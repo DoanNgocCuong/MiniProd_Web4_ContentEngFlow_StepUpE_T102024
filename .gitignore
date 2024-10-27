@@ -1,1 +1,7 @@
+# Start of Selection
 .env
+
+# Do not save the node_modules folder created by NodeJS
+node_modules/
+
+# Checkpoints/
