@@ -96,26 +96,17 @@ function createGenerateQuestionPrompt() {
 async function generateQuestions(prompt) {
     try {
         showLoadingDialog();
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        const response = await fetch('http://localhost:3000/api/generate-questions', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${apiKey}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                model: 'gpt-4o-mini',
-                messages: [
-                    { role: 'system', content: 'You are an expert at English lesson topic-related content generating, only respone in json' },
-                    { role: 'user', content: prompt }
-                ],
-                max_tokens: 3000,
-                temperature: 0.7
-            })
+            body: JSON.stringify({ prompt })
         });
         const data = await response.json();
         processApiResponse(data);
     } catch (error) {
-        alert(error.message)
+        alert(error.message);
         console.error('Error:', error.message);
     } finally {
         hideLoadingDialog();
@@ -130,16 +121,36 @@ function showLoadingDialog() {
 
 function processApiResponse(data) {
     try {
-        const lessons = JSON.parse(data.choices[0].message.content.trim().replace(/```json|```/g, ''));
-        storagedLessons = lessons;
-        if (Array.isArray(lessons)) {
-            displayGeneratedQuestions(lessons);
-        } else {
-            console.error('Expected an array but got:', lessons);
+        console.log('Raw API response:', data);
+        
+        // Kiểm tra nếu data là array
+        if (Array.isArray(data)) {
+            storagedLessons = data;
+            displayGeneratedQuestions(data);
+            return;
         }
-    } catch (jsonError) {
-        console.error('Invalid JSON returned by API:', jsonError);
-        console.error('Raw content:', data.choices[0].message.content);
+        
+        // Nếu không phải array, thử parse từ content
+        if (data.choices && data.choices[0] && data.choices[0].message) {
+            const content = data.choices[0].message.content;
+            console.log('Content from API:', content);
+            
+            // Clean và parse JSON
+            const cleanedContent = content.trim().replace(/```json|```/g, '');
+            const lessons = JSON.parse(cleanedContent);
+            
+            if (Array.isArray(lessons)) {
+                storagedLessons = lessons;
+                displayGeneratedQuestions(lessons);
+            } else {
+                throw new Error('Expected an array of lessons');
+            }
+        } else {
+            throw new Error('Invalid API response structure');
+        }
+    } catch (error) {
+        console.error('Error processing API response:', error);
+        alert('Error processing response: ' + error.message);
     }
 }
 
@@ -151,7 +162,7 @@ function processApiResponse(data) {
 
 function displayGeneratedQuestions(lessons) {
     const container = document.getElementById('question-container');
-    container.innerHTML = '';
+    container.textContent = '';
     const table = createLessonTable(lessons);
     container.appendChild(table);
     addCopyButton(container, table);
@@ -495,54 +506,20 @@ You are an expert at creating English exercise content. You will receive \`CẤU
     }
 ]`;
 
-// Function to call OpenAI API
-async function genOpenAIResponse(apiKey, systemPrompt, userPrompt) {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${apiKey}`,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            model: 'gpt-4o-mini',
-            messages: [
-                { role: 'system', content: systemPrompt },
-                { role: 'user', content: userPrompt }
-            ],
-            max_tokens: 3000,
-            temperature: 0.7
-        })
-    });
-    
-    const data = await response.json();
-    if (!data?.choices?.[0]?.message?.content) {
-        throw new Error('Invalid response from API');
-    }
-    return data;
-}
-
-// Sửa lại hàm generateLearningMeaning
+// Update Learning Meaning generation
 async function generateLearningMeaning(storagedLessons) {
     try {
         showLoadingDialog();
-        const allResults = [];
-        
-        for (const lesson of storagedLessons) {
-            const lessonPrompt = JSON.stringify({
-                structure: lesson.structure,
-                mainPhrase: lesson["main phrase"],
-                optionalPhrase: lesson["optional phrase 1"]
-            }, null, 2);
-            
-            const response = await genOpenAIResponse(apiKey, LEARNING_MEANING_PROMPT, lessonPrompt);
-            const lessonResults = JSON.parse(response.choices[0].message.content);
-            allResults.push(...lessonResults);
-        }
-
-        // Lưu kết quả vào biến toàn cục
-        learningMeaningLessons = allResults;
-        displayLearningMeaningResults(learningMeaningLessons);
-
+        const response = await fetch('http://localhost:3000/api/generate-learning-meaning', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ lessons: storagedLessons })
+        });
+        const data = await response.json();
+        learningMeaningLessons = data;
+        displayLearningMeaningResults(data);
     } catch (error) {
         alert(error.message);
         console.error('Error:', error.message);
@@ -632,7 +609,7 @@ function displayLearningMeaningResults(lessons) {
         }
         
         const container = document.getElementById('learning-meaning-container'); 
-        container.innerHTML = '';
+        container.textContent = '';
         
         // Create and add table
         const table = createLearningMeaningTable(lessons);
@@ -767,7 +744,7 @@ function createLearningMeaningTable(lessons) {
             
             optionalCells.forEach(content => {
                 const td = document.createElement('td');
-                td.innerHTML = content || ''; // Dùng innerHTML thay vì textContent
+                td.textContent = content || ''; // Dùng textContent thay vì innerHTML để giữ nguyên các thẻ <g>, <r>
                 optionalPhraseRow.appendChild(td);
             });
 
@@ -865,58 +842,20 @@ Expected Output:
     }
 ]`;
 
-// Function to call OpenAI API
-async function genOpenAIResponse(apiKey, systemPrompt, userPrompt) {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${apiKey}`,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            model: 'gpt-4o-mini',
-            messages: [
-                { role: 'system', content: systemPrompt },
-                { role: 'user', content: userPrompt }
-            ],
-            max_tokens: 3000,
-            temperature: 0.7
-        })
-    });
-    
-    const data = await response.json();
-    if (!data?.choices?.[0]?.message?.content) {
-        throw new Error('Invalid response from API');
-    }
-    return data;
-}
-
-// Sửa lại hàm generateLearningCard
+// Update Learning Card generation 
 async function generateLearningCard(storagedLessons) {
     try {
         showLoadingDialog();
-        const allResults = [];
-        
-        for (const lesson of storagedLessons) {
-            const lessonPrompt = {};
-            lessonPrompt["main phrase"] = lesson["main phrase"];
-            if (lesson["optional phrase 1"]) {
-                lessonPrompt["optional phrase 1"] = lesson["optional phrase 1"];
-            }
-            if (lesson["optional phrase 2"]) {
-                lessonPrompt["optional phrase 2"] = lesson["optional phrase 2"];
-            }
-            const lessonPromptStr = JSON.stringify(lessonPrompt, null, 2);
-            
-            const response = await genOpenAIResponse(apiKey, LEARNING_CARD_PROMPT, lessonPromptStr);
-            const lessonResults = JSON.parse(response.choices[0].message.content);
-            allResults.push(...lessonResults);
-        }
-
-        // Lưu kết quả vào biến toàn cục
-        learningCardLessons = allResults;
-        displayLearningCardResults(learningCardLessons);
-
+        const response = await fetch('http://localhost:3000/api/generate-learning-card', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ lessons: storagedLessons })
+        });
+        const data = await response.json();
+        learningCardLessons = data;
+        displayLearningCardResults(data);
     } catch (error) {
         alert(error.message);
         console.error('Error:', error.message);
@@ -984,7 +923,7 @@ function addLearningCardEditDialogListeners(dialog, lesson, index) {
 function deleteLearningCardLesson(index, lessons) {
     if (confirm('Are you sure you want to delete this item?')) {
         learningCardLessons.splice(index, 1);
-        // Cập nhật lại hiển thị
+        // Cập nhật lại hiển th
         displayLearningCardResults(learningCardLessons);
     }
 }
@@ -1168,7 +1107,7 @@ function createLearningCardTableHeader() {
 //     try {
 //         showLoadingDialog();
 //         const allResults = [];
-        
+//         
 //         // Xử lý từng bài học
 //         for (const lesson of storagedLessons) {
 //             const lessonPrompt = JSON.stringify({
@@ -1176,7 +1115,7 @@ function createLearningCardTableHeader() {
 //                 structure: lesson.structure,
 //                 phrases: [lesson["phrase 1"], lesson["phrase 2"], lesson["phrase 3"]]
 //             }, null, 2);
-            
+//             
 //             const response = await genOpenAIResponse(apiKey, FILL_IN_THE_BLANK_PROMPT, lessonPrompt);
 //             const lessonResults = JSON.parse(response.choices[0].message.content);
 //             allResults.push(...lessonResults);
@@ -1199,7 +1138,7 @@ function createLearningCardTableHeader() {
 //         if (!lessons || !Array.isArray(lessons)) {
 //             throw new Error('Invalid lessons data received');
 //         }
-        
+//         
 //         const container = document.getElementById('fill-in-the-blank-container'); 
 //         container.innerHTML = '';
 //         const table = createFillInTheBlankTable(lessons);
@@ -1216,12 +1155,12 @@ function createLearningCardTableHeader() {
 //     table.className = 'fill-in-the-blank-table';
 //     table.style.borderCollapse = 'collapse';
 //     table.style.width = '100%';
-    
+//     
 //     // Thêm phần header cho bảng
 //     table.appendChild(createFillInTheBlankTableHeader());
-    
+//     
 //     const tbody = document.createElement('tbody');
-    
+//     
 //     // Duyệt qua các bài học trong lessons
 //     for(const lesson of lessons) {
 //         const row = document.createElement('tr');
@@ -1231,7 +1170,7 @@ function createLearningCardTableHeader() {
 //             lesson.sentence_en || '',   // Câu đầy đủ tiếng Anh
 //             lesson.sentence_vi || ''    // Dịch tiếng Việt
 //         ];
-        
+//         
 //         // Tạo các ô (td) cho mỗi nội dung trong mảng
 //         cells.forEach(content => {
 //             const td = document.createElement('td');
@@ -1241,10 +1180,10 @@ function createLearningCardTableHeader() {
 //             td.style.padding = '8px';
 //             row.appendChild(td);
 //         });
-        
+//         
 //         tbody.appendChild(row);
 //     }
-    
+//     
 //     // Thêm phần tbody vào bảng
 //     table.appendChild(tbody);
 //     return table;

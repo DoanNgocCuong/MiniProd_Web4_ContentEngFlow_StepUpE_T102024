@@ -7,20 +7,22 @@ I'll help you split this into a proper backend and frontend structure. Here's th
 
 ```
 project/
+project/
 ├── backend/
 │   ├── src/
-│   │   ├── controllers/
-│   │   ├── routes/
-│   │   ├── config/
-│   │   └── server.js
-│   ├── .env
-│   └── package.json
+│   │   ├── controllers/       # Nơi chứa các logic xử lý các request HTTP
+│   │   ├── routes/            # Nơi chứa các endpoint của API (mỗi file route tương ứng với một module)
+│   │   ├── config/            # Nơi chứa file cấu hình (như kết nối database, cấu hình server, v.v.)
+│   │   └── server.js          # File chính khởi động server
+│   ├── .env                   # File chứa các biến môi trường (cần bảo mật thông tin nhạy cảm)
+│   └── package.json           # File cấu hình các dependency của backend
 └── frontend/
     ├── src/
-    │   ├── js/
-    │   ├── css/
-    │   └── index.html
-    └── package.json
+    │   ├── js/                # Nơi chứa các file JavaScript cho frontend (chia nhỏ theo từng component hoặc feature)
+    │   ├── css/               # Nơi chứa các file CSS cho giao diện
+    │   └── index.html         # File HTML chính của frontend
+    └── package.json           # File cấu hình các dependency của frontend
+
 ```
 
 ## How to Run: 
