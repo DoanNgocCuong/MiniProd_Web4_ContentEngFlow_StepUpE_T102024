@@ -613,9 +613,12 @@ function addLearningMeaningEditDialogListeners(dialog, lesson, index) {
     });
 }
 
+// Sửa lại hàm deleteLearningMeaningLesson
 function deleteLearningMeaningLesson(index, lessons) {
     if (confirm('Are you sure you want to delete this item?')) {
+        // Xóa chính xác 1 dòng tại index được chọn
         learningMeaningLessons.splice(index, 1);
+        
         // Cập nhật lại hiển thị
         displayLearningMeaningResults(learningMeaningLessons);
     }
@@ -631,16 +634,9 @@ function displayLearningMeaningResults(lessons) {
         const container = document.getElementById('learning-meaning-container'); 
         container.innerHTML = '';
         
-        // Tạo bảng
+        // Chỉ tạo và thêm bảng, không thêm nút Copy
         const table = createLearningMeaningTable(lessons);
         container.appendChild(table);
-
-        // Thêm nút Copy
-        const copyButton = document.createElement('button');
-        copyButton.textContent = 'Copy Table';
-        copyButton.className = 'copy-btn';
-        copyButton.addEventListener('click', () => copyTableToClipboard(table));
-        container.appendChild(copyButton);
 
     } catch (error) {
         console.error('Error:', error.message);
@@ -657,21 +653,21 @@ function createLearningMeaningTable(lessons) {
     const tbody = document.createElement('tbody');
     
     for(let i = 0; i < lessons.length; i += 2) {
+        // Main phrase row
         const mainPhraseRow = document.createElement('tr');
         const mainCells = [
             'Hãy dịch cụm in đậm',
-            lessons[i].sentence,
+            lessons[i].sentence,          // Giữ nguyên các thẻ <g>, <r>
             lessons[i].answer_1,
             lessons[i].answer_2,
             lessons[i].answer_3,
-            lessons[i].answer_2_description,
-            lessons[i].answer_3_description
+            lessons[i].answer_2_description,  // Giữ nguyên các thẻ <r>
+            lessons[i].answer_3_description   // Giữ nguyên các thẻ <r>
         ];
         
-        // Thêm các ô thông thường
         mainCells.forEach(content => {
             const td = document.createElement('td');
-            td.textContent = content || '';
+            td.textContent = content || ''; // Dùng innerHTML thay vì textContent
             mainPhraseRow.appendChild(td);
         });
 
@@ -698,14 +694,53 @@ function createLearningMeaningTable(lessons) {
         
         tbody.appendChild(mainPhraseRow);
 
-        // Tương tự cho optional phrase row
-        // ... (giữ nguyên code xử lý optional phrase row và thêm buttons tương tự)
+        // Optional phrase row
+        if (lessons[i + 1]) {
+            const optionalPhraseRow = document.createElement('tr');
+            const optionalCells = [
+                'Hãy dịch cụm in đậm',
+                lessons[i + 1].sentence,          // Giữ nguyên các thẻ <g>, <r>
+                lessons[i + 1].answer_1,
+                lessons[i + 1].answer_2,
+                lessons[i + 1].answer_3,
+                lessons[i + 1].answer_2_description,  // Giữ nguyên các thẻ <r>
+                lessons[i + 1].answer_3_description   // Giữ nguyên các thẻ <r>
+            ];
+            
+            optionalCells.forEach(content => {
+                const td = document.createElement('td');
+                td.innerHTML = content || ''; // Dùng innerHTML thay vì textContent
+                optionalPhraseRow.appendChild(td);
+            });
+
+            // Thêm nút Edit và Delete cho optional phrase
+            const optEditTd = document.createElement('td');
+            const optDeleteTd = document.createElement('td');
+            
+            const optEditButton = document.createElement('button');
+            optEditButton.className = 'edit-btn';
+            optEditButton.textContent = 'Edit';
+            optEditButton.dataset.index = i + 1;
+            optEditButton.onclick = () => openLearningMeaningEditDialog(lessons[i + 1], i + 1);
+            
+            const optDeleteButton = document.createElement('button');
+            optDeleteButton.className = 'delete-btn';
+            optDeleteButton.textContent = 'Delete';
+            optDeleteButton.dataset.index = i + 1;
+            optDeleteButton.onclick = () => deleteLearningMeaningLesson(i + 1, lessons);
+            
+            optEditTd.appendChild(optEditButton);
+            optDeleteTd.appendChild(optDeleteButton);
+            optionalPhraseRow.appendChild(optEditTd);
+            optionalPhraseRow.appendChild(optDeleteTd);
+            
+            tbody.appendChild(optionalPhraseRow);
+        }
     }
     
     table.appendChild(tbody);
     return table;
 }
-
 // Hàm tạo header cho bảng learning meaning - thêm 2 cột Actions
 function createLearningMeaningTableHeader() {
     const thead = document.createElement('thead');
@@ -906,16 +941,9 @@ function displayLearningCardResults(lessons) {
         const container = document.getElementById('learning-card-container'); 
         container.innerHTML = '';
         
-        // Tạo bảng
+        // Chỉ tạo và thêm bảng, không thêm nút Copy
         const table = createLearningCardTable(lessons);
         container.appendChild(table);
-
-        // Thêm nút Copy
-        const copyButton = document.createElement('button');
-        copyButton.textContent = 'Copy Table';
-        copyButton.className = 'copy-btn';
-        copyButton.addEventListener('click', () => copyTableToClipboard(table));
-        container.appendChild(copyButton);
 
     } catch (error) {
         console.error('Error:', error.message);
@@ -1131,6 +1159,12 @@ function hideLoadingDialog() {
     const loadingDialog = document.getElementById('loading-dialog');
     loadingDialog.style.display = 'none'; // Hide the dialog
 }
+
+
+
+
+
+
 
 
 
