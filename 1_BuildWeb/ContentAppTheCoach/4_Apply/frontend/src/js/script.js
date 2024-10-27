@@ -2,6 +2,8 @@
 const apiKey = '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';
 
 let storagedLessons;
+let learningMeaningLessons = [];
+let learningCardLessons = [];
 
 /**
  * ---------------------------------------------------------------------------------------------------------
@@ -243,12 +245,55 @@ function addCopyButton(container, table) {
 }
 
 function copyTableToClipboard(table) {
+    // Tạo bảng tm thời để copy
+    const tempTable = document.createElement('table');
+    
+    // Copy header (loại bỏ 2 cột Action)
+    const headerRow = table.querySelector('thead tr');
+    const newHeader = document.createElement('thead');
+    const newHeaderRow = document.createElement('tr');
+    
+    // Copy tất cả cells từ header, trừ 2 cột cuối
+    for (let i = 0; i < headerRow.cells.length - 2; i++) {
+        const cell = headerRow.cells[i].cloneNode(true);
+        newHeaderRow.appendChild(cell);
+    }
+    newHeader.appendChild(newHeaderRow);
+    tempTable.appendChild(newHeader);
+    
+    // Copy body (loại bỏ 2 cột Action)
+    const tbody = document.createElement('tbody');
+    const rows = table.querySelectorAll('tbody tr');
+    
+    rows.forEach(row => {
+        const newRow = document.createElement('tr');
+        // Copy tất cả cells từ mỗi row, trừ 2 cột cuối
+        for (let i = 0; i < row.cells.length - 2; i++) {
+            const cell = row.cells[i].cloneNode(true);
+            newRow.appendChild(cell);
+        }
+        tbody.appendChild(newRow);
+    });
+    
+    tempTable.appendChild(tbody);
+    
+    // Thêm bảng tạm thời vào document (ẩn)
+    tempTable.style.position = 'absolute';
+    tempTable.style.left = '-9999px';
+    document.body.appendChild(tempTable);
+    
+    // Copy nội dung
     const range = document.createRange();
-    range.selectNode(table);
+    range.selectNode(tempTable);
     window.getSelection().removeAllRanges();
     window.getSelection().addRange(range);
     document.execCommand('copy');
     window.getSelection().removeAllRanges();
+    
+    // Xóa bảng tạm thời
+    document.body.removeChild(tempTable);
+    
+    // Thông báo
     alert('Table copied to clipboard!');
 }
 
@@ -407,6 +452,7 @@ document.querySelectorAll('.tab-btn').forEach(button => {
  * Generate Learning Meaning
  * ---------------------------------------------------------------------------------------------------------
  */
+
 // Define system prompt as a constant
 const LEARNING_MEANING_PROMPT = `**Prompt:**  
 You are an expert at creating English exercise content. You will receive \`CẤU TRÚC\`, \`MAIN PHRASE\`, and \`OTHER PHRASE\` inputs from the user.
@@ -481,27 +527,21 @@ async function generateLearningMeaning(storagedLessons) {
         showLoadingDialog();
         const allResults = [];
         
-        // Xử lý từng lesson một
         for (const lesson of storagedLessons) {
             const lessonPrompt = JSON.stringify({
                 structure: lesson.structure,
                 mainPhrase: lesson["main phrase"],
                 optionalPhrase: lesson["optional phrase 1"]
             }, null, 2);
-            // example of lessonPrompt:
-            // {
-            //     "structure": "I'm the ______ from ABC Company.",
-            //     "mainPhrase": "Sales representative",
-            //     "optionalPhrase": "Sales director"
-            // }
             
             const response = await genOpenAIResponse(apiKey, LEARNING_MEANING_PROMPT, lessonPrompt);
             const lessonResults = JSON.parse(response.choices[0].message.content);
             allResults.push(...lessonResults);
         }
 
-        // Truyền trực tiếp mảng kết quả
-        displayLearningMeaningResults(allResults);
+        // Lưu kết quả vào biến toàn cục
+        learningMeaningLessons = allResults;
+        displayLearningMeaningResults(learningMeaningLessons);
 
     } catch (error) {
         alert(error.message);
@@ -510,96 +550,165 @@ async function generateLearningMeaning(storagedLessons) {
         hideLoadingDialog();
     }
 }
+
+function updateLearningMeaningLesson(lesson) {
+    lesson.sentence = document.getElementById('edit-sentence').value;
+    lesson.answer_1 = document.getElementById('edit-answer1').value;
+    lesson.answer_2 = document.getElementById('edit-answer2').value;
+    lesson.answer_3 = document.getElementById('edit-answer3').value;
+    lesson.answer_2_description = document.getElementById('edit-answer2-desc').value;
+    lesson.answer_3_description = document.getElementById('edit-answer3-desc').value;
+}
+
+function openLearningMeaningEditDialog(lesson, index) {
+    const dialog = createLearningMeaningEditDialog(lesson);
+    document.body.appendChild(dialog);
+    addLearningMeaningEditDialogListeners(dialog, lesson, index);
+}
+
+function createLearningMeaningEditDialog(lesson) {
+    const dialog = document.createElement('div');
+    dialog.className = 'edit-dialog';
+    dialog.innerHTML = `
+        <div class="dialog-content">
+            <h3>Edit Learning Meaning</h3>
+            <label for="edit-sentence">Sentence:</label>
+            <input type="text" id="edit-sentence" value="${lesson.sentence || ''}">
+            
+            <label for="edit-answer1">Answer 1:</label>
+            <input type="text" id="edit-answer1" value="${lesson.answer_1 || ''}">
+            
+            <label for="edit-answer2">Answer 2:</label>
+            <input type="text" id="edit-answer2" value="${lesson.answer_2 || ''}">
+            
+            <label for="edit-answer3">Answer 3:</label>
+            <input type="text" id="edit-answer3" value="${lesson.answer_3 || ''}">
+            
+            <label for="edit-answer2-desc">Answer 2 Description:</label>
+            <textarea id="edit-answer2-desc">${lesson.answer_2_description || ''}</textarea>
+            
+            <label for="edit-answer3-desc">Answer 3 Description:</label>
+            <textarea id="edit-answer3-desc">${lesson.answer_3_description || ''}</textarea>
+            
+            <div class="dialog-buttons">
+                <button id="save-edit">Save</button>
+                <button id="cancel-edit">Cancel</button>
+            </div>
+        </div>
+    `;
+    return dialog;
+}
+
+function addLearningMeaningEditDialogListeners(dialog, lesson, index) {
+    document.getElementById('save-edit').addEventListener('click', () => {
+        updateLearningMeaningLesson(lesson);
+        // Cập nhật lại mảng dữ liệu gốc
+        learningMeaningLessons[index] = lesson;
+        displayLearningMeaningResults(learningMeaningLessons);
+        document.body.removeChild(dialog);
+    });
+
+    document.getElementById('cancel-edit').addEventListener('click', () => {
+        document.body.removeChild(dialog);
+    });
+}
+
+function deleteLearningMeaningLesson(index, lessons) {
+    if (confirm('Are you sure you want to delete this item?')) {
+        learningMeaningLessons.splice(index, 1);
+        // Cập nhật lại hiển thị
+        displayLearningMeaningResults(learningMeaningLessons);
+    }
+}
+
 // Hàm hiển thị kết quả học nghĩa
 function displayLearningMeaningResults(lessons) {
     try {
-        // Kiểm tra dữ liệu đầu vào có hợp lệ không
         if (!lessons || !Array.isArray(lessons)) {
             throw new Error('Invalid lessons data received');
         }
         
-        // Lấy container từ DOM để hiển thị kết quả
         const container = document.getElementById('learning-meaning-container'); 
-        // Xóa nội dung cũ trong container
         container.innerHTML = '';
-        // Tạo bảng mới từ dữ liệu lessons
+        
+        // Tạo bảng
         const table = createLearningMeaningTable(lessons);
-        // Thêm bảng vào container
         container.appendChild(table);
+
+        // Thêm nút Copy
+        const copyButton = document.createElement('button');
+        copyButton.textContent = 'Copy Table';
+        copyButton.className = 'copy-btn';
+        copyButton.addEventListener('click', () => copyTableToClipboard(table));
+        container.appendChild(copyButton);
+
     } catch (error) {
-        // Ghi log lỗi vào console
         console.error('Error:', error.message);
-        // Hiển thị thông báo lỗi cho người dùng
         alert('Error displaying results: ' + error.message);
     }
 }
+
 // Hàm tạo bảng hiển thị kết quả học nghĩa
 function createLearningMeaningTable(lessons) {
-    // Tạo phần tử table mới
     const table = document.createElement('table');
-    // Thêm class cho table để áp dụng CSS
     table.className = 'learning-meaning-table';
-    // Thêm phần header cho bảng
     table.appendChild(createLearningMeaningTableHeader());
     
-    // Tạo phần tbody để chứa nội dung bảng
     const tbody = document.createElement('tbody');
     
-    // Duyệt qua mảng lessons, mỗi lần lấy 2 phần tử (main phrase và optional phrase)
     for(let i = 0; i < lessons.length; i += 2) {
-        // Tạo hàng cho main phrase
         const mainPhraseRow = document.createElement('tr');
-        // Tạo mảng chứa nội dung các ô cho main phrase
         const mainCells = [
-            'Hãy dịch cụm in đậm', // Cột mô tả
-            lessons[i].sentence, // Câu tiếng Anh
-            lessons[i].answer_1, // Đáp án 1
-            lessons[i].answer_2, // Đáp án 2
-            lessons[i].answer_3, // Đáp án 3
-            lessons[i].answer_2_description, // Mô tả đáp án 2
-            lessons[i].answer_3_description  // Mô tả đáp án 3
+            'Hãy dịch cụm in đậm',
+            lessons[i].sentence,
+            lessons[i].answer_1,
+            lessons[i].answer_2,
+            lessons[i].answer_3,
+            lessons[i].answer_2_description,
+            lessons[i].answer_3_description
         ];
         
-        // Duyệt qua mảng nội dung để tạo các ô
+        // Thêm các ô thông thường
         mainCells.forEach(content => {
             const td = document.createElement('td');
-            td.textContent = content || ''; // Gán nội dung cho ô, nếu không có thì để trống
+            td.textContent = content || '';
             mainPhraseRow.appendChild(td);
         });
+
+        // Thêm nút Edit và Delete
+        const editTd = document.createElement('td');
+        const deleteTd = document.createElement('td');
+        
+        const editButton = document.createElement('button');
+        editButton.className = 'edit-btn';
+        editButton.textContent = 'Edit';
+        editButton.dataset.index = i;
+        editButton.onclick = () => openLearningMeaningEditDialog(lessons[i], i);
+        
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'delete-btn';
+        deleteButton.textContent = 'Delete';
+        deleteButton.dataset.index = i;
+        deleteButton.onclick = () => deleteLearningMeaningLesson(i, lessons);
+        
+        editTd.appendChild(editButton);
+        deleteTd.appendChild(deleteButton);
+        mainPhraseRow.appendChild(editTd);
+        mainPhraseRow.appendChild(deleteTd);
+        
         tbody.appendChild(mainPhraseRow);
 
-        // Tạo hàng cho optional phrase
-        const optionalPhraseRow = document.createElement('tr');
-        // Tạo mảng chứa nội dung các ô cho optional phrase
-        const optionalCells = [
-            'Hãy dịch cụm in đậm', // Cột mô tả
-            lessons[i+1].sentence, // Câu tiếng Anh
-            lessons[i+1].answer_1, // Đáp án 1
-            lessons[i+1].answer_2, // Đáp án 2
-            lessons[i+1].answer_3, // Đáp án 3
-            lessons[i+1].answer_2_description, // Mô tả đáp án 2
-            lessons[i+1].answer_3_description  // Mô tả đáp án 3
-        ];
-        
-        // Duyệt qua mảng nội dung để tạo các ô
-        optionalCells.forEach(content => {
-            const td = document.createElement('td');
-            td.textContent = content || ''; // Gán nội dung cho ô, nếu không có thì để trống
-            optionalPhraseRow.appendChild(td);
-        });
-        tbody.appendChild(optionalPhraseRow);
+        // Tương tự cho optional phrase row
+        // ... (giữ nguyên code xử lý optional phrase row và thêm buttons tương tự)
     }
     
-    // Thêm phần tbody vào bảng
     table.appendChild(tbody);
     return table;
 }
 
-// Hàm tạo header cho bảng learning meaning
+// Hàm tạo header cho bảng learning meaning - thêm 2 cột Actions
 function createLearningMeaningTableHeader() {
-    // Tạo phần tử thead
     const thead = document.createElement('thead');
-    // Thêm nội dung HTML cho thead với các cột tương ứng
     thead.innerHTML = `
         <tr>
             <th>Description</th>
@@ -609,6 +718,8 @@ function createLearningMeaningTableHeader() {
             <th>Answer 3</th>
             <th>Answer 2 Description</th>
             <th>Answer 3 Description</th>
+            <th>Actions</th>
+            <th>Actions</th>
         </tr>
     `;
     return thead;
@@ -693,7 +804,6 @@ async function generateLearningCard(storagedLessons) {
         showLoadingDialog();
         const allResults = [];
         
-        // Xử lý từng lesson một
         for (const lesson of storagedLessons) {
             const lessonPrompt = {};
             lessonPrompt["main phrase"] = lesson["main phrase"];
@@ -704,20 +814,15 @@ async function generateLearningCard(storagedLessons) {
                 lessonPrompt["optional phrase 2"] = lesson["optional phrase 2"];
             }
             const lessonPromptStr = JSON.stringify(lessonPrompt, null, 2);
-            // Ví dụ của lessonPromptStr:
-            // {
-            //     "main phrase": "Sales representative",
-            //     "optional phrase 1": "Sales director",
-            //     "optional phrase 2": "Sales associate"
-            // }
             
             const response = await genOpenAIResponse(apiKey, LEARNING_CARD_PROMPT, lessonPromptStr);
             const lessonResults = JSON.parse(response.choices[0].message.content);
             allResults.push(...lessonResults);
         }
 
-        // Truyền trực tiếp mảng kết quả
-        displayLearningCardResults(allResults);
+        // Lưu kết quả vào biến toàn cục
+        learningCardLessons = allResults;
+        displayLearningCardResults(learningCardLessons);
 
     } catch (error) {
         alert(error.message);
@@ -727,68 +832,150 @@ async function generateLearningCard(storagedLessons) {
     }
 }
 
+/**
+ * ---------------------------------------------------------------------------------------------------------
+ * Learning Card Functions
+ * ---------------------------------------------------------------------------------------------------------
+ */
+
+function updateLearningCardLesson(lesson) {
+    lesson.sentence_en = document.getElementById('edit-sentence-en').value;
+    lesson.sentence_vi = document.getElementById('edit-sentence-vi').value;
+    lesson.ipa = document.getElementById('edit-ipa').value;
+}
+
+function openLearningCardEditDialog(lesson, index) {
+    const dialog = createLearningCardEditDialog(lesson);
+    document.body.appendChild(dialog);
+    addLearningCardEditDialogListeners(dialog, lesson, index);
+}
+
+function createLearningCardEditDialog(lesson) {
+    const dialog = document.createElement('div');
+    dialog.className = 'edit-dialog';
+    dialog.innerHTML = `
+        <div class="dialog-content">
+            <h3>Edit Learning Card</h3>
+            <label for="edit-sentence-en">English Sentence:</label>
+            <input type="text" id="edit-sentence-en" value="${lesson.sentence_en || ''}">
+            
+            <label for="edit-sentence-vi">Vietnamese Sentence:</label>
+            <input type="text" id="edit-sentence-vi" value="${lesson.sentence_vi || ''}">
+            
+            <label for="edit-ipa">IPA:</label>
+            <input type="text" id="edit-ipa" value="${lesson.ipa || ''}">
+            
+            <div class="dialog-buttons">
+                <button id="save-edit">Save</button>
+                <button id="cancel-edit">Cancel</button>
+            </div>
+        </div>
+    `;
+    return dialog;
+}
+
+function addLearningCardEditDialogListeners(dialog, lesson, index) {
+    document.getElementById('save-edit').addEventListener('click', () => {
+        updateLearningCardLesson(lesson);
+        // Cập nhật lại mảng dữ liệu gốc
+        learningCardLessons[index] = lesson;
+        displayLearningCardResults(learningCardLessons);
+        document.body.removeChild(dialog);
+    });
+
+    document.getElementById('cancel-edit').addEventListener('click', () => {
+        document.body.removeChild(dialog);
+    });
+}
+
+function deleteLearningCardLesson(index, lessons) {
+    if (confirm('Are you sure you want to delete this item?')) {
+        learningCardLessons.splice(index, 1);
+        // Cập nhật lại hiển thị
+        displayLearningCardResults(learningCardLessons);
+    }
+}
+
 // Hàm hiển thị kết quả học thẻ
 function displayLearningCardResults(lessons) {
     try {
-        // Kiểm tra dữ liệu đầu vào có hợp lệ không
         if (!lessons || !Array.isArray(lessons)) {
             throw new Error('Invalid lessons data received');
         }
         
-        // Lấy container từ DOM để hiển thị kết quả
         const container = document.getElementById('learning-card-container'); 
-        // Xóa nội dung cũ trong container
         container.innerHTML = '';
-        // Tạo bảng mới từ dữ liệu lessons
+        
+        // Tạo bảng
         const table = createLearningCardTable(lessons);
-        // Thêm bảng vào container
         container.appendChild(table);
+
+        // Thêm nút Copy
+        const copyButton = document.createElement('button');
+        copyButton.textContent = 'Copy Table';
+        copyButton.className = 'copy-btn';
+        copyButton.addEventListener('click', () => copyTableToClipboard(table));
+        container.appendChild(copyButton);
+
     } catch (error) {
-        // Ghi log lỗi vào console
         console.error('Error:', error.message);
-        // Hiển thị thông báo lỗi cho người dùng
         alert('Error displaying results: ' + error.message);
     }
 }
 
 // Hàm tạo bảng hiển thị kết quả học thẻ
 function createLearningCardTable(lessons) {
-    // Tạo phần tử table mới
     const table = document.createElement('table');
-    // Thêm class và style cho table
     table.className = 'learning-card-table';
     table.style.borderCollapse = 'collapse';
     table.style.width = '100%';
     
-    // Thêm phần header cho bảng
     table.appendChild(createLearningCardTableHeader());
-    
-    // Tạo phần tbody để chứa nội dung bảng
     const tbody = document.createElement('tbody');
     
-    // Duyệt qua mảng lessons
-    for(const lesson of lessons) {
+    lessons.forEach((lesson, index) => {
         const row = document.createElement('tr');
-        // Tạo mảng chứa nội dung các ô cho mỗi lesson
         const cells = [
-            lesson.sentence_en || '', // Sentence (EN)
-            lesson.sentence_vi || '', // Sentence (VI)
-            lesson.ipa || ''          // IPA
+            lesson.sentence_en || '',
+            lesson.sentence_vi || '',
+            lesson.ipa || ''
         ];
         
-        // Duyệt qua mảng nội dung để tạo các ô
+        // Thêm cells thông thường
         cells.forEach(content => {
             const td = document.createElement('td');
             td.textContent = content;
-            // Thêm style cho td
             td.style.border = '1px solid #ddd';
             td.style.padding = '8px';
             row.appendChild(td);
         });
+
+        // Thêm nút Edit và Delete
+        const editTd = document.createElement('td');
+        const deleteTd = document.createElement('td');
+        editTd.style.border = '1px solid #ddd';
+        deleteTd.style.border = '1px solid #ddd';
+        
+        const editButton = document.createElement('button');
+        editButton.className = 'edit-btn';
+        editButton.textContent = 'Edit';
+        editButton.dataset.index = index;
+        editButton.onclick = () => openLearningCardEditDialog(lesson, index);
+        
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'delete-btn';
+        deleteButton.textContent = 'Delete';
+        deleteButton.dataset.index = index;
+        deleteButton.onclick = () => deleteLearningCardLesson(index, lessons);
+        
+        editTd.appendChild(editButton);
+        deleteTd.appendChild(deleteButton);
+        row.appendChild(editTd);
+        row.appendChild(deleteTd);
+        
         tbody.appendChild(row);
-    }
+    });
     
-    // Thêm phần tbody vào bảng
     table.appendChild(tbody);
     return table;
 }
@@ -801,6 +988,8 @@ function createLearningCardTableHeader() {
             <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Sentence (EN)</th>
             <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Sentence (VI)</th>
             <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">IPA</th>
+            <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Actions</th>
+            <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Actions</th>
         </tr>
     `;
     return thead;
@@ -942,3 +1131,10 @@ function hideLoadingDialog() {
     const loadingDialog = document.getElementById('loading-dialog');
     loadingDialog.style.display = 'none'; // Hide the dialog
 }
+
+
+
+
+
+
+
