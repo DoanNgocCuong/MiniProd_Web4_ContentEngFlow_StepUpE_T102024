@@ -634,14 +634,72 @@ function displayLearningMeaningResults(lessons) {
         const container = document.getElementById('learning-meaning-container'); 
         container.innerHTML = '';
         
-        // Chỉ tạo và thêm bảng, không thêm nút Copy
+        // Create and add table
         const table = createLearningMeaningTable(lessons);
         container.appendChild(table);
+
+        // Add copy button
+        const copyButton = document.createElement('button');
+        copyButton.textContent = 'Copy Table';
+        copyButton.className = 'copy-btn';
+        copyButton.addEventListener('click', () => copyLearningMeaningTable(table));
+        container.appendChild(copyButton);
 
     } catch (error) {
         console.error('Error:', error.message);
         alert('Error displaying results: ' + error.message);
     }
+}
+
+function copyLearningMeaningTable(table) {
+    // Create temporary table for copying
+    const tempTable = document.createElement('table');
+    
+    // Copy header (excluding Action columns)
+    const headerRow = table.querySelector('thead tr');
+    const newHeader = document.createElement('thead');
+    const newHeaderRow = document.createElement('tr');
+    
+    // Copy all cells except the last two (Action columns)
+    for (let i = 0; i < headerRow.cells.length - 2; i++) {
+        const cell = headerRow.cells[i].cloneNode(true);
+        newHeaderRow.appendChild(cell);
+    }
+    newHeader.appendChild(newHeaderRow);
+    tempTable.appendChild(newHeader);
+    
+    // Copy body (excluding Action columns)
+    const tbody = document.createElement('tbody');
+    const rows = table.querySelectorAll('tbody tr');
+    
+    rows.forEach(row => {
+        const newRow = document.createElement('tr');
+        for (let i = 0; i < row.cells.length - 2; i++) {
+            const cell = row.cells[i].cloneNode(true);
+            newRow.appendChild(cell);
+        }
+        tbody.appendChild(newRow);
+    });
+    
+    tempTable.appendChild(tbody);
+    
+    // Add temporary table to document (hidden)
+    tempTable.style.position = 'absolute';
+    tempTable.style.left = '-9999px';
+    document.body.appendChild(tempTable);
+    
+    // Copy content
+    const range = document.createRange();
+    range.selectNode(tempTable);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+    
+    // Remove temporary table
+    document.body.removeChild(tempTable);
+    
+    alert('Table copied to clipboard!');
 }
 
 // Hàm tạo bảng hiển thị kết quả học nghĩa
@@ -941,14 +999,72 @@ function displayLearningCardResults(lessons) {
         const container = document.getElementById('learning-card-container'); 
         container.innerHTML = '';
         
-        // Chỉ tạo và thêm bảng, không thêm nút Copy
+        // Create and add table
         const table = createLearningCardTable(lessons);
         container.appendChild(table);
+
+        // Add copy button
+        const copyButton = document.createElement('button');
+        copyButton.textContent = 'Copy Table';
+        copyButton.className = 'copy-btn';
+        copyButton.addEventListener('click', () => copyLearningCardTable(table));
+        container.appendChild(copyButton);
 
     } catch (error) {
         console.error('Error:', error.message);
         alert('Error displaying results: ' + error.message);
     }
+}
+
+function copyLearningCardTable(table) {
+    // Create temporary table for copying
+    const tempTable = document.createElement('table');
+    
+    // Copy header (excluding Action columns)
+    const headerRow = table.querySelector('thead tr');
+    const newHeader = document.createElement('thead');
+    const newHeaderRow = document.createElement('tr');
+    
+    // Copy all cells except the last two (Action columns)
+    for (let i = 0; i < headerRow.cells.length - 2; i++) {
+        const cell = headerRow.cells[i].cloneNode(true);
+        newHeaderRow.appendChild(cell);
+    }
+    newHeader.appendChild(newHeaderRow);
+    tempTable.appendChild(newHeader);
+    
+    // Copy body (excluding Action columns)
+    const tbody = document.createElement('tbody');
+    const rows = table.querySelectorAll('tbody tr');
+    
+    rows.forEach(row => {
+        const newRow = document.createElement('tr');
+        for (let i = 0; i < row.cells.length - 2; i++) {
+            const cell = row.cells[i].cloneNode(true);
+            newRow.appendChild(cell);
+        }
+        tbody.appendChild(newRow);
+    });
+    
+    tempTable.appendChild(tbody);
+    
+    // Add temporary table to document (hidden)
+    tempTable.style.position = 'absolute';
+    tempTable.style.left = '-9999px';
+    document.body.appendChild(tempTable);
+    
+    // Copy content
+    const range = document.createRange();
+    range.selectNode(tempTable);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+    
+    // Remove temporary table
+    document.body.removeChild(tempTable);
+    
+    alert('Table copied to clipboard!');
 }
 
 // Hàm tạo bảng hiển thị kết quả học thẻ
@@ -1159,6 +1275,7 @@ function hideLoadingDialog() {
     const loadingDialog = document.getElementById('loading-dialog');
     loadingDialog.style.display = 'none'; // Hide the dialog
 }
+
 
 
 
