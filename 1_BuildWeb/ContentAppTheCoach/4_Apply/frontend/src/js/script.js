@@ -62,32 +62,34 @@ function createGenerateQuestionPrompt() {
     const questionCount = document.getElementById('question-count').value;
     const extraRequirements = document.getElementById('extra-requirements').value;
 
-    return `Based on the provided context that provide you the number of questions  need to be generated, the topic, level, generate the content for an English lesson with additional context ${extraRequirements}
-            For each question, you must return in the following dictionary format. Generate ${questionCount} questions about the topic "${topic}" for English learners at the ${level} level:
-                'question':put question here,
-                'structure':put answer structure here,
-                'main phrase':put main phrase for filling in the blank of 'structure' here,
-                'optional phrase 1':put optional phrase 1 for filling in the blank of 'structure' here,
-                'optional phrase 2':put optional phrase 2 for filling in the blank of 'structure' here,
-                'question-vi':put question in Vietnamese here,
-                'structure-vi':put answer structure in Vietnamese here,
-                'main phrase-vi':put main phrase in Vietnamese for filling in the blank of 'structure' here,
-                'optional phrase 1-vi':put optional phrase 1 in Vietnamese for filling in the blank of 'structure' here,
-                'optional phrase 2-vi':put optional phrase 2 in Vietnamese for filling in the blank of 'structure' here,
-            For example:
+    return `Generate ${questionCount} questions for an English lesson on the topic "${topic}" at the ${level} level, following any additional requirements: ${extraRequirements}.
+            Each question should follow this dictionary format and ensure that the 'structure' and 'structure-vi' include a blank space (____) where the answer will fit:
+                'question': 'Your question text here',
+                'structure': 'Answer structure here with a blank (____)',
+                'main phrase': 'Phrase to fill in the blank',
+                'optional phrase 1': 'Alternative phrase option 1',
+                'optional phrase 2': 'Alternative phrase option 2',
+                'question-vi': 'Vietnamese translation of question here',
+                'structure-vi': 'Vietnamese translation of answer structure with blank (____)',
+                'main phrase-vi': 'Vietnamese translation of main phrase',
+                'optional phrase 1-vi': 'Vietnamese translation of option 1',
+                'optional phrase 2-vi': 'Vietnamese translation of option 2'.
+
+            Example:
                 {
-                    "question":"Which company are you working for?",
-                    "structure":"I'm the ______ from ABC Company. ",
-                    "main phrase":"Sales representative",
-                    "optional phrase 1":"Sales director",
-                    "optional phrase 2":"Sales associate"
-                    "question-vi":"Bạn đang làm việc cho công ty nào vậy?",
-                    "structure-vi":"Tôi là _____ từ công ty ABC.",
-                    "main phrase-vi":"Đại diện kinh doanh",
-                    "optional phrase 1-vi":"Giám đốc kinh doanh",
-                    "optional phrase 2-vi":"Nhân viên bán hàng"
+                    "question": "Which company are you working for?",
+                    "structure": "I'm the ____ from ABC Company.",
+                    "main phrase": "Sales representative",
+                    "optional phrase 1": "Sales director",
+                    "optional phrase 2": "Sales associate",
+                    "question-vi": "Bạn đang làm việc cho công ty nào vậy?",
+                    "structure-vi": "Tôi là ____ từ công ty ABC.",
+                    "main phrase-vi": "Đại diện kinh doanh",
+                    "optional phrase 1-vi": "Giám đốc kinh doanh",
+                    "optional phrase 2-vi": "Nhân viên bán hàng"
                 }`;
 }
+
 
 async function generateQuestions(prompt) {
     try {
@@ -612,47 +614,50 @@ function createLearningMeaningTableHeader() {
     return thead;
 }
 
-
 /**
  * ---------------------------------------------------------------------------------------------------------
  * Generate Learning Card
  * ---------------------------------------------------------------------------------------------------------
  */
 // Định nghĩa hệ thống prompt
-const LEARNING_CARD_PROMPT = `**Prompt:**
+const LEARNING_CARD_PROMPT = 
+`You are an English exercise content expert. Given structure_en, main_phrase, and up to two optional_phrases, create a JSON array with:
 
-You are an expert at creating English exercise content. Given a "main phrase" and up to two optional phrases, generate a JSON array of objects where each object includes:
+- sentence_en: English sentence
+- sentence_vi: Vietnamese translation 
+- ipa: IPA pronunciation
 
-- \`sentence_en\`: the English phrase
-- \`sentence_vi\`: the Vietnamese translation
-- \`ipa\`: the IPA pronunciation
-
-Response JSON format (not include other characters, such as \`\`\`JSON)
+**Response Format:** Output only in JSON format with no extra characters (such as \`\`\`Json).
 
 **Example Input:**
 {
-    "main phrase": "Sales representative",
-    "optional phrase 1": "Sales director",
-    "optional phrase 2": "Sales associate"
+    "structure_en": "Our team of _____ specialists is here to help",
+    "main_phrase": "healthcare",
+    "optional_phrase_1": "financial", 
+    "optional_phrase_2": "legal"
 }
 
-**Expected Output:**
-
+Expected Output:
 [
     {
-        "sentence_en": "Sales representative",
-        "sentence_vi": "Đại diện kinh doanh",
-        "ipa": "/seɪlz ˌrɛprɪˈzɛntətɪv/"
+        "sentence_en": "Our team of _____ specialists is here to help",
+        "sentence_vi": "Đội ngũ chuyên gia _____ của chúng tôi sẵn sàng hỗ trợ",
+        "ipa": "/ˈaʊər tiːm əv _____ ˈspɛʃəlɪsts ɪz hɪər tuː hɛlp/"
     },
     {
-        "sentence_en": "Sales director",
-        "sentence_vi": "Giám đốc kinh doanh",
-        "ipa": "/seɪlz dəˈrɛktər/"
+        "sentence_en": "healthcare specialists",
+        "sentence_vi": "chuyên gia y tế",
+        "ipa": "/ˈhɛlθˌkɛr ˈspɛʃəlɪsts/"
     },
     {
-        "sentence_en": "Sales Associate",
-        "sentence_vi": "Nhân viên bán hàng",
-        "ipa": "/seɪlz əˈsoʊsiət/"
+        "sentence_en": "financial specialists", 
+        "sentence_vi": "chuyên gia tài chính",
+        "ipa": "/faɪˈnænʃəl ˈspɛʃəlɪsts/"
+    },
+    {
+        "sentence_en": "legal specialists",
+        "sentence_vi": "chuyên gia pháp lý", 
+        "ipa": "/ˈliːɡəl ˈspɛʃəlɪsts/"
     }
 ]`;
 
@@ -924,3 +929,16 @@ function createLearningCardTableHeader() {
 //     `;
 //     return thead;
 // }
+
+// Add this function for copyCheckedLessons
+function copyCheckedLessons() {
+    // This function will be called when the copy button is clicked
+    // You can implement the logic to copy selected lessons here
+    console.log('Copy checked lessons functionality to be implemented');
+}
+
+// Add this function for hideLoadingDialog
+function hideLoadingDialog() {
+    const loadingDialog = document.getElementById('loading-dialog');
+    loadingDialog.style.display = 'none'; // Hide the dialog
+}
