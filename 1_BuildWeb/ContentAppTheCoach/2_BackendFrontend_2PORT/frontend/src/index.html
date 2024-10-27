@@ -1,0 +1,39 @@
+<!-- html:frontend/src/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Generator</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="main-container">
+        <section id="input-section">
+            <h2>Generate Questions</h2>
+            <label for="topic">Topic:</label>
+            <input type="text" id="topic" name="topic" required>
+            <label for="level">Level:</label>
+            <select id="level" name="level">
+                <option value="Below A1">Below A1</option>
+                <option value="A1-A2">A1 - A2</option>
+                <option value="A2-B1">A2 - B1</option>
+                <option value="Upper B1">Upper B1</option>
+            </select>
+            <button type="button" id="generate-btn">Generate Questions</button>
+        </section>
+
+        <section id="output-section">
+            <h2>Generated Questions</h2>
+            <div id="question-container"></div>
+        </section>
+
+        <div id="loading-dialog" class="loading-modal">
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
