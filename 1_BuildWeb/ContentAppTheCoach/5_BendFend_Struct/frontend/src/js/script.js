@@ -801,49 +801,22 @@ function createLearningMeaningTableHeader() {
  * ---------------------------------------------------------------------------------------------------------
  */
 // Định nghĩa hệ thống prompt
-const LEARNING_CARD_PROMPT = 
-`You are an English exercise content expert. Given structure_en, main_phrase, and up to two optional_phrases, create a JSON array with:
+const LEARNING_CARD_PROMPT = `**Prompt:**
+You are an expert at creating English learning cards. Generate learning cards based on the provided structure and phrases.
 
-- sentence_en: English sentence
-- sentence_vi: Vietnamese translation 
-- ipa: IPA pronunciation
-
-**Response Format:** Output only in JSON format with no extra characters (such as \`\`\`Json).
-
-**Example Input:**
+**Response Format:** 
+Return an array of learning card objects in JSON format with the following structure:
 {
-    "structure_en": "Our team of _____ specialists is here to help",
-    "main_phrase": "healthcare",
-    "optional_phrase_1": "financial", 
-    "optional_phrase_2": "legal"
+    "card_front": "English phrase or sentence",
+    "card_back": "Vietnamese translation",
+    "example_en": "Example sentence in English",
+    "example_vi": "Example sentence in Vietnamese"
 }
 
-Expected Output:
-[
-    {
-        "sentence_en": "Our team of _____ specialists is here to help",
-        "sentence_vi": "Đội ngũ chuyên gia _____ của chúng tôi sẵn sàng hỗ trợ",
-        "ipa": "/ˈaʊər tiːm əv _____ ˈspɛʃəlɪsts ɪz hɪər tuː hɛlp/"
-    },
-    {
-        "sentence_en": "healthcare specialists",
-        "sentence_vi": "chuyên gia y tế",
-        "ipa": "/ˈhɛlθˌkɛr ˈspɛʃəlɪsts/"
-    },
-    {
-        "sentence_en": "financial specialists", 
-        "sentence_vi": "chuyên gia tài chính",
-        "ipa": "/faɪˈnænʃəl ˈspɛʃəlɪsts/"
-    },
-    {
-        "sentence_en": "legal specialists",
-        "sentence_vi": "chuyên gia pháp lý", 
-        "ipa": "/ˈliːɡəl ˈspɛʃəlɪsts/"
-    }
-]`;
+Do not include \`\`\`json or any extra characters in the response.`;
 
 // Update Learning Card generation 
-async function generateLearningCard(storagedLessons) {
+async function generateLearningCard(lessons) {
     try {
         showLoadingDialog();
         const response = await fetch('http://localhost:3000/api/generate-learning-card', {
@@ -851,84 +824,28 @@ async function generateLearningCard(storagedLessons) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ lessons: storagedLessons })
+            body: JSON.stringify({ lessons })
         });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const data = await response.json();
+        if (!Array.isArray(data)) {
+            throw new Error('Invalid response format: expected an array');
+        }
+        
         learningCardLessons = data;
         displayLearningCardResults(data);
     } catch (error) {
-        alert(error.message);
-        console.error('Error:', error.message);
+        console.error('Error generating learning cards:', error);
+        alert('Error generating learning cards: ' + error.message);
     } finally {
         hideLoadingDialog();
     }
 }
 
-/**
- * ---------------------------------------------------------------------------------------------------------
- * Learning Card Functions
- * ---------------------------------------------------------------------------------------------------------
- */
-
-function updateLearningCardLesson(lesson) {
-    lesson.sentence_en = document.getElementById('edit-sentence-en').value;
-    lesson.sentence_vi = document.getElementById('edit-sentence-vi').value;
-    lesson.ipa = document.getElementById('edit-ipa').value;
-}
-
-function openLearningCardEditDialog(lesson, index) {
-    const dialog = createLearningCardEditDialog(lesson);
-    document.body.appendChild(dialog);
-    addLearningCardEditDialogListeners(dialog, lesson, index);
-}
-
-function createLearningCardEditDialog(lesson) {
-    const dialog = document.createElement('div');
-    dialog.className = 'edit-dialog';
-    dialog.innerHTML = `
-        <div class="dialog-content">
-            <h3>Edit Learning Card</h3>
-            <label for="edit-sentence-en">English Sentence:</label>
-            <input type="text" id="edit-sentence-en" value="${lesson.sentence_en || ''}">
-            
-            <label for="edit-sentence-vi">Vietnamese Sentence:</label>
-            <input type="text" id="edit-sentence-vi" value="${lesson.sentence_vi || ''}">
-            
-            <label for="edit-ipa">IPA:</label>
-            <input type="text" id="edit-ipa" value="${lesson.ipa || ''}">
-            
-            <div class="dialog-buttons">
-                <button id="save-edit">Save</button>
-                <button id="cancel-edit">Cancel</button>
-            </div>
-        </div>
-    `;
-    return dialog;
-}
-
-function addLearningCardEditDialogListeners(dialog, lesson, index) {
-    document.getElementById('save-edit').addEventListener('click', () => {
-        updateLearningCardLesson(lesson);
-        // Cập nhật lại mảng dữ liệu gốc
-        learningCardLessons[index] = lesson;
-        displayLearningCardResults(learningCardLessons);
-        document.body.removeChild(dialog);
-    });
-
-    document.getElementById('cancel-edit').addEventListener('click', () => {
-        document.body.removeChild(dialog);
-    });
-}
-
-function deleteLearningCardLesson(index, lessons) {
-    if (confirm('Are you sure you want to delete this item?')) {
-        learningCardLessons.splice(index, 1);
-        // Cập nhật lại hiển th
-        displayLearningCardResults(learningCardLessons);
-    }
-}
-
-// Hàm hiển thị kết quả học thẻ
 function displayLearningCardResults(lessons) {
     try {
         if (!lessons || !Array.isArray(lessons)) {
@@ -938,11 +855,9 @@ function displayLearningCardResults(lessons) {
         const container = document.getElementById('learning-card-container'); 
         container.innerHTML = '';
         
-        // Create and add table
         const table = createLearningCardTable(lessons);
         container.appendChild(table);
 
-        // Add copy button
         const copyButton = document.createElement('button');
         copyButton.textContent = 'Copy Table';
         copyButton.className = 'copy-btn';
@@ -955,58 +870,6 @@ function displayLearningCardResults(lessons) {
     }
 }
 
-function copyLearningCardTable(table) {
-    // Create temporary table for copying
-    const tempTable = document.createElement('table');
-    
-    // Copy header (excluding Action columns)
-    const headerRow = table.querySelector('thead tr');
-    const newHeader = document.createElement('thead');
-    const newHeaderRow = document.createElement('tr');
-    
-    // Copy all cells except the last two (Action columns)
-    for (let i = 0; i < headerRow.cells.length - 2; i++) {
-        const cell = headerRow.cells[i].cloneNode(true);
-        newHeaderRow.appendChild(cell);
-    }
-    newHeader.appendChild(newHeaderRow);
-    tempTable.appendChild(newHeader);
-    
-    // Copy body (excluding Action columns)
-    const tbody = document.createElement('tbody');
-    const rows = table.querySelectorAll('tbody tr');
-    
-    rows.forEach(row => {
-        const newRow = document.createElement('tr');
-        for (let i = 0; i < row.cells.length - 2; i++) {
-            const cell = row.cells[i].cloneNode(true);
-            newRow.appendChild(cell);
-        }
-        tbody.appendChild(newRow);
-    });
-    
-    tempTable.appendChild(tbody);
-    
-    // Add temporary table to document (hidden)
-    tempTable.style.position = 'absolute';
-    tempTable.style.left = '-9999px';
-    document.body.appendChild(tempTable);
-    
-    // Copy content
-    const range = document.createRange();
-    range.selectNode(tempTable);
-    window.getSelection().removeAllRanges();
-    window.getSelection().addRange(range);
-    document.execCommand('copy');
-    window.getSelection().removeAllRanges();
-    
-    // Remove temporary table
-    document.body.removeChild(tempTable);
-    
-    alert('Table copied to clipboard!');
-}
-
-// Hàm tạo bảng hiển thị kết quả học thẻ
 function createLearningCardTable(lessons) {
     const table = document.createElement('table');
     table.className = 'learning-card-table';
@@ -1024,7 +887,6 @@ function createLearningCardTable(lessons) {
             lesson.ipa || ''
         ];
         
-        // Thêm cells thông thường
         cells.forEach(content => {
             const td = document.createElement('td');
             td.textContent = content;
@@ -1033,7 +895,6 @@ function createLearningCardTable(lessons) {
             row.appendChild(td);
         });
 
-        // Thêm nút Edit và Delete
         const editTd = document.createElement('td');
         const deleteTd = document.createElement('td');
         editTd.style.border = '1px solid #ddd';
@@ -1063,7 +924,6 @@ function createLearningCardTable(lessons) {
     return table;
 }
 
-// Hàm tạo header cho bảng learning card
 function createLearningCardTableHeader() {
     const thead = document.createElement('thead');
     thead.innerHTML = `
@@ -1078,129 +938,54 @@ function createLearningCardTableHeader() {
     return thead;
 }
 
+function updateLearningCardLesson(lesson) {
+    lesson.sentence_en = document.getElementById('edit-sentence-en').value;
+    lesson.sentence_vi = document.getElementById('edit-sentence-vi').value;
+    lesson.ipa = document.getElementById('edit-ipa').value;
+}
 
-// /**
-//  * ---------------------------------------------------------------------------------------------------------
-//  * Generate Flexible Phrase
-//  * ---------------------------------------------------------------------------------------------------------
-//  */
-// // Định nghĩa prompt cho bài tập Fill-in-the-Blank
-// const FILL_IN_THE_BLANK_PROMPT = `**Prompt:**
+function openLearningCardEditDialog(lesson, index) {
+    const dialog = document.createElement('div');
+    dialog.className = 'edit-dialog';
+    dialog.innerHTML = `
+        <div class="dialog-content">
+            <h3>Edit Learning Card</h3>
+            <label for="edit-sentence-en">English Sentence:</label>
+            <input type="text" id="edit-sentence-en" value="${lesson.sentence_en || ''}">
+            
+            <label for="edit-sentence-vi">Vietnamese Sentence:</label>
+            <input type="text" id="edit-sentence-vi" value="${lesson.sentence_vi || ''}">
+            
+            <label for="edit-ipa">IPA:</label>
+            <input type="text" id="edit-ipa" value="${lesson.ipa || ''}">
+            
+            <div class="dialog-buttons">
+                <button class="btn btn-primary" id="save-edit">Save</button>
+                <button class="btn btn-secondary" id="cancel-edit">Cancel</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(dialog);
+    
+    document.getElementById('save-edit').addEventListener('click', () => {
+        updateLearningCardLesson(lesson);
+        learningCardLessons[index] = lesson;
+        displayLearningCardResults(learningCardLessons);
+        document.body.removeChild(dialog);
+    });
 
-// You are an expert at creating English exercise content. Based on the given structure, generate a JSON response with various English sentences, where specific words are hidden to create fill-in-the-blank exercises. Translate each sentence into Vietnamese.
+    document.getElementById('cancel-edit').addEventListener('click', () => {
+        document.body.removeChild(dialog);
+    });
+}
 
-// **Instruction:**
-// - The output should contain 7 JSON objects within a JSON array.
-// - JSON 1: Full sentence with no blanks.
-// - JSONs 2, 3, 4: Replace each phrase in turn with underscores (one JSON per phrase).
-// - JSONs 5, 6, 7: Only the specified phrases are visible, while the rest of the sentence is replaced by underscores.
-
-// Response JSON format (not include other characters such as \`\`\`JSON)
-// **Example Input:**
-
-// Câu hỏi: Which company are you working for?  
-// Cấu trúc: I'm the ______ from ABC Company.  
-// Cụm thông tin: phrase 1, 2, 3: Sales representative, Sales director, Sales associate  
-// `;
-
-// async function generateFillInTheBlank(storagedLessons) {
-//     try {
-//         showLoadingDialog();
-//         const allResults = [];
-//         
-//         // Xử lý từng bài học
-//         for (const lesson of storagedLessons) {
-//             const lessonPrompt = JSON.stringify({
-//                 question: lesson.question,
-//                 structure: lesson.structure,
-//                 phrases: [lesson["phrase 1"], lesson["phrase 2"], lesson["phrase 3"]]
-//             }, null, 2);
-//             
-//             const response = await genOpenAIResponse(apiKey, FILL_IN_THE_BLANK_PROMPT, lessonPrompt);
-//             const lessonResults = JSON.parse(response.choices[0].message.content);
-//             allResults.push(...lessonResults);
-//         }
-
-//         // Hiển thị kết quả cho người dùng
-//         displayFillInTheBlankResults(allResults);
-
-//     } catch (error) {
-//         alert(error.message);
-//         console.error('Error:', error.message);
-//     } finally {
-//         hideLoadingDialog();
-//     }
-// }
-
-// // Hàm hiển thị kết quả Fill-in-the-Blank
-// function displayFillInTheBlankResults(lessons) {
-//     try {
-//         if (!lessons || !Array.isArray(lessons)) {
-//             throw new Error('Invalid lessons data received');
-//         }
-//         
-//         const container = document.getElementById('fill-in-the-blank-container'); 
-//         container.innerHTML = '';
-//         const table = createFillInTheBlankTable(lessons);
-//         container.appendChild(table);
-//     } catch (error) {
-//         console.error('Error:', error.message);
-//         alert('Error displaying results: ' + error.message);
-//     }
-// }
-// // Hàm tạo bảng hiển thị kết quả Fill-in-the-Blank
-// function createFillInTheBlankTable(lessons) {
-//     const table = document.createElement('table');
-//     // Thêm class và style cho bảng
-//     table.className = 'fill-in-the-blank-table';
-//     table.style.borderCollapse = 'collapse';
-//     table.style.width = '100%';
-//     
-//     // Thêm phần header cho bảng
-//     table.appendChild(createFillInTheBlankTableHeader());
-//     
-//     const tbody = document.createElement('tbody');
-//     
-//     // Duyệt qua các bài học trong lessons
-//     for(const lesson of lessons) {
-//         const row = document.createElement('tr');
-//         // Tạo mảng chứa nội dung các ô trong mỗi bài học
-//         const cells = [
-//             lesson.sentence_hide || '', // Câu có từ bị ẩn
-//             lesson.sentence_en || '',   // Câu đầy đủ tiếng Anh
-//             lesson.sentence_vi || ''    // Dịch tiếng Việt
-//         ];
-//         
-//         // Tạo các ô (td) cho mỗi nội dung trong mảng
-//         cells.forEach(content => {
-//             const td = document.createElement('td');
-//             td.textContent = content;
-//             // Thêm style cho các ô trong bảng
-//             td.style.border = '1px solid #ddd';
-//             td.style.padding = '8px';
-//             row.appendChild(td);
-//         });
-//         
-//         tbody.appendChild(row);
-//     }
-//     
-//     // Thêm phần tbody vào bảng
-//     table.appendChild(tbody);
-//     return table;
-// }
-
-// // Hàm tạo header cho bảng Fill-in-the-Blank
-// function createFillInTheBlankTableHeader() {
-//     const thead = document.createElement('thead');
-//     thead.innerHTML = `
-//         <tr>
-//             <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Sentence with Blanks</th>
-//             <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Full Sentence (EN)</th>
-//             <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Translation (VI)</th>
-//         </tr>
-//     `;
-//     return thead;
-// }
+function deleteLearningCardLesson(index) {
+    if (confirm('Are you sure you want to delete this item?')) {
+        learningCardLessons.splice(index, 1);
+        displayLearningCardResults(learningCardLessons);
+    }
+}
 
 // Add this function for copyCheckedLessons
 function copyCheckedLessons() {
@@ -1214,6 +999,9 @@ function hideLoadingDialog() {
     const loadingDialog = document.getElementById('loading-dialog');
     loadingDialog.style.display = 'none'; // Hide the dialog
 }
+
+
+
 
 
 
