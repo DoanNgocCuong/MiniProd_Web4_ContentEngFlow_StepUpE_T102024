@@ -9,31 +9,6 @@ let storagedLessons;
  * ---------------------------------------------------------------------------------------------------------
  */
 
-function copyCheckedLessons() {
-    const table = document.querySelector('.lesson-table');
-    if (!table) {
-        alert('No lessons to copy!');
-        return;
-    }
-
-    const rows = table.querySelectorAll('tbody tr');
-    let textToCopy = '';
-
-    rows.forEach(row => {
-        const cells = row.querySelectorAll('td');
-        const rowText = Array.from(cells)
-            .slice(0, -2) // Bỏ qua 2 cột cuối (Edit và Delete)
-            .map(cell => cell.textContent)
-            .join('\t');
-        textToCopy += rowText + '\n';
-    });
-
-    navigator.clipboard.writeText(textToCopy)
-        .then(() => alert('Selected lessons copied to clipboard!'))
-        .catch(err => console.error('Failed to copy: ', err));
-}
-
-
 document.addEventListener('DOMContentLoaded', () => {
     initializeTabs();
     document.getElementById('generate-btn').addEventListener('click', handleGenerateClick);
@@ -117,21 +92,32 @@ function createGenerateQuestionPrompt() {
 async function generateQuestions(prompt) {
     try {
         showLoadingDialog();
-        const response = await fetch('http://localhost:5000/api/generate-questions', {
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ prompt })
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: 'gpt-4o-mini',
+                messages: [
+                    { role: 'system', content: 'You are an expert at English lesson topic-related content generating, only respone in json' },
+                    { role: 'user', content: prompt }
+                ],
+                max_tokens: 3000,
+                temperature: 0.7
+            })
         });
-        
         const data = await response.json();
         processApiResponse(data);
     } catch (error) {
-        alert(error.message);
+        alert(error.message)
         console.error('Error:', error.message);
     } finally {
         hideLoadingDialog();
     }
 }
+
 // Show loading dialog
 function showLoadingDialog() {
     const loadingDialog = document.getElementById('loading-dialog');
@@ -383,10 +369,7 @@ function downloadCSV(csvContent, filename) {
     document.body.removeChild(link);
 }
 
-/**
- * ---------------------------------------------------------------------------------------------------------
- * Exercise Generation
- * ---------------------------------------------------------------------------------------------------------
+
 /**
  * ---------------------------------------------------------------------------------------------------------
  * Exercise Generation
@@ -409,12 +392,13 @@ document.querySelectorAll('.tab-btn').forEach(button => {
         } else if (tabId === 'learning-card') {
             generateLearningCard(storagedLessons); // Call the function for Learning Card
         } else if (tabId === 'flexible-phrase') {
-            generateFlexiblePhrase(storagedLessons); // Call the function for Flexible Phrase
+            generateFlexiblePhrase(); // Call the function for Flexible Phrase
         } else if (tabId === 'qa') {
-            generateQA(storagedLessons); // Call the function for Q&A
+            generateQA(); // Call the function for Q&A
         }
     });
 });
+
 
 /**
  * ---------------------------------------------------------------------------------------------------------
@@ -634,65 +618,101 @@ function createLearningMeaningTableHeader() {
  * Generate Learning Card
  * ---------------------------------------------------------------------------------------------------------
  */
+// Định nghĩa hệ thống prompt
+const LEARNING_CARD_PROMPT = `**Prompt:**
 
+You are an expert at creating English exercise content. Given a "main phrase" and up to two optional phrases, generate a JSON array of objects where each object includes:
+
+- \`sentence_en\`: the English phrase
+- \`sentence_vi\`: the Vietnamese translation
+- \`ipa\`: the IPA pronunciation
+
+Response JSON format (not include other characters, such as \`\`\`JSON)
+
+**Example Input:**
+{
+    "main phrase": "Sales representative",
+    "optional phrase 1": "Sales director",
+    "optional phrase 2": "Sales associate"
+}
+
+**Expected Output:**
+
+[
+    {
+        "sentence_en": "Sales representative",
+        "sentence_vi": "Đại diện kinh doanh",
+        "ipa": "/seɪlz ˌrɛprɪˈzɛntətɪv/"
+    },
+    {
+        "sentence_en": "Sales director",
+        "sentence_vi": "Giám đốc kinh doanh",
+        "ipa": "/seɪlz dəˈrɛktər/"
+    },
+    {
+        "sentence_en": "Sales Associate",
+        "sentence_vi": "Nhân viên bán hàng",
+        "ipa": "/seɪlz əˈsoʊsiət/"
+    }
+]`;
+
+// Function to call OpenAI API
+async function genOpenAIResponse(apiKey, systemPrompt, userPrompt) {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            model: 'gpt-4o-mini',
+            messages: [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: userPrompt }
+            ],
+            max_tokens: 3000,
+            temperature: 0.7
+        })
+    });
+    
+    const data = await response.json();
+    if (!data?.choices?.[0]?.message?.content) {
+        throw new Error('Invalid response from API');
+    }
+    return data;
+}
+
+// Sửa lại hàm generateLearningCard
 async function generateLearningCard(storagedLessons) {
     try {
         showLoadingDialog();
+        const allResults = [];
+        
+        // Xử lý từng lesson một
+        for (const lesson of storagedLessons) {
+            const lessonPrompt = {};
+            lessonPrompt["main phrase"] = lesson["main phrase"];
+            if (lesson["optional phrase 1"]) {
+                lessonPrompt["optional phrase 1"] = lesson["optional phrase 1"];
+            }
+            if (lesson["optional phrase 2"]) {
+                lessonPrompt["optional phrase 2"] = lesson["optional phrase 2"];
+            }
+            const lessonPromptStr = JSON.stringify(lessonPrompt, null, 2);
+            // Ví dụ của lessonPromptStr:
+            // {
+            //     "main phrase": "Sales representative",
+            //     "optional phrase 1": "Sales director",
+            //     "optional phrase 2": "Sales associate"
+            // }
+            
+            const response = await genOpenAIResponse(apiKey, LEARNING_CARD_PROMPT, lessonPromptStr);
+            const lessonResults = JSON.parse(response.choices[0].message.content);
+            allResults.push(...lessonResults);
+        }
 
-        const mappedList = storagedLessons.map(item => ({
-            structure: item["structure"],
-            main_phrase: item["main phrase"]
-        }));
-        // Check if custom prompt is provided
-        const customPrompt = document.getElementById('custom-prompt-text').value.trim();
-        const prompt = customPrompt ||
-        `Based on the provided context ${JSON.stringify(mappedList, null, 2)}, generate the exercise content.
-        - For each object in the provided list. You must follow the below steps and response as a JSON array of objects.
-            + Step 1. Do this first:
-                [1] create the IPA for 'structure'.
-                [2] create the IPA for 'phrase'.
-            + Step 2. Then return in the following dictionary format:
-                sentence_en: put the 'structure' here.
-                sentence_vi: put the 'structure-vi' here.
-                ipa: put [1] here.
-                sentence_en: put the 'main_phrase' here.
-                sentence_vi: put the 'main_phrase-vi' here.
-                ipa: put [2] here.
-        - Each object generate 2 sentence: structure and main_phrase. Total number of sentences is doubled of size of provided list
-        For example:
-        [    
-            {
-              "description": "Hãy nói cụm sau",
-              "sentence_en": "Over ten years",
-              "sentence_vi": "Hơn mười năm",
-              "ipa": "/\\u02C8\\u0259\\u028Av\\u0259r t\\u025Bn j\\u026Arz/"
-            },
-            {
-              "description": "Hãy nói cụm sau",
-              "sentence_en": "I have been learning English for",
-              "sentence_vi": "Tôi đã học tiếng Anh được",
-              "ipa": "/a\\u026A h\\u00E6v b\\u026An \\u02C8l\\u0253\\u02D0rn\\u026A\\u014B \\u02C8\\u026A\\u014Bgl\\u026A\\u0283 f\\u0254\\u02D0r/"
-            },
-        ]`;
-
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${apiKey}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                model: 'gpt-4o-mini',
-                messages: [
-                    { role: 'system', content: 'You are an expert at English exercise content generating, only respond in json' },
-                    { role: 'user', content: prompt }
-                ],
-                max_tokens: 3000,
-                temperature: 0.7
-            })
-        });
-        const data = await response.json();
-        displayLearningCardResults(data); // Call the function to display results
+        // Truyền trực tiếp mảng kết quả
+        displayLearningCardResults(allResults);
 
     } catch (error) {
         alert(error.message);
@@ -702,265 +722,205 @@ async function generateLearningCard(storagedLessons) {
     }
 }
 
-function displayLearningCardResults(data) {
-    const lessons = JSON.parse(data.choices[0].message.content.trim().replace(/```json|```/g, ''));
-    const container = document.getElementById('learning-card-container'); // Ensure you have a container in your HTML
-    container.innerHTML = ''; // Clear previous results
-
-    const table = createLearningCardTable(lessons);
-    container.appendChild(table);
+// Hàm hiển thị kết quả học thẻ
+function displayLearningCardResults(lessons) {
+    try {
+        // Kiểm tra dữ liệu đầu vào có hợp lệ không
+        if (!lessons || !Array.isArray(lessons)) {
+            throw new Error('Invalid lessons data received');
+        }
+        
+        // Lấy container từ DOM để hiển thị kết quả
+        const container = document.getElementById('learning-card-container'); 
+        // Xóa nội dung cũ trong container
+        container.innerHTML = '';
+        // Tạo bảng mới từ dữ liệu lessons
+        const table = createLearningCardTable(lessons);
+        // Thêm bảng vào container
+        container.appendChild(table);
+    } catch (error) {
+        // Ghi log lỗi vào console
+        console.error('Error:', error.message);
+        // Hiển thị thông báo lỗi cho người dùng
+        alert('Error displaying results: ' + error.message);
+    }
 }
 
+// Hàm tạo bảng hiển thị kết quả học thẻ
 function createLearningCardTable(lessons) {
+    // Tạo phần tử table mới
     const table = document.createElement('table');
-    table.className = 'learning-meaning-table';
+    // Thêm class và style cho table
+    table.className = 'learning-card-table';
+    table.style.borderCollapse = 'collapse';
+    table.style.width = '100%';
+    
+    // Thêm phần header cho bảng
     table.appendChild(createLearningCardTableHeader());
-    table.appendChild(createLearningCardTableBody(lessons));
+    
+    // Tạo phần tbody để chứa nội dung bảng
+    const tbody = document.createElement('tbody');
+    
+    // Duyệt qua mảng lessons
+    for(const lesson of lessons) {
+        const row = document.createElement('tr');
+        // Tạo mảng chứa nội dung các ô cho mỗi lesson
+        const cells = [
+            lesson.sentence_en || '', // Sentence (EN)
+            lesson.sentence_vi || '', // Sentence (VI)
+            lesson.ipa || ''          // IPA
+        ];
+        
+        // Duyệt qua mảng nội dung để tạo các ô
+        cells.forEach(content => {
+            const td = document.createElement('td');
+            td.textContent = content;
+            // Thêm style cho td
+            td.style.border = '1px solid #ddd';
+            td.style.padding = '8px';
+            row.appendChild(td);
+        });
+        tbody.appendChild(row);
+    }
+    
+    // Thêm phần tbody vào bảng
+    table.appendChild(tbody);
     return table;
 }
 
+// Hàm tạo header cho bảng learning card
 function createLearningCardTableHeader() {
     const thead = document.createElement('thead');
     thead.innerHTML = `
         <tr>
-            <th>Description</th>
-            <th>Sentence (EN)</th>
-            <th>Sentence (VI)</th>
-            <th>IPA</th>
+            <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Sentence (EN)</th>
+            <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Sentence (VI)</th>
+            <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">IPA</th>
         </tr>
     `;
     return thead;
 }
 
-function createLearningCardTableBody(lessons) {
-    const tbody = document.createElement('tbody');
-    lessons.forEach(lesson => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${lesson.description}</td>
-            <td>${lesson.sentence_en}</td>
-            <td>${lesson.sentence_vi}</td>
-            <td>${lesson.ipa}</td>
-        `;
-        tbody.appendChild(row);
-    });
-    return tbody;
-}
 
-function extractPhrases(storagedLessons) {
-    return storagedLessons.map(lesson => [
-        lesson['main phrase'],
-        lesson['optional phrase 1']
-    ]).flat();
-}
+// /**
+//  * ---------------------------------------------------------------------------------------------------------
+//  * Generate Flexible Phrase
+//  * ---------------------------------------------------------------------------------------------------------
+//  */
+// // Định nghĩa prompt cho bài tập Fill-in-the-Blank
+// const FILL_IN_THE_BLANK_PROMPT = `**Prompt:**
 
-function displayExerciseOutput(text, type) {
-    const exercisesOutput = document.getElementById('exercises-output');
-    const exerciseContainer = document.createElement('div');
-    exerciseContainer.classList.add('exercise-output');
+// You are an expert at creating English exercise content. Based on the given structure, generate a JSON response with various English sentences, where specific words are hidden to create fill-in-the-blank exercises. Translate each sentence into Vietnamese.
 
-    exerciseContainer.innerHTML = `
-        <h4>${type}</h4>
-        <p>${text}</p>
-    `;
-    exercisesOutput.appendChild(exerciseContainer);
-}
+// **Instruction:**
+// - The output should contain 7 JSON objects within a JSON array.
+// - JSON 1: Full sentence with no blanks.
+// - JSONs 2, 3, 4: Replace each phrase in turn with underscores (one JSON per phrase).
+// - JSONs 5, 6, 7: Only the specified phrases are visible, while the rest of the sentence is replaced by underscores.
 
+// Response JSON format (not include other characters such as \`\`\`JSON)
+// **Example Input:**
 
-/**
- * ---------------------------------------------------------------------------------------------------------
- * Utility Functions
- * ---------------------------------------------------------------------------------------------------------
- */
+// Câu hỏi: Which company are you working for?  
+// Cấu trúc: I'm the ______ from ABC Company.  
+// Cụm thông tin: phrase 1, 2, 3: Sales representative, Sales director, Sales associate  
+// `;
 
-function showLoadingDialog() {
-    const loadingDialog = document.getElementById('loading-dialog');
-    loadingDialog.style.display = 'flex';
-}
+// async function generateFillInTheBlank(storagedLessons) {
+//     try {
+//         showLoadingDialog();
+//         const allResults = [];
+        
+//         // Xử lý từng bài học
+//         for (const lesson of storagedLessons) {
+//             const lessonPrompt = JSON.stringify({
+//                 question: lesson.question,
+//                 structure: lesson.structure,
+//                 phrases: [lesson["phrase 1"], lesson["phrase 2"], lesson["phrase 3"]]
+//             }, null, 2);
+            
+//             const response = await genOpenAIResponse(apiKey, FILL_IN_THE_BLANK_PROMPT, lessonPrompt);
+//             const lessonResults = JSON.parse(response.choices[0].message.content);
+//             allResults.push(...lessonResults);
+//         }
 
-function hideLoadingDialog() {
-    const loadingDialog = document.getElementById('loading-dialog');
-    loadingDialog.style.display = 'none';
-}
+//         // Hiển thị kết quả cho người dùng
+//         displayFillInTheBlankResults(allResults);
 
-function handleDownloadDraft() {
-    updateStoragedLessonsFromTable();
-    const csvContent = convertToCSV(storagedLessons);
-    downloadCSV(csvContent, 'lessons.csv');
-}
+//     } catch (error) {
+//         alert(error.message);
+//         console.error('Error:', error.message);
+//     } finally {
+//         hideLoadingDialog();
+//     }
+// }
 
-function updateStoragedLessonsFromTable() {
-    const table = document.querySelector('.lesson-table');
-    if (!table) {
-        console.error('Table not found');
-        return;
-    }
+// // Hàm hiển thị kết quả Fill-in-the-Blank
+// function displayFillInTheBlankResults(lessons) {
+//     try {
+//         if (!lessons || !Array.isArray(lessons)) {
+//             throw new Error('Invalid lessons data received');
+//         }
+        
+//         const container = document.getElementById('fill-in-the-blank-container'); 
+//         container.innerHTML = '';
+//         const table = createFillInTheBlankTable(lessons);
+//         container.appendChild(table);
+//     } catch (error) {
+//         console.error('Error:', error.message);
+//         alert('Error displaying results: ' + error.message);
+//     }
+// }
+// // Hàm tạo bảng hiển thị kết quả Fill-in-the-Blank
+// function createFillInTheBlankTable(lessons) {
+//     const table = document.createElement('table');
+//     // Thêm class và style cho bảng
+//     table.className = 'fill-in-the-blank-table';
+//     table.style.borderCollapse = 'collapse';
+//     table.style.width = '100%';
+    
+//     // Thêm phần header cho bảng
+//     table.appendChild(createFillInTheBlankTableHeader());
+    
+//     const tbody = document.createElement('tbody');
+    
+//     // Duyệt qua các bài học trong lessons
+//     for(const lesson of lessons) {
+//         const row = document.createElement('tr');
+//         // Tạo mảng chứa nội dung các ô trong mỗi bài học
+//         const cells = [
+//             lesson.sentence_hide || '', // Câu có từ bị ẩn
+//             lesson.sentence_en || '',   // Câu đầy đủ tiếng Anh
+//             lesson.sentence_vi || ''    // Dịch tiếng Việt
+//         ];
+        
+//         // Tạo các ô (td) cho mỗi nội dung trong mảng
+//         cells.forEach(content => {
+//             const td = document.createElement('td');
+//             td.textContent = content;
+//             // Thêm style cho các ô trong bảng
+//             td.style.border = '1px solid #ddd';
+//             td.style.padding = '8px';
+//             row.appendChild(td);
+//         });
+        
+//         tbody.appendChild(row);
+//     }
+    
+//     // Thêm phần tbody vào bảng
+//     table.appendChild(tbody);
+//     return table;
+// }
 
-    const rows = table.querySelectorAll('tbody tr');
-    storagedLessons = Array.from(rows).map(row => {
-        const cells = row.querySelectorAll('td');
-        return {
-            question: cells[0].textContent,
-            'sentence-with-blank': cells[1].textContent,
-            'main-chunk': cells[2].textContent,
-            chunk1: cells[3].textContent,
-            chunk2: cells[4].textContent
-        };
-    });
-}
-
-function copyExerciseContent(exerciseType) {
-    let content;
-    switch (exerciseType) {
-        case 'learning-meaning':
-            content = document.getElementById('learning-meaning-container').innerText;
-            break;
-        case 'learning-card':
-            content = document.getElementById('learning-card-container').innerText;
-            break;
-        case 'flexible-phrase':
-            content = document.getElementById('flexible-phrase-container').innerText;
-            break;
-        case 'qa':
-            content = document.getElementById('qa-container').innerText;
-            break;
-        default:
-            console.error('Invalid exercise type');
-            return;
-    }
-
-    // Copy to clipboard
-    navigator.clipboard.writeText(content).then(() => {
-        alert(`${exerciseType.replace('-', ' ')} content copied to clipboard!`);
-    }).catch(err => {
-        console.error('Failed to copy: ', err);
-    });
-}
-
-let storageLessons = []; // Assuming this is defined somewhere in your code
-
-function updateStorageLessons(lessons) {
-    const checkboxes = document.querySelectorAll('.lesson-checkbox');
-    storageLessons = []; // Reset storageLessons
-
-    checkboxes.forEach((checkbox, index) => {
-        if (checkbox.checked) {
-            storageLessons.push(lessons[index]); // Add the lesson to storageLessons if checked
-        }
-    });
-
-    console.log('Updated storageLessons:', storageLessons); // For debugging
-}
-
-/**
- * ---------------------------------------------------------------------------------------------------------
- * Generate Flexible Phrase
- * ---------------------------------------------------------------------------------------------------------
- */
-
-async function generateFlexiblePhrase(storagedLessons) {
-    try {
-        showLoadingDialog();
-
-        const mappedList = storagedLessons.map(item => ({
-            question: item["question"],
-            answer_structure: item["answer structure"],
-            main_phrase: item["main phrase"],
-            optional_phrase_1: item["optional phrase 1"],
-            optional_phrase_2: item["optional phrase 2"]
-        }));
-
-        // Check if custom prompt is provided
-        const customPrompt = document.getElementById('custom-prompt-text').value.trim();
-        const prompt = customPrompt ||
-        `You are an expert at English exercise content generating. \
-         Based on the provided context, generate the exercise content. \
-         - For each 'question' in the provided context, follow these steps: \
-           + Step 1: \
-               [1] Use 'main_phrase' to fill in the blank of 'answer_structure'. \
-               [2] Use 'optional_phrase_1' to fill in the blank of 'answer_structure'. \
-               [3] Use 'optional_phrase_2' to fill in the blank of 'answer_structure'. \
-               [4] Convert [1] to Vietnamese. \
-               [5] Convert [2] to Vietnamese. \
-               [6] Convert [3] to Vietnamese. \
-               [7] Convert 'question' to Vietnamese. \
-           + Step 2: Return in dictionary format with duplications as shown below. \
-              sentence_en: [1]\\n[1]\\n[2]\\n[3]\\n[1]\\n[2]\\n[3]\\n'question'\\n \
-              sentence_vi: [4]\\n[4]\\n[5]\\n[6]\\n[4]\\n[5]\\n[6]\\n[7]\\n \
-        `;
-
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${apiKey}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                model: 'gpt-4o-mini',
-                messages: [
-                    { role: 'system', content: 'You are an expert at English exercise content generating, only respond in json' },
-                    { role: 'user', content: prompt }
-                ],
-                max_tokens: 3000,
-                temperature: 0.7
-            })
-        });
-        const data = await response.json();
-
-        displayFlexiblePhraseResults(data); // Call function to display results
-
-    } catch (error) {
-        alert(error.message);
-        console.error('Error:', error.message);
-    } finally {
-        hideLoadingDialog();
-    }
-}
-
-function displayFlexiblePhraseResults(data) {
-    const phrases = JSON.parse(data.choices[0].message.content.trim().replace(/```json|```/g, ''));
-    const container = document.getElementById('flexible-phrase-container'); // Ensure you have a container in your HTML
-    container.innerHTML = ''; // Clear previous results
-
-    const table = createFlexiblePhraseTable(phrases);
-    container.appendChild(table);
-}
-
-function createFlexiblePhraseTable(phrases) {
-    const table = document.createElement('table');
-    table.className = 'flexible-phrase-table';
-    table.appendChild(createFlexiblePhraseTableHeader());
-    table.appendChild(createFlexiblePhraseTableBody(phrases));
-    return table;
-}
-
-function createFlexiblePhraseTableHeader() {
-    const thead = document.createElement('thead');
-    thead.innerHTML = `
-        <tr>
-            <th>Sentence (EN)</th>
-            <th>Sentence (VI)</th>
-        </tr>
-    `;
-    return thead;
-}
-
-function createFlexiblePhraseTableBody(phrases) {
-    const tbody = document.createElement('tbody');
-    phrases.forEach(phrase => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${escapeHtml(phrase.sentence_en)}</td>
-            <td>${escapeHtml(phrase.sentence_vi)}</td>
-        `;
-        tbody.appendChild(row);
-    });
-    return tbody;
-}
-
-
-
-
-
-
-
+// // Hàm tạo header cho bảng Fill-in-the-Blank
+// function createFillInTheBlankTableHeader() {
+//     const thead = document.createElement('thead');
+//     thead.innerHTML = `
+//         <tr>
+//             <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Sentence with Blanks</th>
+//             <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Full Sentence (EN)</th>
+//             <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Translation (VI)</th>
+//         </tr>
+//     `;
+//     return thead;
+// }
