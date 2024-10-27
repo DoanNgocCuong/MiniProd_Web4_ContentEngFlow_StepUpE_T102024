@@ -987,6 +987,58 @@ function deleteLearningCardLesson(index) {
     }
 }
 
+function copyLearningCardTable(table) {
+    // Create temporary table for copying
+    const tempTable = document.createElement('table');
+    
+    // Copy header (excluding Action columns)
+    const headerRow = table.querySelector('thead tr');
+    const newHeader = document.createElement('thead');
+    const newHeaderRow = document.createElement('tr');
+    
+    // Copy only the first 3 columns (excluding Action columns)
+    for (let i = 0; i < headerRow.cells.length - 2; i++) {
+        const cell = headerRow.cells[i].cloneNode(true);
+        newHeaderRow.appendChild(cell);
+    }
+    newHeader.appendChild(newHeaderRow);
+    tempTable.appendChild(newHeader);
+    
+    // Copy body (excluding Action columns)
+    const tbody = document.createElement('tbody');
+    const rows = table.querySelectorAll('tbody tr');
+    
+    rows.forEach(row => {
+        const newRow = document.createElement('tr');
+        // Copy only the first 3 columns (excluding Action columns)
+        for (let i = 0; i < row.cells.length - 2; i++) {
+            const cell = row.cells[i].cloneNode(true);
+            newRow.appendChild(cell);
+        }
+        tbody.appendChild(newRow);
+    });
+    
+    tempTable.appendChild(tbody);
+    
+    // Add temporary table to document (hidden)
+    tempTable.style.position = 'absolute';
+    tempTable.style.left = '-9999px';
+    document.body.appendChild(tempTable);
+    
+    // Copy content
+    const range = document.createRange();
+    range.selectNode(tempTable);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+    
+    // Remove temporary table
+    document.body.removeChild(tempTable);
+    
+    alert('Table copied to clipboard!');
+}
+
 // Add this function for copyCheckedLessons
 function copyCheckedLessons() {
     // This function will be called when the copy button is clicked
@@ -999,6 +1051,7 @@ function hideLoadingDialog() {
     const loadingDialog = document.getElementById('loading-dialog');
     loadingDialog.style.display = 'none'; // Hide the dialog
 }
+
 
 
 

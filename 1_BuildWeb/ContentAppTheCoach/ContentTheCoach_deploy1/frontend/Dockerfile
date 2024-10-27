@@ -10,4 +10,5 @@ COPY . .
 
 EXPOSE 80
 
-CMD ["http-server", ".", "-p", "80"]
+# Update the command to serve from the src directory
+CMD ["http-server", "src", "-p", "80", "--cors", "-a", "0.0.0.0"]

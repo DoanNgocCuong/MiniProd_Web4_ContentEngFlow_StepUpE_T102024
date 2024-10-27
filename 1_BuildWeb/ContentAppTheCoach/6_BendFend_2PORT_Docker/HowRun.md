@@ -3,8 +3,12 @@
 ```bash
 cp .env.example .env
 ```
--> add your OpenAI API key
-2. Run: 
+
+2. Chỉnh sửa PORT trong docker-compose.yml
+- Port 80: frontend
+- Port 3000: backend
+
+3. Run: 
 ```bash
 # Build images
 docker-compose build   # docker-compose build --no-cache
