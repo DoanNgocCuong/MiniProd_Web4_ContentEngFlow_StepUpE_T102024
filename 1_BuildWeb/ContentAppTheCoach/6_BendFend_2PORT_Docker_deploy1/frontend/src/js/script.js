@@ -1,5 +1,8 @@
-// Fetch OpenAI API key from environment or use a stored one
-const apiKey = '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';
+// Add import at the top of the file
+import { config } from './config.js';
+
+// Get the current environment's API URL
+const API_URL = config.development.apiUrl; // or development/dockerInternal as needed
 
 let storagedLessons;
 let learningMeaningLessons = [];
@@ -96,7 +99,7 @@ function createGenerateQuestionPrompt() {
 async function generateQuestions(prompt) {
     try {
         showLoadingDialog();
-        const response = await fetch('http://localhost:3000/api/generate-questions', {
+        const response = await fetch(`${API_URL}/generate-questions`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -510,7 +513,7 @@ You are an expert at creating English exercise content. You will receive \`CẤU
 async function generateLearningMeaning(storagedLessons) {
     try {
         showLoadingDialog();
-        const response = await fetch('http://localhost:3000/api/generate-learning-meaning', {
+        const response = await fetch(`${API_URL}/generate-learning-meaning`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -819,7 +822,7 @@ Do not include \`\`\`json or any extra characters in the response.`;
 async function generateLearningCard(lessons) {
     try {
         showLoadingDialog();
-        const response = await fetch('http://localhost:3000/api/generate-learning-card', {
+        const response = await fetch(`${API_URL}/generate-learning-card`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -1051,21 +1054,3 @@ function hideLoadingDialog() {
     const loadingDialog = document.getElementById('loading-dialog');
     loadingDialog.style.display = 'none'; // Hide the dialog
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

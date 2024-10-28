@@ -9,18 +9,18 @@ services:
       - ./backend:/app
       - /app/node_modules
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
     restart: unless-stopped
 
   frontend:
     build: ./frontend
     ports:
-      - "80:80"
+      - "25007:25007"
     volumes:
       - ./frontend:/app
       - /app/node_modules
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
     depends_on:
       - backend
     restart: unless-stopped
