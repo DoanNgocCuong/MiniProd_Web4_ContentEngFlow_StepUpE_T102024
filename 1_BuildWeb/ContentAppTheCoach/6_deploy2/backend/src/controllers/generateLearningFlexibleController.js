@@ -94,7 +94,7 @@ exports.generateFlexibleCard = async (req, res) => {
             console.log('Sending flexible prompt to OpenAI:', lessonPrompt);
             
             const response = await openai.chat.completions.create({
-                model: 'gpt-4-turbo-preview',
+                model: 'gpt-4o-mini',
                 messages: [
                     { role: 'system', content: LEARNING_FLEXIBLE_PROMPT },
                     { role: 'user', content: lessonPrompt }
