@@ -5,7 +5,8 @@ import { handleGenerateClick, storagedLessons } from './generateQuestion.js';
 import { showLoadingDialog, hideLoadingDialog } from './utils.js';
 import { generateLearningMeaning } from './modules/learningMeaning.js';
 import { generateLearningCard } from './modules/learningCard.js';
-
+import { generateLearningFlexible } from './modules/learningFlexible.js';
+import { generateLearningQNA } from './modules/learningQNA.js';
 
 // Get the current environment's API URL
 const API_URL = config.development.apiUrl; // or development/dockerInternal as needed
@@ -13,7 +14,7 @@ const API_URL = config.development.apiUrl; // or development/dockerInternal as n
 let learningMeaningLessons = [];
 let learningCardLessons = [];
 let learningFlexibleLessons = [];
-let learningPhraseQNALessons = [];
+let learningQNALessons = [];
 
 /**
  * ---------------------------------------------------------------------------------------------------------
@@ -91,9 +92,9 @@ document.querySelectorAll('.tab-btn').forEach(button => {
        } else if (tabId === 'learning-card') {
            generateLearningCard(storagedLessons); // Call the function for Learning Card
        } else if (tabId === 'flexible-phrase') {
-           generateLearningFlexible(storagedLessons    ); // Call the function for Flexible Phrase
-       } else if (tabId === 'qa') {
-           generateQA(storagedLessons); // Call the function for Q&A
+           generateLearningFlexible(storagedLessons); // Call the function for Flexible Phrase
+       } else if (tabId === 'learning-qna') {
+           generateLearningQNA(storagedLessons); // Call the function for Q&A
        }
    });
 });

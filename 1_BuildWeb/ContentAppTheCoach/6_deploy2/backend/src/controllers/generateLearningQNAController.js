@@ -4,7 +4,7 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 });
 
-const LEARNING_PHRASE_QNA_PROMPT = `You are an expert at creating English exercise content. Based on the given structure and phrases, generate a JSON response with English sentences where specific words are hidden.
+const LEARNING_QNA_PROMPT = `You are an expert at creating English exercise content. Based on the given structure and phrases, generate a JSON response with English sentences where specific words are hidden.
 
 Instructions:
 - Create English sentences by replacing the blank in the structure with each phrase
@@ -37,7 +37,7 @@ Expected Output:
     }
 ]`;
 
-exports.generateLearningPhraseQNA = async (req, res) => {
+exports.generateLearningQNA = async (req, res) => {
     try {
         console.log('Received request for QNA phrases:', req.body);
         
@@ -61,7 +61,7 @@ exports.generateLearningPhraseQNA = async (req, res) => {
             const response = await openai.chat.completions.create({
                 model: 'gpt-4o-mini',
                 messages: [
-                    { role: 'system', content: LEARNING_PHRASE_QNA_PROMPT },
+                    { role: 'system', content: LEARNING_QNA_PROMPT },
                     { role: 'user', content: lessonPrompt }
                 ],
                 max_tokens: 3000,
@@ -76,27 +76,15 @@ exports.generateLearningPhraseQNA = async (req, res) => {
                 console.log('Cleaned content:', cleanedContent);
                 
                 const lessonResults = JSON.parse(cleanedContent);
-                console.log('Parsed results:', lessonResults);
                 
                 if (!Array.isArray(lessonResults)) {
-                    console.error('Response is not an array:', lessonResults);
                     throw new Error('Response must be an array');
                 }
 
-                if (lessonResults.length !== 3) {
-                    console.error('Invalid number of results:', lessonResults.length);
-                    throw new Error('Expected exactly 3 results');
-                }
-
                 const validResults = lessonResults.filter(result => {
-                    const isValid = result.description && 
-                                  result.sentence_en && 
-                                  result.sentence_hide;
-                    
-                    if (!isValid) {
-                        console.error('Invalid result structure:', result);
-                    }
-                    return isValid;
+                    return result.description && 
+                           result.sentence_en && 
+                           result.sentence_hide;
                 });
 
                 if (validResults.length === 3) {
@@ -105,11 +93,7 @@ exports.generateLearningPhraseQNA = async (req, res) => {
                     throw new Error(`Expected 3 valid results, got ${validResults.length}`);
                 }
             } catch (parseError) {
-                console.error('Parse error details:', {
-                    error: parseError.message,
-                    stack: parseError.stack,
-                    content: response.choices[0].message.content
-                });
+                console.error('Parse error:', parseError);
                 throw parseError;
             }
         }
@@ -118,14 +102,7 @@ exports.generateLearningPhraseQNA = async (req, res) => {
         res.json(allResults);
         
     } catch (error) {
-        console.error('Error in generateLearningPhraseQNA:', {
-            message: error.message,
-            stack: error.stack
-        });
-        
-        res.status(500).json({ 
-            error: error.message,
-            details: error.stack
-        });
+        console.error('Error in generateLearningQNA:', error);
+        res.status(500).json({ error: error.message });
     }
 };
