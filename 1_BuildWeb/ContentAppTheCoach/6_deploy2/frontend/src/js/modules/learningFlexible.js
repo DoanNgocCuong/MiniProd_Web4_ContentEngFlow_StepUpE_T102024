@@ -1,7 +1,7 @@
 import { config } from '../config.js';
 import { showLoadingDialog, hideLoadingDialog } from '../utils.js';
 
-const API_URL = config.development.apiUrl;
+const API_URL = config.production.apiUrl;
 let learningFlexibleLessons = [];
 
 async function generateLearningFlexible(lessons) {
@@ -188,17 +188,7 @@ function deleteLearningFlexibleLesson(index) {
 function copyLearningFlexibleTable(table) {
     const tempTable = document.createElement('table');
     
-    const headerRow = table.querySelector('thead tr');
-    const newHeader = document.createElement('thead');
-    const newHeaderRow = document.createElement('tr');
-    
-    for (let i = 0; i < headerRow.cells.length - 2; i++) {
-        const cell = headerRow.cells[i].cloneNode(true);
-        newHeaderRow.appendChild(cell);
-    }
-    newHeader.appendChild(newHeaderRow);
-    tempTable.appendChild(newHeader);
-    
+    // Skip header and only copy body
     const tbody = document.createElement('tbody');
     const rows = table.querySelectorAll('tbody tr');
     

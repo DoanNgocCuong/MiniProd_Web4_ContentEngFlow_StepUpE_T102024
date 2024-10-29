@@ -12,7 +12,7 @@ You are an expert at creating English exercise content. You will receive \`CẤU
    - Use \`answer_1\` as the exact \`MAIN PHRASE\` or \`OTHER PHRASE\`.
    - Provide alternatives for \`answer_2\` and \`answer_3\` with phrases close in meaning but incorrect.
 2. For each incorrect answer:
-   - Give a description explaining why it is incorrect, highlighting incorrect words with \`<r>...</r>\` tags.
+   - Give a short description explaining why it is incorrect, highlighting incorrect words with \`<r>...</r>\` tags.
 
 **Response Format:** Output only in JSON format with no extra characters (not include \`\`\`json).
 
@@ -27,21 +27,19 @@ You are an expert at creating English exercise content. You will receive \`CẤU
 [
     {
         "sentence": "I'm the <g>Đại diện kinh doanh</g> from ABC Company.",
-        "_comment": "MAIN PHRASE",
         "answer_1": "Sales representative",
         "answer_2": "Business representative",
         "answer_3": "Sales agent",
-        "answer_2_description": "<r>Business representative</r> không hoàn toàn đúng vì 'Business representative' thường mang nghĩa rộng hơn 'Đại diện kinh doanh', không chuyên biệt cho mảng bán hàng.",
-        "answer_3_description": "<r>Sales agent</r> không hoàn toàn chính xác vì 'Sales agent' thường được dùng cho vai trò đại diện bán hàng theo hợp đồng, không bao hàm toàn bộ công việc của một 'Sales representative'."
+        "answer_2_description": "<r>Business representative</r> rộng hơn 'Đại diện kinh doanh'.",
+        "answer_3_description": "<r>Sales agent</r> thường là vai trò hợp đồng, không bao hàm đầy đủ trách nhiệm của 'Sales representative'."
     },
     {
         "sentence": "I'm the <g>Giám đốc kinh doanh</g> from ABC Company.",
-        "_comment": "OTHER PHRASE",
         "answer_1": "Sales director",
         "answer_2": "Sales manager",
         "answer_3": "Commercial director",
-        "answer_2_description": "<r>Sales manager</r> không hoàn toàn đúng vì 'Sales manager' mang nghĩa là 'Quản lý kinh doanh' thay vì 'Giám đốc kinh doanh', thể hiện cấp bậc thấp hơn trong cấu trúc công ty.",
-        "answer_3_description": "<r>Commercial director</r> không chính xác vì 'Commercial director' quản lý các hoạt động thương mại nói chung, không chuyên biệt về kinh doanh hoặc bán hàng."
+        "answer_2_description": "<r>Sales manager</r> là quản lý, không phải giám đốc.",
+        "answer_3_description": "<r>Commercial director</r> liên quan đến hoạt động thương mại, không chuyên về kinh doanh."
     }
 ]`;
 

@@ -4,7 +4,7 @@ import { config } from './config.js';
 import { showLoadingDialog, hideLoadingDialog } from './utils.js'; // if you moved these functions to utils.js
 
 // Get the current environment's API URL
-const API_URL = config.development.apiUrl; // or development/dockerInternal as needed
+const API_URL = config.production.apiUrl; // or development/dockerInternal as needed
 
 let storagedLessons;
 
@@ -26,32 +26,36 @@ function createGenerateQuestionPrompt() {
     const questionCount = document.getElementById('question-count').value;
     const extraRequirements = document.getElementById('extra-requirements').value;
 
-    return `Generate ${questionCount} questions for an English lesson on the topic "${topic}" at the ${level} level, following any additional requirements: ${extraRequirements}.
-            Each question should follow this dictionary format and ensure that the 'structure' and 'structure-vi' include a blank space (____) where the answer will fit:
-                'question': 'Your question text here',
-                'structure': 'Answer structure here with a blank (____)',
-                'main phrase': 'Phrase to fill in the blank',
-                'optional phrase 1': 'Alternative phrase option 1',
-                'optional phrase 2': 'Alternative phrase option 2',
-                'question-vi': 'Vietnamese translation of question here',
-                'structure-vi': 'Vietnamese translation of answer structure with blank (____)',
-                'main phrase-vi': 'Vietnamese translation of main phrase',
-                'optional phrase 1-vi': 'Vietnamese translation of option 1',
-                'optional phrase 2-vi': 'Vietnamese translation of option 2'.
+    return `Generate ${questionCount} English lesson questions on "${topic}" at ${level} level, meeting any additional requirements: ${extraRequirements}. 
 
-            Example:
-                {
-                    "question": "Which company are you working for?",
-                    "structure": "I'm the ____ from ABC Company.",
-                    "main phrase": "Sales representative",
-                    "optional phrase 1": "Sales director",
-                    "optional phrase 2": "Sales associate",
-                    "question-vi": "Bạn đang làm việc cho công ty nào vậy?",
-                    "structure-vi": "Tôi là ____ từ công ty ABC.",
-                    "main phrase-vi": "Đại diện kinh doanh",
-                    "optional phrase 1-vi": "Giám đốc kinh doanh",
-                    "optional phrase 2-vi": "Nhân viên bán hàng"
-                }`;
+Each question should follow this structure, ensuring a blank (____) for the answer:
+
+{
+  "question": "Question text",
+  "structure": "Answer format with blank (____)",
+  "main phrase": "Key phrase to fit blank (no proper nouns)", 
+  "optional phrase 1": "Alternative phrase option 1",
+  "optional phrase 2": "Alternative phrase option 2",
+  "question-vi": "Vietnamese translation of question",
+  "structure-vi": "Vietnamese translation of structure",
+  "main phrase-vi": "Vietnamese translation of main phrase",
+  "optional phrase 1-vi": "Vietnamese for option 1",
+  "optional phrase 2-vi": "Vietnamese for option 2"
+}
+
+Example:
+{
+  "question": "Which company are you working for?",
+  "structure": "I'm the ____ from ABC Company.",
+  "main phrase": "Sales representative",
+  "optional phrase 1": "Sales director", 
+  "optional phrase 2": "Sales associate",
+  "question-vi": "Bạn đang làm việc cho công ty nào vậy?",
+  "structure-vi": "Tôi là ____ từ công ty ABC.",
+  "main phrase-vi": "Đại diện kinh doanh",
+  "optional phrase 1-vi": "Giám đốc kinh doanh",
+  "optional phrase 2-vi": "Nhân viên bán hàng"
+}`;
 }
 
 async function generateQuestions(prompt) {
@@ -209,29 +213,15 @@ function addCopyButton(container, table) {
 }
 
 function copyTableToClipboard(table) {
-    // Tạo bảng tm thời để copy
     const tempTable = document.createElement('table');
     
-    // Copy header (loại bỏ 2 cột Action)
-    const headerRow = table.querySelector('thead tr');
-    const newHeader = document.createElement('thead');
-    const newHeaderRow = document.createElement('tr');
-    
-    // Copy tất cả cells từ header, trừ 2 cột cuối
-    for (let i = 0; i < headerRow.cells.length - 2; i++) {
-        const cell = headerRow.cells[i].cloneNode(true);
-        newHeaderRow.appendChild(cell);
-    }
-    newHeader.appendChild(newHeaderRow);
-    tempTable.appendChild(newHeader);
-    
-    // Copy body (loại bỏ 2 cột Action)
+    // Skip header and only copy body
     const tbody = document.createElement('tbody');
     const rows = table.querySelectorAll('tbody tr');
     
     rows.forEach(row => {
         const newRow = document.createElement('tr');
-        // Copy tất cả cells từ mỗi row, trừ 2 cột cuối
+        // Copy all cells except the last two (Action columns)
         for (let i = 0; i < row.cells.length - 2; i++) {
             const cell = row.cells[i].cloneNode(true);
             newRow.appendChild(cell);
@@ -241,12 +231,12 @@ function copyTableToClipboard(table) {
     
     tempTable.appendChild(tbody);
     
-    // Thêm bảng tạm thời vào document (ẩn)
+    // Add temporary table to document (hidden)
     tempTable.style.position = 'absolute';
     tempTable.style.left = '-9999px';
     document.body.appendChild(tempTable);
     
-    // Copy nội dung
+    // Copy content
     const range = document.createRange();
     range.selectNode(tempTable);
     window.getSelection().removeAllRanges();
@@ -254,13 +244,11 @@ function copyTableToClipboard(table) {
     document.execCommand('copy');
     window.getSelection().removeAllRanges();
     
-    // Xóa bảng tạm thời
+    // Remove temporary table
     document.body.removeChild(tempTable);
     
-    // Thông báo
     alert('Table copied to clipboard!');
 }
-
 function openEditDialog(lesson, index) {
     const dialog = createEditDialog(lesson);
     document.body.appendChild(dialog);
@@ -344,3 +332,4 @@ export {
     processApiResponse,
     // ... any other functions needed externally
 };
+

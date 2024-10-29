@@ -81,7 +81,18 @@ exports.generateLearningQNA = async (req, res) => {
                     throw new Error('Response must be an array');
                 }
 
-                const validResults = lessonResults.filter(result => {
+                const validResults = lessonResults.map(result => {
+                    // Process sentence_hide to replace all characters (except spaces) with underscores
+                    const processedSentenceHide = result.sentence_en
+                        .split('')
+                        .map(char => char === ' ' ? ' ' : '_')
+                        .join('');
+                    
+                    return {
+                        ...result,
+                        sentence_hide: processedSentenceHide
+                    };
+                }).filter(result => {
                     return result.description && 
                            result.sentence_en && 
                            result.sentence_hide;

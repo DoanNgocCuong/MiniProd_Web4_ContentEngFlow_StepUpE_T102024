@@ -9,7 +9,7 @@ import { generateLearningFlexible } from './modules/learningFlexible.js';
 import { generateLearningQNA } from './modules/learningQNA.js';
 
 // Get the current environment's API URL
-const API_URL = config.development.apiUrl; // or development/dockerInternal as needed
+const API_URL = config.production.apiUrl; // or development/dockerInternal as needed
 
 let learningMeaningLessons = [];
 let learningCardLessons = [];

@@ -87,6 +87,11 @@ exports.generateLearningCard = async (req, res) => {
                 
                 const lessonResults = JSON.parse(cleanedContent);
                 
+                // Add processing for IPA
+                lessonResults.forEach(result => {
+                    result.ipa = result.ipa.replace(/[_]+/g, '');
+                });
+                
                 // Log parsed results
                 console.log('Parsed results:', lessonResults);
                 

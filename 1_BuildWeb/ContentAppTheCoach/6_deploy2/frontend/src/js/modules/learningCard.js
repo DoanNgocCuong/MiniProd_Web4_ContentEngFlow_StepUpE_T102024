@@ -1,7 +1,7 @@
 import { config } from '../config.js';
 import { showLoadingDialog, hideLoadingDialog } from '../utils.js';
 
-const API_URL = config.development.apiUrl;
+const API_URL = config.production.apiUrl;
 
 // khai báo biến global, sau đó ở cuối sẽ export ra hàm để sử dụng ở ngoài
 let learningCardLessons = [];
@@ -175,23 +175,9 @@ function deleteLearningCardLesson(index) {
 }
 
 function copyLearningCardTable(table) {
-    // Create temporary table for copying
     const tempTable = document.createElement('table');
     
-    // Copy header (excluding Action columns)
-    const headerRow = table.querySelector('thead tr');
-    const newHeader = document.createElement('thead');
-    const newHeaderRow = document.createElement('tr');
-    
-    // Copy only the first 3 columns (excluding Action columns)
-    for (let i = 0; i < headerRow.cells.length - 2; i++) {
-        const cell = headerRow.cells[i].cloneNode(true);
-        newHeaderRow.appendChild(cell);
-    }
-    newHeader.appendChild(newHeaderRow);
-    tempTable.appendChild(newHeader);
-    
-    // Copy body (excluding Action columns)
+    // Skip header and only copy body
     const tbody = document.createElement('tbody');
     const rows = table.querySelectorAll('tbody tr');
     

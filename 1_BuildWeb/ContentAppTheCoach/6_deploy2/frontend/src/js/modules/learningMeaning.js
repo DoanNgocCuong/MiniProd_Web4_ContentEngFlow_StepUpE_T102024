@@ -1,7 +1,7 @@
 import { config } from '../config.js';
 import { showLoadingDialog, hideLoadingDialog } from '../utils.js';
 
-const API_URL = config.development.apiUrl;
+const API_URL = config.production.apiUrl;
 let learningMeaningLessons = [];
 
 async function generateLearningMeaning(lessons) {
@@ -128,23 +128,9 @@ function displayLearningMeaningResults(lessons) {
   }
   
 function copyLearningMeaningTable(table) {
-    // Create temporary table for copying
     const tempTable = document.createElement('table');
     
-    // Copy header (excluding Action columns)
-    const headerRow = table.querySelector('thead tr');
-    const newHeader = document.createElement('thead');
-    const newHeaderRow = document.createElement('tr');
-    
-    // Copy all cells except the last two (Action columns)
-    for (let i = 0; i < headerRow.cells.length - 2; i++) {
-        const cell = headerRow.cells[i].cloneNode(true);
-        newHeaderRow.appendChild(cell);
-    }
-    newHeader.appendChild(newHeaderRow);
-    tempTable.appendChild(newHeader);
-    
-    // Copy body (excluding Action columns)
+    // Skip header and only copy body
     const tbody = document.createElement('tbody');
     const rows = table.querySelectorAll('tbody tr');
     
