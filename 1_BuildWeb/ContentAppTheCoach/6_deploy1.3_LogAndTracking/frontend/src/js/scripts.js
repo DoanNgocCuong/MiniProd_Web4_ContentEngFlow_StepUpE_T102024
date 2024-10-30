@@ -1,20 +1,12 @@
 // scripts.js
 
-import { config } from './config.js';
+
 import { handleGenerateClick, storagedLessons } from './generateQuestion.js';
-import { showLoadingDialog, hideLoadingDialog } from './utils.js';
 import { generateLearningMeaning } from './modules/learningMeaning.js';
 import { generateLearningCard } from './modules/learningCard.js';
 import { generateLearningFlexible } from './modules/learningFlexible.js';
 import { generateLearningQNA } from './modules/learningQNA.js';
 
-// Get the current environment's API URL
-const API_URL = config.production.apiUrl; // or development/dockerInternal as needed
-
-let learningMeaningLessons = [];
-let learningCardLessons = [];
-let learningFlexibleLessons = [];
-let learningQNALessons = [];
 
 /**
  * ---------------------------------------------------------------------------------------------------------
@@ -130,3 +122,42 @@ document.querySelectorAll('.tab-btn').forEach(button => {
  * Generate Learning Flexible
  * ---------------------------------------------------------------------------------------------------------
  */
+
+// Add this to your existing JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+    const feedbackBtn = document.getElementById('feedback-btn');
+    const feedbackModal = document.getElementById('feedback-modal');
+    const closeModal = document.querySelector('.close-modal');
+    const sendFeedbackBtn = document.getElementById('send-feedback-btn');
+
+    // Open modal
+    feedbackBtn.addEventListener('click', () => {
+        feedbackModal.style.display = 'block';
+    });
+
+    // Close modal when clicking X
+    closeModal.addEventListener('click', () => {
+        feedbackModal.style.display = 'none';
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', (e) => {
+        if (e.target === feedbackModal) {
+            feedbackModal.style.display = 'none';
+        }
+    });
+
+    // Handle send feedback
+    sendFeedbackBtn.addEventListener('click', () => {
+        const feedbackText = document.getElementById('feedback-text').value;
+        if (feedbackText.trim()) {
+            // Here you can add code to send feedback to your server
+            console.log('Feedback:', feedbackText);
+            alert('Thank you for your feedback!');
+            feedbackModal.style.display = 'none';
+            document.getElementById('feedback-text').value = ''; // Clear textarea
+        } else {
+            alert('Please enter your feedback before sending.');
+        }
+    });
+});

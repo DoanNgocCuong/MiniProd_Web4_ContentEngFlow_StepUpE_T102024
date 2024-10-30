@@ -26,21 +26,22 @@ function createGenerateQuestionPrompt() {
     const questionCount = document.getElementById('question-count').value;
     const extraRequirements = document.getElementById('extra-requirements').value;
 
-    return `Generate ${questionCount} English lesson questions on "${topic}" at ${level} level, meeting any additional requirements: ${extraRequirements}. 
+    return `Generate ${questionCount} English lesson questions on "${topic}" at ${level} level, 
+and MUST meet the following additional requirements: ${extraRequirements}. 
 
-Each question should follow this structure, ensuring a blank (____) for the answer:
+Instructions: 
 
 {
   "question": "Question text",
-  "structure": "Answer format with blank (____)",
-  "main phrase": "Key phrase to fit blank (no proper nouns)", 
-  "optional phrase 1": "Alternative phrase option 1",
-  "optional phrase 2": "Alternative phrase option 2",
+  "structure": "Answer format with blank (____), ONLY 1 blank for the answer",
+  "main phrase": "Key phrase to fit blank (no proper nouns and must be a phrase 1, 2, 3, 4 words)", 
+  "optional phrase 1": "Alternative phrase option 1 (no proper nouns and must be a phrase 1, 2, 3, 4 words)",
+  "optional phrase 2": "Alternative phrase option 2 (no proper nouns and must be a phrase 1, 2, 3, 4 words)",
   "question-vi": "Vietnamese translation of question",
   "structure-vi": "Vietnamese translation of structure",
   "main phrase-vi": "Vietnamese translation of main phrase",
-  "optional phrase 1-vi": "Vietnamese for option 1",
-  "optional phrase 2-vi": "Vietnamese for option 2"
+  "optional phrase 1-vi": "Vietnamese translation of option 1",
+  "optional phrase 2-vi": "Vietnamese translation of option 2"
 }
 
 Example:

@@ -1,7 +1,7 @@
 import { config } from '../config.js';
 import { showLoadingDialog, hideLoadingDialog } from '../utils.js';
 
-const API_URL = config.development.apiUrl;
+const API_URL = config.production.apiUrl;
 let learningQNALessons = [];
 
 async function generateLearningQNA(lessons) {

@@ -30,16 +30,16 @@ You are an expert at creating English exercise content. You will receive \`CẤU
         "answer_1": "Sales representative",
         "answer_2": "Business representative",
         "answer_3": "Sales agent",
-        "answer_2_description": "<r>Business representative</r> rộng hơn 'Đại diện kinh doanh'.",
-        "answer_3_description": "<r>Sales agent</r> thường là vai trò hợp đồng, không bao hàm đầy đủ trách nhiệm của 'Sales representative'."
+        "answer_2_description": "<r>Business representative</r> mang nghĩa là 'đại diện kinh doanh chung' nên sai nghĩa so với yêu cầu của đề bài.",
+        "answer_3_description": "<r>Sales agent</r> mang nghĩa là 'đại diện bán hàng hợp đồng' nên sai nghĩa so với yêu cầu của đề bài."
     },
     {
         "sentence": "I'm the <g>Giám đốc kinh doanh</g> from ABC Company.",
         "answer_1": "Sales director",
         "answer_2": "Sales manager",
         "answer_3": "Commercial director",
-        "answer_2_description": "<r>Sales manager</r> là quản lý, không phải giám đốc.",
-        "answer_3_description": "<r>Commercial director</r> liên quan đến hoạt động thương mại, không chuyên về kinh doanh."
+        "answer_2_description": "<r>Sales manager</r> mang nghĩa là 'quản lý kinh doanh' nên sai nghĩa so với yêu cầu của đề bài.",
+        "answer_3_description": "<r>Commercial director</r> mang nghĩa là 'giám đốc thương mại' nên sai nghĩa so với yêu cầu của đề bài."
     }
 ]`;
 

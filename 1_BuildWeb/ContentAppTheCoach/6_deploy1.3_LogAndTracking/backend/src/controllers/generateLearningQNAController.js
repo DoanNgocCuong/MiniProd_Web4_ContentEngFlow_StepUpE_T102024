@@ -26,12 +26,19 @@ exports.generateLearningQNA = async (req, res) => {
             }
             const placeholder = placeholderMatch[0];
 
+            // Tạo mảng kết quả bằng cách map qua từng phrase
             const lessonResults = phrases.map(phrase => {
+                // Thay thế placeholder trong cấu trúc câu bằng phrase đã được cắt khoảng trắng 2 đầu
                 const sentence_en = lesson.structure.replace(placeholder, phrase.trim());
                 
+                // Tạo câu ẩn bằng cách:
+                // 1. Tách chuỗi thành mảng các ký tự
+                // 2. Thay thế các ký tự chữ và số bằng dấu gạch dưới '_' (sửa [a-zA-Z0-9] thành [a-zA-Z0-9'])
+                // 3. Giữ nguyên các ký tự đặc biệt và khoảng trắng
+                // 4. Nối lại thành chuỗi hoàn chỉnh
                 const sentence_hide = sentence_en
                     .split('')
-                    .map(char => /[a-zA-Z0-9]/.test(char) ? '_' : char)
+                    .map(char => /[a-zA-Z0-9']/.test(char) ? '_' : char)
                     .join('');
                 
                 return {

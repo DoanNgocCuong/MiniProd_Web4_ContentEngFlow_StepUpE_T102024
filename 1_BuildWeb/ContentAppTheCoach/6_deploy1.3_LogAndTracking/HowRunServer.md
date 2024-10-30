@@ -10,11 +10,20 @@ environment:
 ```
 trong file docker-compose.yml
 
-4. Đặt 
+Chỉnh sửa 5 files: `generateQuestion.js`, `generateLearningMeaning.js`, `generateLearningFlexible.js`, `generateLearningVocabulary.js`, `generateLearningGrammar.js` từ 
+```
+const API_URL = config.development.apiUrl;
+```
+thành 
+```
+const API_URL = config.production.apiUrl;
+```
+
+4. Đặt trong file frontend/src/js/script.js
 ```bash
 const environment = process.env.NODE_ENV || 'development';
 ```
-trong file frontend/src/js/script.js
+
 
 5. Run: 
 ```

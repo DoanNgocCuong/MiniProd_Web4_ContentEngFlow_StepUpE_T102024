@@ -10,6 +10,18 @@
 
 <body>
     <div class="main-container">
+        <button id="feedback-btn" class="feedback-button">Feedback</button>
+
+        <!-- Add feedback modal -->
+        <div id="feedback-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Send Feedback</h2>
+                <textarea id="feedback-text" placeholder="Please enter your feedback here..."></textarea>
+                <button id="send-feedback-btn">Send Feedback</button>
+            </div>
+        </div>
+
         <section id="input-section">
             <h2>Generate Questions</h2>
             <div class="tab-switch">
