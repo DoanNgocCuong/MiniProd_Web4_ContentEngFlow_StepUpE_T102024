@@ -9,7 +9,9 @@ const learningCardController = require('../controllers/generateLearningCardContr
 const learningFlexibleController = require('../controllers/generateLearningFlexibleController');
 const learningQNAController = require('../controllers/generateLearningQNAController');
 
-const feedbackController = require('../controllers/feedbackController');
+const tableFeedbackController = require('../controllers/tableFeedbackController');
+const tableDraftController = require('../controllers/tableDraftController');
+
 
 // Generate questions and other learning types
 router.post('/generate-questions', questionsController.generateQuestions);
@@ -19,6 +21,6 @@ router.post('/generate-learning-flexible', learningFlexibleController.generateFl
 router.post('/generate-learning-qna', learningQNAController.generateLearningQNA);
 
 // Submit feedback
-router.post('/submit-feedback', feedbackController.submitFeedback);
-
+router.post('/submit-feedback', tableFeedbackController.submitFeedback);
+router.post('/submit-draft', tableDraftController.submitDraft);
 module.exports = router;

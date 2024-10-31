@@ -1,4 +1,4 @@
-// feedback.js
+// frontend/src/js/feedback.js
 
 /**
  * Send feedback to the API
