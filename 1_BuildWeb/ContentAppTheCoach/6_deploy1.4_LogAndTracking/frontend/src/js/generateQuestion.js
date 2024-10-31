@@ -1,12 +1,13 @@
 // generateQuestion.js
 
 import { config } from './config.js';
-import { showLoadingDialog, hideLoadingDialog } from './utils.js'; // if you moved these functions to utils.js
+import { showLoadingDialog, hideLoadingDialog } from './utils.js';
+import TableDraftTracking from './trackings/tableDraftTracking.js';
 
-// Get the current environment's API URL
-const API_URL = config.production.apiUrl; // or development/dockerInternal as needed
-
+const API_URL = config.production.apiUrl;
 let storagedLessons;
+let inputDataTemp;
+let rawResponseTemp;
 
 /**
  * ---------------------------------------------------------------------------------------------------------
@@ -14,10 +15,47 @@ let storagedLessons;
  * ---------------------------------------------------------------------------------------------------------
  */
 
-function handleGenerateClick() {
+async function handleGenerateClick() {
     const activeTab = document.querySelector('.tab-content.active');
-    const prompt = activeTab.id === 'standard-form' ? createGenerateQuestionPrompt() : document.getElementById('custom-prompt-text').value;
-    generateQuestions(prompt);
+    const isStandardForm = activeTab.id === 'standard-form';
+
+    try {
+        if (isStandardForm) {
+            inputDataTemp = {
+                topic: document.getElementById('topic').value,
+                level: document.getElementById('level').value,
+                questionCount: document.getElementById('question-count').value,
+                extraRequirements: document.getElementById('extra-requirements').value
+            };
+
+            const prompt = createGenerateQuestionPrompt();
+            
+            showLoadingDialog();
+            const response = await fetch(`${API_URL}/generate-questions`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ prompt })
+            });
+            
+            const data = await response.json();
+            
+            const processedData = await processApiResponse(data);
+            rawResponseTemp = [...processedData];
+            
+            storagedLessons = processedData;
+
+        } else {
+            const prompt = document.getElementById('custom-prompt-text').value;
+            generateQuestions(prompt);
+        }
+    } catch (error) {
+        console.error('Error in handleGenerateClick:', error);
+        alert(error.message);
+    } finally {
+        hideLoadingDialog();
+    }
 }
 
 function createGenerateQuestionPrompt() {
@@ -79,7 +117,7 @@ async function generateQuestions(prompt) {
     }
 }
 
-function processApiResponse(data) {
+async function processApiResponse(data) {
     try {
         console.log('Raw API response:', data);
 
@@ -94,17 +132,11 @@ function processApiResponse(data) {
             throw new Error('Invalid API response structure');
         }
 
-        // Thêm lesson_id cho mỗi bài học
-        lessons = lessons.map(lesson => ({
-            ...lesson,
-            lesson_id: generateUniqueId()
-        }));
-
-        storagedLessons = lessons;
         displayGeneratedQuestions(lessons);
+        return lessons;
     } catch (error) {
         console.error('Error processing API response:', error);
-        alert('Error processing response: ' + error.message);
+        throw error;
     }
 }
 
@@ -203,51 +235,73 @@ function addEditButtonListeners(table, lessons) {
     });
 }
 
-function addCopyButton(container, table) {
-    const copyButton = document.createElement('button');
-    copyButton.textContent = 'Copy Table';
-    copyButton.className = 'copy-btn';
-    copyButton.addEventListener('click', () => copyTableToClipboard(table));
-    container.appendChild(copyButton);
+async function copyTableToClipboard(table) {
+    try {
+        const tempTable = document.createElement('table');
+        const tbody = document.createElement('tbody');
+        const rows = table.querySelectorAll('tbody tr');
+        
+        // Create temporary table for copying
+        rows.forEach(row => {
+            const newRow = document.createElement('tr');
+            for (let i = 0; i < row.cells.length - 2; i++) {
+                const cell = row.cells[i].cloneNode(true);
+                newRow.appendChild(cell);
+            }
+            tbody.appendChild(newRow);
+        });
+        
+        tempTable.appendChild(tbody);
+        
+        // Copy to clipboard logic
+        tempTable.style.position = 'absolute';
+        tempTable.style.left = '-9999px';
+        document.body.appendChild(tempTable);
+        
+        const range = document.createRange();
+        range.selectNode(tempTable);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        document.execCommand('copy');
+        window.getSelection().removeAllRanges();
+        
+        document.body.removeChild(tempTable);
+
+        // Extract current table data (final version after edits)
+        const finalTableData = Array.from(table.querySelectorAll('tbody tr')).map(row => ({
+            question: row.cells[0].textContent,
+            structure: row.cells[1].textContent,
+            'main phrase': row.cells[2].textContent,
+            'optional phrase 1': row.cells[3].textContent,
+            'optional phrase 2': row.cells[4].textContent,
+            'question-vi': row.cells[5].textContent,
+            'structure-vi': row.cells[6].textContent,
+            'main phrase-vi': row.cells[7].textContent,
+            'optional phrase 1-vi': row.cells[8].textContent,
+            'optional phrase 2-vi': row.cells[9].textContent
+        }));
+
+        // Submit to Larkbase
+        await TableDraftTracking.trackDraftGeneration(
+            inputDataTemp,      // Input form data
+            rawResponseTemp,    // Version đầu tiên với đầy đủ câu hỏi
+            finalTableData      // Version cuối (có thể ít câu hỏi hơn do đã xóa)
+        );
+
+        console.log('Data submitted to Larkbase:', {
+            input: inputDataTemp,
+            raw: rawResponseTemp,    // Full version
+            final: finalTableData    // Edited/deleted version
+        });
+        
+        alert('Table copied to clipboard!');
+
+    } catch (error) {
+        console.error('Error in copyTableToClipboard:', error);
+        alert('Error copying table: ' + error.message);
+    }
 }
 
-function copyTableToClipboard(table) {
-    const tempTable = document.createElement('table');
-    
-    // Skip header and only copy body
-    const tbody = document.createElement('tbody');
-    const rows = table.querySelectorAll('tbody tr');
-    
-    rows.forEach(row => {
-        const newRow = document.createElement('tr');
-        // Copy all cells except the last two (Action columns)
-        for (let i = 0; i < row.cells.length - 2; i++) {
-            const cell = row.cells[i].cloneNode(true);
-            newRow.appendChild(cell);
-        }
-        tbody.appendChild(newRow);
-    });
-    
-    tempTable.appendChild(tbody);
-    
-    // Add temporary table to document (hidden)
-    tempTable.style.position = 'absolute';
-    tempTable.style.left = '-9999px';
-    document.body.appendChild(tempTable);
-    
-    // Copy content
-    const range = document.createRange();
-    range.selectNode(tempTable);
-    window.getSelection().removeAllRanges();
-    window.getSelection().addRange(range);
-    document.execCommand('copy');
-    window.getSelection().removeAllRanges();
-    
-    // Remove temporary table
-    document.body.removeChild(tempTable);
-    
-    alert('Table copied to clipboard!');
-}
 function openEditDialog(lesson, index) {
     const dialog = createEditDialog(lesson);
     document.body.appendChild(dialog);
@@ -329,10 +383,24 @@ function generateUniqueId() {
     return 'lesson_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
 }
 
+function addCopyButton(container, table) {
+    const copyButton = document.createElement('button');
+    copyButton.textContent = 'Copy Table';
+    copyButton.className = 'copy-btn';
+    copyButton.addEventListener('click', async () => {
+        try {
+            await copyTableToClipboard(table);
+        } catch (error) {
+            console.error('Error copying table:', error);
+            alert('Failed to copy table: ' + error.message);
+        }
+    });
+    container.appendChild(copyButton);
+}
+
 export { 
     handleGenerateClick,
     storagedLessons,
     generateQuestions,
-    processApiResponse,
-    // ... any other functions needed externally
+    processApiResponse
 };

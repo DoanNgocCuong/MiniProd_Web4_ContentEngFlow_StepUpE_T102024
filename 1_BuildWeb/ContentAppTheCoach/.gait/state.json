@@ -1,0 +1,1330 @@
+{
+  "panelChats": [],
+  "inlineChats": [],
+  "schemaVersion": "1.0",
+  "deletedChats": {
+    "deletedMessageIDs": [],
+    "deletedPanelChatIDs": []
+  },
+  "kv_store": {
+    "unique_matched_lines_count": 0,
+    "total_repo_line_count": 32967,
+    "best_prompt_response": null,
+    "file_statistics": [
+      {
+        "file": ".DS_Store",
+        "total_lines": 1,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "0_baseJS_HTML/base.ipynb",
+        "total_lines": 209,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "0_baseJS_HTML/index.html",
+        "total_lines": 38,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "0_baseJS_HTML/script.js",
+        "total_lines": 43,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "0_baseJS_HTML/style.css",
+        "total_lines": 50,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "1_serverAPI_OpenAI_GoLive2PORT/.vscode/settings.json",
+        "total_lines": 3,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "1_serverAPI_OpenAI_GoLive2PORT/1_APIEndpointBackend.ipynb",
+        "total_lines": 711,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "1_serverAPI_OpenAI_GoLive2PORT/HowRun.md",
+        "total_lines": 34,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "1_serverAPI_OpenAI_GoLive2PORT/server.js",
+        "total_lines": 51,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "1_serverAPI_OpenAI_GoLive2PORT/src/css/style.css",
+        "total_lines": 50,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "1_serverAPI_OpenAI_GoLive2PORT/src/index.html",
+        "total_lines": 43,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "1_serverAPI_OpenAI_GoLive2PORT/src/js/api.js",
+        "total_lines": 29,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "1_serverAPI_OpenAI_GoLive2PORT/src/js/main.js",
+        "total_lines": 38,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "1_serverAPI_OpenAI_GoLive2PORT/src/js/ui.js",
+        "total_lines": 38,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "2_BackendFrontend_2PORT/2_BackendFrontend_2PORT.ipynb",
+        "total_lines": 451,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "2_BackendFrontend_2PORT/HowRun.md",
+        "total_lines": 69,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "2_BackendFrontend_2PORT/backend/src/controllers/questionController.js",
+        "total_lines": 45,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "2_BackendFrontend_2PORT/backend/src/routes/questionRoutes.js",
+        "total_lines": 12,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "2_BackendFrontend_2PORT/backend/src/server.js",
+        "total_lines": 22,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "2_BackendFrontend_2PORT/frontend/package.json",
+        "total_lines": 9,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "2_BackendFrontend_2PORT/frontend/src/css/style.css",
+        "total_lines": 52,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "2_BackendFrontend_2PORT/frontend/src/index.html",
+        "total_lines": 40,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "2_BackendFrontend_2PORT/frontend/src/js/api.js",
+        "total_lines": 26,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "2_BackendFrontend_2PORT/frontend/src/js/main.js",
+        "total_lines": 40,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "2_BackendFrontend_2PORT/frontend/src/js/ui.js",
+        "total_lines": 39,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "3_CauTrucMoRong/3.ipynb",
+        "total_lines": 112,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "4_ApplyForTask_OnlyFrontend/.vscode/settings.json",
+        "total_lines": 3,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "4_ApplyForTask_OnlyFrontend/ApplyCauTruc2RefactorCode.ipynb",
+        "total_lines": 257,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "4_ApplyForTask_OnlyFrontend/HowRun.md",
+        "total_lines": 75,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "4_ApplyForTask_OnlyFrontend/New Microsoft Excel Worksheet.xlsx",
+        "total_lines": 20,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "4_ApplyForTask_OnlyFrontend/backend/package.json",
+        "total_lines": 20,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "4_ApplyForTask_OnlyFrontend/backend/src/server.js",
+        "total_lines": 1,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "4_ApplyForTask_OnlyFrontend/detail.ipynb",
+        "total_lines": 1674,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "4_ApplyForTask_OnlyFrontend/frontend/src/css/styles.css",
+        "total_lines": 335,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "4_ApplyForTask_OnlyFrontend/frontend/src/index.html",
+        "total_lines": 102,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "4_ApplyForTask_OnlyFrontend/frontend/src/js/script.js",
+        "total_lines": 1292,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "4_ApplyForTask_OnlyFrontend/note",
+        "total_lines": 2,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "5_BendFend_Struct_2PORT/BackendAPIPacking.ipynb",
+        "total_lines": 326,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "5_BendFend_Struct_2PORT/Bug.md",
+        "total_lines": 9,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "5_BendFend_Struct_2PORT/Deploy1PORTor2PORT.ipynb",
+        "total_lines": 93,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "5_BendFend_Struct_2PORT/HowRun.md",
+        "total_lines": 77,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "5_BendFend_Struct_2PORT/New Microsoft Excel Worksheet.xlsx",
+        "total_lines": 20,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "5_BendFend_Struct_2PORT/backend/package.json",
+        "total_lines": 22,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "5_BendFend_Struct_2PORT/backend/src/controllers/generateLearningCardController.js",
+        "total_lines": 147,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "5_BendFend_Struct_2PORT/backend/src/controllers/generateLearningMeaningController.js",
+        "total_lines": 122,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "5_BendFend_Struct_2PORT/backend/src/controllers/generateQuestionsController.js",
+        "total_lines": 40,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "5_BendFend_Struct_2PORT/backend/src/routes/index.js",
+        "total_lines": 13,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "5_BendFend_Struct_2PORT/backend/src/server.js",
+        "total_lines": 17,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "5_BendFend_Struct_2PORT/frontend/src/css/styles.css",
+        "total_lines": 335,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "5_BendFend_Struct_2PORT/frontend/src/index.html",
+        "total_lines": 102,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "5_BendFend_Struct_2PORT/frontend/src/js/script.js",
+        "total_lines": 1019,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/1_Deploy1PORTor2PORT.ipynb",
+        "total_lines": 686,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/2_DeployServer.ipynb",
+        "total_lines": 299,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/2_SieuBugCONFIG/.vscode/settings.json",
+        "total_lines": 3,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/2_SieuBugCONFIG/bugCONFIG_LienKetCacFileJS.ipynb",
+        "total_lines": 232,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/2_SieuBugCONFIG/frontend/.ipynb",
+        "total_lines": 159,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/2_SieuBugCONFIG/frontend/.vscode/settings.json",
+        "total_lines": 3,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/2_SieuBugCONFIG/frontend/ver1_setupSame/config.js",
+        "total_lines": 14,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/2_SieuBugCONFIG/frontend/ver1_setupSame/index.html",
+        "total_lines": 27,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/2_SieuBugCONFIG/frontend/ver1_setupSame/script.js",
+        "total_lines": 26,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/2_SieuBugCONFIG/frontend/ver2_change2Folder/index.html",
+        "total_lines": 63,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/2_SieuBugCONFIG/frontend/ver2_change2Folder/js/config.js",
+        "total_lines": 16,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/2_SieuBugCONFIG/frontend/ver2_change2Folder/js/script.js",
+        "total_lines": 24,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/2_SieuBugCONFIG/frontend/ver3_FindSuccBug/index.html",
+        "total_lines": 63,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/2_SieuBugCONFIG/frontend/ver3_FindSuccBug/js/config.js",
+        "total_lines": 20,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/2_SieuBugCONFIG/frontend/ver3_FindSuccBug/js/script.js",
+        "total_lines": 24,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/3_TruyenCacFileJS_HTML.ipynb",
+        "total_lines": 121,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/4_bugCONFIG_LienKetCacFileJS.ipynb",
+        "total_lines": 232,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/HowRun.md",
+        "total_lines": 198,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/HowRunServer.md",
+        "total_lines": 73,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/KienTruc.md",
+        "total_lines": 58,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/backend/.env.example",
+        "total_lines": 3,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/backend/Dockerfile",
+        "total_lines": 21,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/backend/package.json",
+        "total_lines": 22,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/backend/src/controllers/generateLearningCardController.js",
+        "total_lines": 147,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/backend/src/controllers/generateLearningMeaningController.js",
+        "total_lines": 122,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/backend/src/controllers/generateQuestionsController.js",
+        "total_lines": 40,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/backend/src/routes/index.js",
+        "total_lines": 13,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/backend/src/server.js",
+        "total_lines": 17,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/docker-compose.yml",
+        "total_lines": 27,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/frontend/Dockerfile",
+        "total_lines": 18,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/frontend/src/css/styles.css",
+        "total_lines": 335,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/frontend/src/index.html",
+        "total_lines": 101,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/frontend/src/js/config.js",
+        "total_lines": 24,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_BendFend_2PORT_Docker_deploy1.1/frontend/src/js/script.js",
+        "total_lines": 1057,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/2_DeployServer.ipynb",
+        "total_lines": 299,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/3_TruyenCacFileJS_HTML.ipynb",
+        "total_lines": 121,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/4_bugCONFIG_LienKetCacFileJS.ipynb",
+        "total_lines": 232,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/5_RefactorFRONTEND.ipynb",
+        "total_lines": 714,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/7_KienTrucCode.md",
+        "total_lines": 37,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/HowRun.md",
+        "total_lines": 198,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/HowRunServer.md",
+        "total_lines": 73,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/backend/.env.example",
+        "total_lines": 3,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/backend/Dockerfile",
+        "total_lines": 21,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/backend/package.json",
+        "total_lines": 22,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/backend/src/controllers/APIDocs.ipynb",
+        "total_lines": 287,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/backend/src/controllers/generateLearningCardController.js",
+        "total_lines": 152,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/backend/src/controllers/generateLearningFlexibleController.js",
+        "total_lines": 168,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/backend/src/controllers/generateLearningMeaningController.js",
+        "total_lines": 120,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/backend/src/controllers/generateLearningQNAController.js",
+        "total_lines": 119,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/backend/src/controllers/generateQuestionsController.js",
+        "total_lines": 40,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/backend/src/controllers/xuLyResponse.md",
+        "total_lines": 30,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/backend/src/routes/checkAPI.ipynb",
+        "total_lines": 22,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/backend/src/routes/index.js",
+        "total_lines": 17,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/backend/src/server.js",
+        "total_lines": 17,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/docker-compose.yml",
+        "total_lines": 27,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/frontend/Dockerfile",
+        "total_lines": 18,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/frontend/src/css/styles.css",
+        "total_lines": 335,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/frontend/src/index.html",
+        "total_lines": 100,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/frontend/src/js/api.js",
+        "total_lines": 1,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/frontend/src/js/checkPoint_scripts.js",
+        "total_lines": 1311,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/frontend/src/js/config.js",
+        "total_lines": 24,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/frontend/src/js/generateQuestion.js",
+        "total_lines": 336,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/frontend/src/js/modules/learningCard.js",
+        "total_lines": 231,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/frontend/src/js/modules/learningFlexible.js",
+        "total_lines": 222,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/frontend/src/js/modules/learningMeaning.js",
+        "total_lines": 284,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/frontend/src/js/modules/learningQNA.js",
+        "total_lines": 206,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/frontend/src/js/scripts.js",
+        "total_lines": 133,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.2_Full4Dang/frontend/src/js/utils.js",
+        "total_lines": 17,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/1_Architechture_KienTrucLai.ipynb",
+        "total_lines": 119,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/7_KienTrucCode.md",
+        "total_lines": 37,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/HowRunServer.md",
+        "total_lines": 82,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/backend/.env.example",
+        "total_lines": 3,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/backend/Dockerfile",
+        "total_lines": 21,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/backend/package.json",
+        "total_lines": 22,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/backend/src/controllers/APIDocs.ipynb",
+        "total_lines": 287,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/backend/src/controllers/checkPoints/generateLearningFlexibleController.js",
+        "total_lines": 168,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/backend/src/controllers/checkPoints/generateLearningQNAController.js",
+        "total_lines": 119,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/backend/src/controllers/generateLearningCardController.js",
+        "total_lines": 152,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/backend/src/controllers/generateLearningFlexibleController.js",
+        "total_lines": 138,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/backend/src/controllers/generateLearningMeaningController.js",
+        "total_lines": 120,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/backend/src/controllers/generateLearningQNAController.js",
+        "total_lines": 61,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/backend/src/controllers/generateQuestionsController.js",
+        "total_lines": 40,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/backend/src/controllers/updatePromptWithLogicCode.ipynb",
+        "total_lines": 399,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/backend/src/database/Database_Define.ipynb",
+        "total_lines": 175,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/backend/src/database/LinkTracking.md",
+        "total_lines": 1,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/backend/src/database/ver2_Tracking.base",
+        "total_lines": 1,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/backend/src/routes/checkAPI.ipynb",
+        "total_lines": 22,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/backend/src/routes/index.js",
+        "total_lines": 17,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/backend/src/server.js",
+        "total_lines": 17,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/docker-compose.yml",
+        "total_lines": 27,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/frontend/Dockerfile",
+        "total_lines": 18,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/frontend/src/css/styles.css",
+        "total_lines": 407,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/frontend/src/index.html",
+        "total_lines": 113,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/frontend/src/js/config.js",
+        "total_lines": 24,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/frontend/src/js/generateQuestion.js",
+        "total_lines": 342,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/frontend/src/js/modules/learningCard.js",
+        "total_lines": 231,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/frontend/src/js/modules/learningFlexible.js",
+        "total_lines": 222,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/frontend/src/js/modules/learningMeaning.js",
+        "total_lines": 284,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/frontend/src/js/modules/learningQNA.js",
+        "total_lines": 206,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/frontend/src/js/scripts.js",
+        "total_lines": 163,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.3_UpSpeedDang3,4/frontend/src/js/utils.js",
+        "total_lines": 17,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/1_LogFeedback.ipynb",
+        "total_lines": 896,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/2_LogGenerateQuestion.ipynb",
+        "total_lines": 790,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/7_KienTrucCode.md",
+        "total_lines": 43,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/HowRunServer.md",
+        "total_lines": 82,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/KienTrucCode.md",
+        "total_lines": 37,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/backend/.env.example",
+        "total_lines": 3,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/backend/Dockerfile",
+        "total_lines": 21,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/backend/package.json",
+        "total_lines": 23,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/backend/src/constants/larkbaseTables.js",
+        "total_lines": 6,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/backend/src/controllers/checkPoint/feedbackController_ckp.js",
+        "total_lines": 69,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/backend/src/controllers/generateAPIDocs.ipynb",
+        "total_lines": 287,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/backend/src/controllers/generateLearningCardController.js",
+        "total_lines": 152,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/backend/src/controllers/generateLearningFlexibleController.js",
+        "total_lines": 138,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/backend/src/controllers/generateLearningMeaningController.js",
+        "total_lines": 120,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/backend/src/controllers/generateLearningQNAController.js",
+        "total_lines": 61,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/backend/src/controllers/generateQuestionsController.js",
+        "total_lines": 42,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/backend/src/controllers/npm_run_dev.ipynb",
+        "total_lines": 71,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/backend/src/controllers/tableAPIDocs.ipynb",
+        "total_lines": 74,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/backend/src/controllers/tableDraftController.js",
+        "total_lines": 46,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/backend/src/controllers/tableFeedbackController.js",
+        "total_lines": 45,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/backend/src/database/Database_Define.ipynb",
+        "total_lines": 175,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/backend/src/database/LinkTracking.md",
+        "total_lines": 1,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/backend/src/database/ver2_Tracking.base",
+        "total_lines": 1,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/backend/src/routes/index.js",
+        "total_lines": 27,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/backend/src/server.js",
+        "total_lines": 17,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/backend/src/services/larkbaseService.js",
+        "total_lines": 35,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/docker-compose.yml",
+        "total_lines": 27,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/frontend/Dockerfile",
+        "total_lines": 18,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/frontend/src/css/styles.css",
+        "total_lines": 433,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/frontend/src/index.html",
+        "total_lines": 116,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/frontend/src/js/config.js",
+        "total_lines": 24,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/frontend/src/js/feedback.js",
+        "total_lines": 137,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/frontend/src/js/generateQuestion.js",
+        "total_lines": 400,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/frontend/src/js/generationDocs.ipynb",
+        "total_lines": 101,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/frontend/src/js/modules/learningCard.js",
+        "total_lines": 231,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/frontend/src/js/modules/learningFlexible.js",
+        "total_lines": 222,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/frontend/src/js/modules/learningMeaning.js",
+        "total_lines": 284,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/frontend/src/js/modules/learningQNA.js",
+        "total_lines": 206,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/frontend/src/js/scripts.js",
+        "total_lines": 150,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/frontend/src/js/scripts.test.js",
+        "total_lines": 32,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/frontend/src/js/trackings/tableDraftTracking.js",
+        "total_lines": 94,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/frontend/src/js/utils.js",
+        "total_lines": 24,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.5_Refactor/REFACTOR_Continue.ipynb",
+        "total_lines": 329,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "Checkpoints/index.html",
+        "total_lines": 106,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "Checkpoints/package.json",
+        "total_lines": 7,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "Checkpoints/script.js",
+        "total_lines": 790,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "Checkpoints/styles.css",
+        "total_lines": 334,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "ContentTheCoach_deploy1/Deploy1PORTor2PORT.ipynb",
+        "total_lines": 640,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "ContentTheCoach_deploy1/HowRun.md",
+        "total_lines": 183,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "ContentTheCoach_deploy1/UtilsServer.ipynb",
+        "total_lines": 37,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "ContentTheCoach_deploy1/backend/.env.example",
+        "total_lines": 3,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "ContentTheCoach_deploy1/backend/Dockerfile",
+        "total_lines": 20,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "ContentTheCoach_deploy1/backend/package.json",
+        "total_lines": 22,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "ContentTheCoach_deploy1/backend/src/controllers/generateLearningCardController.js",
+        "total_lines": 147,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "ContentTheCoach_deploy1/backend/src/controllers/generateLearningMeaningController.js",
+        "total_lines": 122,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "ContentTheCoach_deploy1/backend/src/controllers/generateQuestionsController.js",
+        "total_lines": 40,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "ContentTheCoach_deploy1/backend/src/routes/index.js",
+        "total_lines": 13,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "ContentTheCoach_deploy1/backend/src/server.js",
+        "total_lines": 17,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "ContentTheCoach_deploy1/docker-compose.yml",
+        "total_lines": 27,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "ContentTheCoach_deploy1/frontend/Dockerfile",
+        "total_lines": 15,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "ContentTheCoach_deploy1/frontend/src/css/styles.css",
+        "total_lines": 335,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "ContentTheCoach_deploy1/frontend/src/index.html",
+        "total_lines": 102,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "ContentTheCoach_deploy1/frontend/src/js/config.js",
+        "total_lines": 12,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "ContentTheCoach_deploy1/frontend/src/js/script.js",
+        "total_lines": 1072,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "Requirements/Prompting.xlsx",
+        "total_lines": 160,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "VersionControl.md",
+        "total_lines": 4,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "package.json",
+        "total_lines": 11,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      }
+    ]
+  }
+}

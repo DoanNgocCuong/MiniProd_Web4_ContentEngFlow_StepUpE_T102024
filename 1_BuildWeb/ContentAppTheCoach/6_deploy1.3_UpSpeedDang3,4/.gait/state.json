@@ -1,0 +1,214 @@
+{
+  "panelChats": [],
+  "inlineChats": [],
+  "schemaVersion": "1.0",
+  "deletedChats": {
+    "deletedMessageIDs": [],
+    "deletedPanelChatIDs": []
+  },
+  "kv_store": {
+    "unique_matched_lines_count": 0,
+    "total_repo_line_count": 4055,
+    "best_prompt_response": null,
+    "file_statistics": [
+      {
+        "file": "1_Architechture_KienTrucLai.ipynb",
+        "total_lines": 119,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "7_KienTrucCode.md",
+        "total_lines": 37,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "HowRunServer.md",
+        "total_lines": 82,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/.env.example",
+        "total_lines": 3,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/Dockerfile",
+        "total_lines": 21,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/package.json",
+        "total_lines": 22,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/controllers/APIDocs.ipynb",
+        "total_lines": 287,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/controllers/checkPoints/generateLearningFlexibleController.js",
+        "total_lines": 168,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/controllers/checkPoints/generateLearningQNAController.js",
+        "total_lines": 119,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/controllers/generateLearningCardController.js",
+        "total_lines": 152,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/controllers/generateLearningFlexibleController.js",
+        "total_lines": 138,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/controllers/generateLearningMeaningController.js",
+        "total_lines": 120,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/controllers/generateLearningQNAController.js",
+        "total_lines": 61,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/controllers/generateQuestionsController.js",
+        "total_lines": 40,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/controllers/updatePromptWithLogicCode.ipynb",
+        "total_lines": 399,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/database/Database_Define.ipynb",
+        "total_lines": 175,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/database/LinkTracking.md",
+        "total_lines": 1,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/database/ver2_Tracking.base",
+        "total_lines": 1,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/routes/checkAPI.ipynb",
+        "total_lines": 22,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/routes/index.js",
+        "total_lines": 17,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/server.js",
+        "total_lines": 17,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "docker-compose.yml",
+        "total_lines": 27,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/Dockerfile",
+        "total_lines": 18,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/css/styles.css",
+        "total_lines": 407,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/index.html",
+        "total_lines": 113,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/js/config.js",
+        "total_lines": 24,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/js/generateQuestion.js",
+        "total_lines": 342,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/js/modules/learningCard.js",
+        "total_lines": 231,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/js/modules/learningFlexible.js",
+        "total_lines": 222,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/js/modules/learningMeaning.js",
+        "total_lines": 284,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/js/modules/learningQNA.js",
+        "total_lines": 206,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/js/scripts.js",
+        "total_lines": 163,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/js/utils.js",
+        "total_lines": 17,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      }
+    ]
+  }
+}

@@ -1,6 +1,6 @@
 import { config } from '../config.js';
 
-const API_URL = config.production.apiUrl;
+const API_URL = config.development.apiUrl;
 
 class TableDraftTracking {
     static generateLessonId(topic) {
@@ -18,24 +18,16 @@ class TableDraftTracking {
         return `${normalizedTopic}_${time}_${date}`;
     }
 
-    static async trackDraftGeneration(inputData, rawResponse, finalTable = '') {
+    static async trackDraftGeneration(inputData, rawResponse, finalTable) {
         try {
             const lesson_id = this.generateLessonId(inputData.topic);
             
-            // Clean and prepare data
-            const cleanInput = {
-                topic: inputData.topic || '',
-                level: inputData.level || '',
-                questionCount: inputData.questionCount || '',
-                extraRequirements: inputData.extraRequirements || ''
-            };
-
-            // Ensure data is properly stringified
+            // Prepare data for Larkbase
             const draftData = {
                 lesson_id: lesson_id,
-                input: JSON.stringify(cleanInput),
+                input: JSON.stringify(inputData),
                 raw: JSON.stringify(rawResponse),
-                final: finalTable ? JSON.stringify(finalTable) : ''
+                final: JSON.stringify(finalTable)
             };
 
             const response = await fetch(`${API_URL}/submit-draft`, {
