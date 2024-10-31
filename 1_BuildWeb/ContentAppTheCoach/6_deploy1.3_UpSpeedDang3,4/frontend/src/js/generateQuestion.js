@@ -1,4 +1,4 @@
-// generateQuestion.js
+// frontend/src/js/generateQuestion.js
 
 import { config } from './config.js';
 import { showLoadingDialog, hideLoadingDialog } from './utils.js'; // if you moved these functions to utils.js
@@ -7,6 +7,7 @@ import { showLoadingDialog, hideLoadingDialog } from './utils.js'; // if you mov
 const API_URL = config.production.apiUrl; // or development/dockerInternal as needed
 
 let storagedLessons;
+let currentLessonId = null;
 
 /**
  * ---------------------------------------------------------------------------------------------------------
@@ -15,6 +16,9 @@ let storagedLessons;
  */
 
 function handleGenerateClick() {
+    // Generate a unique lesson ID
+    currentLessonId = 'lesson_' + Date.now();
+    
     const activeTab = document.querySelector('.tab-content.active');
     const prompt = activeTab.id === 'standard-form' ? createGenerateQuestionPrompt() : document.getElementById('custom-prompt-text').value;
     generateQuestions(prompt);
@@ -329,6 +333,7 @@ function updateLesson(lesson) {
 export { 
     handleGenerateClick,
     storagedLessons,
+    currentLessonId,
     generateQuestions,
     processApiResponse,
     // ... any other functions needed externally

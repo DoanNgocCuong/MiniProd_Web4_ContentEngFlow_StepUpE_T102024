@@ -6,7 +6,7 @@ import { generateLearningMeaning } from './modules/learningMeaning.js';
 import { generateLearningCard } from './modules/learningCard.js';
 import { generateLearningFlexible } from './modules/learningFlexible.js';
 import { generateLearningQNA } from './modules/learningQNA.js';
-
+// import { initializeFeedback } from './feedback.js';
 
 /**
  * ---------------------------------------------------------------------------------------------------------
@@ -16,6 +16,7 @@ import { generateLearningQNA } from './modules/learningQNA.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     initializeTabs();
+    // initializeFeedback(); // Initialize feedback functionality
     document.getElementById('generate-btn').addEventListener('click', handleGenerateClick);
     document.getElementById('copy-selected-lessons').addEventListener('click', copyCheckedLessons);
 });
@@ -144,20 +145,6 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('click', (e) => {
         if (e.target === feedbackModal) {
             feedbackModal.style.display = 'none';
-        }
-    });
-
-    // Handle send feedback
-    sendFeedbackBtn.addEventListener('click', () => {
-        const feedbackText = document.getElementById('feedback-text').value;
-        if (feedbackText.trim()) {
-            // Here you can add code to send feedback to your server
-            console.log('Feedback:', feedbackText);
-            alert('Thank you for your feedback!');
-            feedbackModal.style.display = 'none';
-            document.getElementById('feedback-text').value = ''; // Clear textarea
-        } else {
-            alert('Please enter your feedback before sending.');
         }
     });
 });
