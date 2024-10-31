@@ -7,7 +7,7 @@
  */
 async function sendFeedbackToAPI(feedback) {
     try {
-        const response = await fetch('/api/feedback', {
+        const response = await fetch('http://localhost:3000/api/submit-feedback', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

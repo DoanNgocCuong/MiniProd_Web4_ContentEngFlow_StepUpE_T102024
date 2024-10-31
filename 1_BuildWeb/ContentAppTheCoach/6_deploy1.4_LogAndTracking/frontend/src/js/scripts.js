@@ -6,7 +6,7 @@ import { generateLearningMeaning } from './modules/learningMeaning.js';
 import { generateLearningCard } from './modules/learningCard.js';
 import { generateLearningFlexible } from './modules/learningFlexible.js';
 import { generateLearningQNA } from './modules/learningQNA.js';
-// import { initializeFeedback } from './feedback.js';
+import { initializeFeedback } from './feedback.js';
 
 /**
  * ---------------------------------------------------------------------------------------------------------
@@ -16,7 +16,7 @@ import { generateLearningQNA } from './modules/learningQNA.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     initializeTabs();
-    // initializeFeedback(); // Initialize feedback functionality
+    initializeFeedback(); // Initialize feedback functionality
     document.getElementById('generate-btn').addEventListener('click', handleGenerateClick);
     document.getElementById('copy-selected-lessons').addEventListener('click', copyCheckedLessons);
 });
