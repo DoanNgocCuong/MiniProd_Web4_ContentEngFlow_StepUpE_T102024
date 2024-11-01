@@ -6,25 +6,26 @@ let meaningCounter = 1;
 class TableLearningMeaningTracking {
     static async trackMeaningGeneration(inputData, rawResponse, finalTable) {
         try {
-            // Validate input data
+            // 1. Validate lesson_id tồn tại
             if (!inputData || !inputData.lesson_id) {
                 throw new Error('Invalid input data: lesson_id is required');
             }
 
-            // Generate meaning_id
+            // 2. Tạo meaning_id mới cho mỗi lần tracking
             const meaning_id = `meaning_${Date.now()}_${meaningCounter++}`;
 
-            // Format data theo đúng yêu cầu của API
+            // 3. Format data với lesson_id từ input
             const meaningData = {
-                meaning_id: meaning_id,
-                lesson_id: inputData.lesson_id,
-                lesson_input: JSON.stringify(inputData.lessons),  // đổi từ input thành lesson_input
-                raw: JSON.stringify(rawResponse),
-                final: JSON.stringify(finalTable)
+                meaning_id: meaning_id,                          // ID unique cho mỗi lần generate meaning
+                lesson_id: inputData.lesson_id,                  // Foreign key liên kết với bài học gốc
+                lesson_input: JSON.stringify(inputData.lessons), // Data gốc từ generateQuestion
+                raw: JSON.stringify(rawResponse),                // Response từ API meaning
+                final: JSON.stringify(finalTable)                // Data sau khi edit/delete
             };
 
             console.log('Submitting meaning data:', meaningData);
 
+            // 4. Submit lên server
             const response = await fetch(`${API_URL}/submit-learning-meaning`, {
                 method: 'POST',
                 headers: {
