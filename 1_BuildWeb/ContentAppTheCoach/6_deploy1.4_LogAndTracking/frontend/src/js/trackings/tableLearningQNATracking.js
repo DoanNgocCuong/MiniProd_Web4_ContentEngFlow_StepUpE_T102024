@@ -1,7 +1,7 @@
 import { config } from '../config.js';
 
 const API_URL = config.development.apiUrl;
-let qnaCounter = 1;
+let qnaCounter = 1;  // Initialize counter
 
 class TableLearningQNATracking {
     static async trackQNAGeneration(inputData, rawResponse, finalTable) {
@@ -11,16 +11,16 @@ class TableLearningQNATracking {
                 throw new Error('Invalid input data: lesson_id is required');
             }
 
-            // Generate unique qna_id
+            // Generate unique qna_id with counter
             const qna_id = `qna_${Date.now()}_${qnaCounter++}`;
 
             // Format tracking data
             const qnaData = {
-                qna_id: qna_id,                                // Unique ID for each QNA generation
-                lesson_id: inputData.lesson_id,                // Foreign key to original lesson
-                lesson_input: JSON.stringify(inputData.lessons), // Original data from generateQuestion
-                raw: JSON.stringify(rawResponse),              // Raw API response
-                final: JSON.stringify(finalTable)              // Data after edits/deletions
+                qna_id: qna_id,
+                lesson_id: inputData.lesson_id,
+                lesson_input: JSON.stringify(inputData.lessons),
+                raw: JSON.stringify(rawResponse),
+                final: JSON.stringify(finalTable)
             };
 
             console.log('Submitting QNA data:', qnaData);

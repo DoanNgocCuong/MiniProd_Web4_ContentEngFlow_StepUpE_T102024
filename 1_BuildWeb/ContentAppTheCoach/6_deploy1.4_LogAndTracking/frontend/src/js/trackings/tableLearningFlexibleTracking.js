@@ -11,16 +11,16 @@ class TableLearningFlexibleTracking {
                 throw new Error('Invalid input data: lesson_id is required');
             }
 
-            // Generate unique flexible_id
+            // Generate unique flexible_id with counter
             const flexible_id = `flexible_${Date.now()}_${flexibleCounter++}`;
 
             // Format tracking data
             const flexibleData = {
-                flexible_id: flexible_id,                        // Unique ID for each flexible generation
-                lesson_id: inputData.lesson_id,                  // Foreign key to original lesson
-                lesson_input: JSON.stringify(inputData.lessons), // Original data from generateQuestion
-                raw: JSON.stringify(rawResponse),                // Raw API response
-                final: JSON.stringify(finalTable)                // Data after edits/deletions
+                flexible_id: flexible_id,
+                lesson_id: inputData.lesson_id,
+                lesson_input: JSON.stringify(inputData.lessons),
+                raw: JSON.stringify(rawResponse),
+                final: JSON.stringify(finalTable)
             };
 
             console.log('Submitting flexible data:', flexibleData);
