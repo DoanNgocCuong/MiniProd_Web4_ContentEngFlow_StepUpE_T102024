@@ -8,7 +8,7 @@
   },
   "kv_store": {
     "unique_matched_lines_count": 0,
-    "total_repo_line_count": 32967,
+    "total_repo_line_count": 33168,
     "best_prompt_response": null,
     "file_statistics": [
       {
@@ -924,6 +924,12 @@
         "ai_generated_percentage": 0
       },
       {
+        "file": "6_deploy1.4_LogAndTracking/.vscode/settings.json",
+        "total_lines": 9,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
         "file": "6_deploy1.4_LogAndTracking/1_LogFeedback.ipynb",
         "total_lines": 896,
         "ai_generated_lines": 0,
@@ -931,7 +937,7 @@
       },
       {
         "file": "6_deploy1.4_LogAndTracking/2_LogGenerateQuestion.ipynb",
-        "total_lines": 790,
+        "total_lines": 938,
         "ai_generated_lines": 0,
         "ai_generated_percentage": 0
       },
@@ -1117,7 +1123,7 @@
       },
       {
         "file": "6_deploy1.4_LogAndTracking/frontend/src/js/generateQuestion.js",
-        "total_lines": 400,
+        "total_lines": 406,
         "ai_generated_lines": 0,
         "ai_generated_percentage": 0
       },
@@ -1166,6 +1172,12 @@
       {
         "file": "6_deploy1.4_LogAndTracking/frontend/src/js/trackings/tableDraftTracking.js",
         "total_lines": 94,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "6_deploy1.4_LogAndTracking/frontend/src/js/trackings/trackingDocs.ipynb",
+        "total_lines": 38,
         "ai_generated_lines": 0,
         "ai_generated_percentage": 0
       },

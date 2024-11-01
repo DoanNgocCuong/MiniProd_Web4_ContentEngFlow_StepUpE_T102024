@@ -1,0 +1,280 @@
+{
+  "panelChats": [],
+  "inlineChats": [],
+  "schemaVersion": "1.0",
+  "deletedChats": {
+    "deletedMessageIDs": [],
+    "deletedPanelChatIDs": []
+  },
+  "kv_store": {
+    "unique_matched_lines_count": 0,
+    "total_repo_line_count": 5962,
+    "best_prompt_response": null,
+    "file_statistics": [
+      {
+        "file": ".vscode/settings.json",
+        "total_lines": 9,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "1_LogFeedback.ipynb",
+        "total_lines": 896,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "2_LogGenerateQuestion.ipynb",
+        "total_lines": 938,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "7_KienTrucCode.md",
+        "total_lines": 43,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "HowRunServer.md",
+        "total_lines": 82,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "KienTrucCode.md",
+        "total_lines": 37,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/.env.example",
+        "total_lines": 3,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/Dockerfile",
+        "total_lines": 21,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/package.json",
+        "total_lines": 23,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/constants/larkbaseTables.js",
+        "total_lines": 6,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/controllers/checkPoint/feedbackController_ckp.js",
+        "total_lines": 69,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/controllers/generateAPIDocs.ipynb",
+        "total_lines": 287,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/controllers/generateLearningCardController.js",
+        "total_lines": 152,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/controllers/generateLearningFlexibleController.js",
+        "total_lines": 138,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/controllers/generateLearningMeaningController.js",
+        "total_lines": 120,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/controllers/generateLearningQNAController.js",
+        "total_lines": 61,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/controllers/generateQuestionsController.js",
+        "total_lines": 42,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/controllers/npm_run_dev.ipynb",
+        "total_lines": 71,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/controllers/tableAPIDocs.ipynb",
+        "total_lines": 74,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/controllers/tableDraftController.js",
+        "total_lines": 46,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/controllers/tableFeedbackController.js",
+        "total_lines": 45,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/database/Database_Define.ipynb",
+        "total_lines": 175,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/database/LinkTracking.md",
+        "total_lines": 1,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/database/ver2_Tracking.base",
+        "total_lines": 1,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/routes/index.js",
+        "total_lines": 27,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/server.js",
+        "total_lines": 17,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "backend/src/services/larkbaseService.js",
+        "total_lines": 35,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "docker-compose.yml",
+        "total_lines": 27,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/Dockerfile",
+        "total_lines": 18,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/css/styles.css",
+        "total_lines": 433,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/index.html",
+        "total_lines": 116,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/js/config.js",
+        "total_lines": 24,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/js/feedback.js",
+        "total_lines": 137,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/js/generateQuestion.js",
+        "total_lines": 406,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/js/generationDocs.ipynb",
+        "total_lines": 101,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/js/modules/learningCard.js",
+        "total_lines": 231,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/js/modules/learningFlexible.js",
+        "total_lines": 222,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/js/modules/learningMeaning.js",
+        "total_lines": 284,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/js/modules/learningQNA.js",
+        "total_lines": 206,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/js/scripts.js",
+        "total_lines": 150,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/js/scripts.test.js",
+        "total_lines": 32,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/js/trackings/tableDraftTracking.js",
+        "total_lines": 94,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/js/trackings/trackingDocs.ipynb",
+        "total_lines": 38,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      },
+      {
+        "file": "frontend/src/js/utils.js",
+        "total_lines": 24,
+        "ai_generated_lines": 0,
+        "ai_generated_percentage": 0
+      }
+    ]
+  }
+}
