@@ -167,11 +167,11 @@ function openLearningCardEditDialog(lesson, index) {
     });
 }
 
+// Sửa lại hàm deleteLearningMeaningLesson - bỏ confirm
 function deleteLearningCardLesson(index) {
-    if (confirm('Are you sure you want to delete this item?')) {
-        learningCardLessons.splice(index, 1);
-        displayLearningCardResults(learningCardLessons);
-    }
+    // Sửa tên biến cho đúng (từ learningMeaningLessons thành learningCardLessons)
+    learningCardLessons.splice(index, 1);
+    displayLearningCardResults(learningCardLessons);
 }
 
 function copyLearningCardTable(table) {

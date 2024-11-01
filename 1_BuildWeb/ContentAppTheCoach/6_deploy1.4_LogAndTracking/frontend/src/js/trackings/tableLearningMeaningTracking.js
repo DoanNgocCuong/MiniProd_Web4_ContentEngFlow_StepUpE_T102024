@@ -39,6 +39,7 @@ class TableLearningMeaningTracking {
             }
 
             console.log('Meaning tracking submitted successfully');
+            
             return meaning_id;
 
         } catch (error) {

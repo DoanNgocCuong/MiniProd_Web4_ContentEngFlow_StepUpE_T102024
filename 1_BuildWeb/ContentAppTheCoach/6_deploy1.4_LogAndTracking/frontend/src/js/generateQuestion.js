@@ -132,6 +132,13 @@ async function processApiResponse(data) {
             throw new Error('Invalid API response structure');
         }
 
+        // Thêm lesson_id vào tất cả lessons
+        const lesson_id = TableDraftTracking.generateLessonId(inputDataTemp.topic);
+        lessons = lessons.map(item => ({
+            ...item,
+            lesson_id: lesson_id
+        }));
+
         displayGeneratedQuestions(lessons);
         return lessons;
     } catch (error) {
@@ -267,6 +274,9 @@ async function copyTableToClipboard(table) {
         
         document.body.removeChild(tempTable);
 
+        // Alert copy success first
+        alert('Table copied to clipboard!');
+
         // Extract current table data (final version after edits)
         const finalTableData = Array.from(table.querySelectorAll('tbody tr')).map(row => ({
             question: row.cells[0].textContent,
@@ -288,13 +298,13 @@ async function copyTableToClipboard(table) {
             finalTableData      // Version cuối (có thể ít câu hỏi hơn do đã xóa)
         );
 
+
         console.log('Data submitted to Larkbase:', {
             input: inputDataTemp,
             raw: rawResponseTemp,    // Full version
             final: finalTableData    // Edited/deleted version
         });
         
-        alert('Table copied to clipboard!');
 
     } catch (error) {
         console.error('Error in copyTableToClipboard:', error);

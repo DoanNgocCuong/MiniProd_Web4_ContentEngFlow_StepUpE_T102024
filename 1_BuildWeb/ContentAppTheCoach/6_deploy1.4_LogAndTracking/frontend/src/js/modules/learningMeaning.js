@@ -96,16 +96,14 @@ function addLearningMeaningEditDialogListeners(dialog, lesson, index) {
     });
   }
   
-  // Sửa lại hàm deleteLearningMeaningLesson
+  // Sửa lại hàm deleteLearningMeaningLesson - bỏ confirm
 function deleteLearningMeaningLesson(index, lessons) {
-    if (confirm('Are you sure you want to delete this item?')) {
-        // Xóa chính xác 1 dòng tại index được chọn
-        learningMeaningLessons.splice(index, 1);
-        
-        // Cập nhật lại hiển thị
-        displayLearningMeaningResults(learningMeaningLessons);
-    }
-  }
+    // Xóa chính xác 1 dòng tại index được chọn
+    learningMeaningLessons.splice(index, 1);
+    
+    // Cập nhật lại hiển thị
+    displayLearningMeaningResults(learningMeaningLessons);
+}
   
   // Hàm hiển thị kết quả học nghĩa
 function displayLearningMeaningResults(lessons) {
@@ -152,17 +150,27 @@ async function copyLearningMeaningTable(table) {
         window.getSelection().addRange(range);
         document.execCommand('copy');
         
+        // Alert copy success first
+        alert('Table copied to clipboard!');
+
         // Clean up
         window.getSelection().removeAllRanges();
         document.body.removeChild(tempTable);
 
-        console.log('Tracking data:', {
+        // Prepare tracking data once
+        const trackingData = {
             lesson_id: currentLessonId,
             lessons: storagedLessons || [],
-            rawApiResponse,
-            learningMeaningLessons
-        });
+            raw: rawApiResponse,
+            final: learningMeaningLessons
+        };
 
+        // Single console.log with grouped data
+        console.group('Learning Meaning Tracking');
+        console.log('Tracking Data:', trackingData);
+        console.log('Status: Ready to submit to Larkbase');
+        console.groupEnd();
+    
         // Track after successful copy
         await TableLearningMeaningTracking.trackMeaningGeneration(
             {
@@ -173,7 +181,8 @@ async function copyLearningMeaningTable(table) {
             learningMeaningLessons
         );
 
-        alert('Table copied to clipboard!');
+        console.log('Data submitted to Larkbase:', trackingData);
+
     } catch (error) {
         console.error('Error copying table:', error);
         alert('Failed to copy table: ' + error.message);

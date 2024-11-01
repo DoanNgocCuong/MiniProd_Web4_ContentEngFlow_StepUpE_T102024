@@ -179,10 +179,8 @@ function openLearningFlexibleEditDialog(lesson, index) {
 }
 
 function deleteLearningFlexibleLesson(index) {
-    if (confirm('Are you sure you want to delete this item?')) {
-        learningFlexibleLessons.splice(index, 1);
-        displayLearningFlexibleResults(learningFlexibleLessons);
-    }
+    learningFlexibleLessons.splice(index, 1);
+    displayLearningFlexibleResults(learningFlexibleLessons);
 }
 
 function copyLearningFlexibleTable(table) {

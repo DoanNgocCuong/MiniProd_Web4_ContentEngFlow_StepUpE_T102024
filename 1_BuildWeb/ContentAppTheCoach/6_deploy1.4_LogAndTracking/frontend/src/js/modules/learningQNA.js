@@ -163,10 +163,9 @@ function openLearningQNAEditDialog(lesson, index) {
 }
 
 function deleteLearningQNALesson(index) {
-    if (confirm('Are you sure you want to delete this item?')) {
-        learningQNALessons.splice(index, 1);
-        displayLearningQNAResults(learningQNALessons);
-    }
+    // Xóa trực tiếp không cần confirm
+    learningQNALessons.splice(index, 1);
+    displayLearningQNAResults(learningQNALessons);
 }
 
 function copyLearningQNATable(table) {
