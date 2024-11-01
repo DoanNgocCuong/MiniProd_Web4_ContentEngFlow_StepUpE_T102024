@@ -1,20 +1,31 @@
 import { config } from '../config.js';
 import { showLoadingDialog, hideLoadingDialog } from '../utils.js';
+import TableLearningMeaningTracking from '../trackings/tableLearningMeaningTracking.js';
+import { storagedLessons, generateUniqueId } from '../generateQuestion.js';
 
 const API_URL = config.production.apiUrl;
 let learningMeaningLessons = [];
+let rawApiResponse;
+let currentLessonId = null;
 
 async function generateLearningMeaning(lessons) {
     try {
+        currentLessonId = storagedLessons?.[0]?.lesson_id || generateUniqueId();
+
         showLoadingDialog();
         const response = await fetch(`${API_URL}/generate-learning-meaning`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ lessons })
         });
+        
         const data = await response.json();
-        learningMeaningLessons = data;
-        displayLearningMeaningResults(data);
+        rawApiResponse = data;
+        learningMeaningLessons = data.map(item => ({
+            ...item,
+            lesson_id: currentLessonId
+        }));
+        displayLearningMeaningResults(learningMeaningLessons);
     } catch (error) {
         console.error('Error:', error);
         alert(error.message);
@@ -22,10 +33,6 @@ async function generateLearningMeaning(lessons) {
         hideLoadingDialog();
     }
 }
-
-
-// ... (copy các hàm liên quan từ script.js)
-
 
 function updateLearningMeaningLesson(lesson) {
     lesson.sentence = document.getElementById('edit-sentence').value;
@@ -127,42 +134,51 @@ function displayLearningMeaningResults(lessons) {
     }
   }
   
-function copyLearningMeaningTable(table) {
-    const tempTable = document.createElement('table');
-    
-    // Skip header and only copy body
-    const tbody = document.createElement('tbody');
-    const rows = table.querySelectorAll('tbody tr');
-    
-    rows.forEach(row => {
-        const newRow = document.createElement('tr');
-        for (let i = 0; i < row.cells.length - 2; i++) {
-            const cell = row.cells[i].cloneNode(true);
-            newRow.appendChild(cell);
+async function copyLearningMeaningTable(table) {
+    try {
+        if (!currentLessonId) {
+            throw new Error('No lesson ID found. Please generate questions first.');
         }
-        tbody.appendChild(newRow);
-    });
-    
-    tempTable.appendChild(tbody);
-    
-    // Add temporary table to document (hidden)
-    tempTable.style.position = 'absolute';
-    tempTable.style.left = '-9999px';
-    document.body.appendChild(tempTable);
-    
-    // Copy content
-    const range = document.createRange();
-    range.selectNode(tempTable);
-    window.getSelection().removeAllRanges();
-    window.getSelection().addRange(range);
-    document.execCommand('copy');
-    window.getSelection().removeAllRanges();
-    
-    // Remove temporary table
-    document.body.removeChild(tempTable);
-    
-    alert('Table copied to clipboard!');
-  }
+
+        // Copy table logic
+        const tempTable = document.createElement('table');
+        tempTable.innerHTML = table.innerHTML;
+        document.body.appendChild(tempTable);
+        
+        // Select and copy
+        const range = document.createRange();
+        range.selectNode(tempTable);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        document.execCommand('copy');
+        
+        // Clean up
+        window.getSelection().removeAllRanges();
+        document.body.removeChild(tempTable);
+
+        console.log('Tracking data:', {
+            lesson_id: currentLessonId,
+            lessons: storagedLessons || [],
+            rawApiResponse,
+            learningMeaningLessons
+        });
+
+        // Track after successful copy
+        await TableLearningMeaningTracking.trackMeaningGeneration(
+            {
+                lesson_id: currentLessonId,
+                lessons: storagedLessons || []
+            },
+            rawApiResponse,
+            learningMeaningLessons
+        );
+
+        alert('Table copied to clipboard!');
+    } catch (error) {
+        console.error('Error copying table:', error);
+        alert('Failed to copy table: ' + error.message);
+    }
+}
   
   // Hàm tạo bảng hiển thị kết quả học nghĩa
 function createLearningMeaningTable(lessons) {
@@ -280,5 +296,4 @@ function createLearningMeaningTableHeader() {
     return thead;
   }
   
-export { learningMeaningLessons }; // export biến global ra ngoài để sử dụng ở ngoài
-export { generateLearningMeaning }; // export hàm ra ngoài để sử dụng ở ngoài
+export { learningMeaningLessons, generateLearningMeaning }; // export biến global ra ngoài để sử dụng ở ngoài

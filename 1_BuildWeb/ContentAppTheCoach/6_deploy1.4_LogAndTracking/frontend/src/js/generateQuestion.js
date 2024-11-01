@@ -402,5 +402,6 @@ export {
     handleGenerateClick,
     storagedLessons,
     generateQuestions,
-    processApiResponse
+    processApiResponse,
+    generateUniqueId
 };
