@@ -1,17 +1,11 @@
 import { config } from '../config.js';
 import { showLoadingDialog, hideLoadingDialog } from '../utils.js';
-import TableLearningQNATracking from '../trackings/tableLearningQNATracking.js';
-import { storagedLessons, generateUniqueId } from '../generateQuestion.js';
 
 const API_URL = config.production.apiUrl;
 let learningQNALessons = [];
-let rawApiResponse;
-let currentLessonId = null;
 
 async function generateLearningQNA(lessons) {
     try {
-        currentLessonId = storagedLessons?.[0]?.lesson_id || generateUniqueId();
-
         showLoadingDialog();
         const response = await fetch(`${API_URL}/generate-learning-qna`, {
             method: 'POST',
@@ -24,12 +18,8 @@ async function generateLearningQNA(lessons) {
         }
         
         const data = await response.json();
-        rawApiResponse = data;
-        learningQNALessons = data.map(item => ({
-            ...item,
-            lesson_id: currentLessonId
-        }));
-        displayLearningQNAResults(learningQNALessons);
+        learningQNALessons = data;
+        displayLearningQNAResults(data);
     } catch (error) {
         console.error('Error:', error);
         alert(error.message);
@@ -173,79 +163,44 @@ function openLearningQNAEditDialog(lesson, index) {
 }
 
 function deleteLearningQNALesson(index) {
-    // Xóa trực tiếp không cần confirm
-    learningQNALessons.splice(index, 1);
-    displayLearningQNAResults(learningQNALessons);
+    if (confirm('Are you sure you want to delete this item?')) {
+        learningQNALessons.splice(index, 1);
+        displayLearningQNAResults(learningQNALessons);
+    }
 }
 
-async function copyLearningQNATable(table) {
-    try {
-        if (!currentLessonId) {
-            throw new Error('No lesson ID found. Please generate questions first.');
+function copyLearningQNATable(table) {
+    const tempTable = document.createElement('table');
+    
+    // Skip header and only copy body
+    const tbody = document.createElement('tbody');
+    const rows = table.querySelectorAll('tbody tr');
+    
+    rows.forEach(row => {
+        const newRow = document.createElement('tr');
+        for (let i = 0; i < row.cells.length - 2; i++) {
+            const cell = row.cells[i].cloneNode(true);
+            newRow.appendChild(cell);
         }
-
-        // Existing copy logic
-        const tempTable = document.createElement('table');
-        const tbody = document.createElement('tbody');
-        const rows = table.querySelectorAll('tbody tr');
-        
-        rows.forEach(row => {
-            const newRow = document.createElement('tr');
-            for (let i = 0; i < row.cells.length - 2; i++) {
-                const cell = row.cells[i].cloneNode(true);
-                newRow.appendChild(cell);
-            }
-            tbody.appendChild(newRow);
-        });
-        
-        tempTable.appendChild(tbody);
-        tempTable.style.position = 'absolute';
-        tempTable.style.left = '-9999px';
-        document.body.appendChild(tempTable);
-        
-        const range = document.createRange();
-        range.selectNode(tempTable);
-        window.getSelection().removeAllRanges();
-        window.getSelection().addRange(range);
-        document.execCommand('copy');
-        
-        // Alert copy success first
-        alert('Table copied to clipboard!');
-
-        // Clean up
-        window.getSelection().removeAllRanges();
-        document.body.removeChild(tempTable);
-
-        // Prepare tracking data
-        const trackingData = {
-            lesson_id: currentLessonId,
-            lessons: storagedLessons || [],
-            raw: rawApiResponse,
-            final: learningQNALessons
-        };
-
-        // Log tracking data
-        console.group('Learning QNA Tracking');
-        console.log('Tracking Data:', trackingData);
-        console.log('Status: Ready to submit to Larkbase');
-        console.groupEnd();
-
-        // Submit tracking data
-        await TableLearningQNATracking.trackQNAGeneration(
-            {
-                lesson_id: currentLessonId,
-                lessons: storagedLessons || []
-            },
-            rawApiResponse,
-            learningQNALessons
-        );
-
-        console.log('Data submitted to Larkbase:', trackingData);
-
-    } catch (error) {
-        console.error('Error copying table:', error);
-        alert('Failed to copy table: ' + error.message);
-    }
+        tbody.appendChild(newRow);
+    });
+    
+    tempTable.appendChild(tbody);
+    
+    tempTable.style.position = 'absolute';
+    tempTable.style.left = '-9999px';
+    document.body.appendChild(tempTable);
+    
+    const range = document.createRange();
+    range.selectNode(tempTable);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+    
+    document.body.removeChild(tempTable);
+    
+    alert('Table copied to clipboard!');
 }
 
 export { learningQNALessons, generateLearningQNA };

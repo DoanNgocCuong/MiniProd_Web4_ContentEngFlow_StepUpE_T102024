@@ -1,17 +1,14 @@
 import { config } from '../config.js';
 import { showLoadingDialog, hideLoadingDialog } from '../utils.js';
-import TableLearningCardTracking from '../trackings/tableLearningCardTracking.js';
-import { storagedLessons, generateUniqueId } from '../generateQuestion.js';
 
 const API_URL = config.production.apiUrl;
-let learningCardLessons = [];
-let rawApiResponse;
-let currentLessonId = null;
 
+// khai báo biến global, sau đó ở cuối sẽ export ra hàm để sử dụng ở ngoài
+let learningCardLessons = [];
+
+// thêm export để sử dụng ở ngoài
 async function generateLearningCard(lessons) {
     try {
-        currentLessonId = storagedLessons?.[0]?.lesson_id || generateUniqueId();
-
         showLoadingDialog();
         const response = await fetch(`${API_URL}/generate-learning-card`, {
             method: 'POST',
@@ -24,12 +21,8 @@ async function generateLearningCard(lessons) {
         }
         
         const data = await response.json();
-        rawApiResponse = data;
-        learningCardLessons = data.map(item => ({
-            ...item,
-            lesson_id: currentLessonId
-        }));
-        displayLearningCardResults(learningCardLessons);
+        learningCardLessons = data;
+        displayLearningCardResults(data);
     } catch (error) {
         console.error('Error:', error);
         alert(error.message);
@@ -37,6 +30,8 @@ async function generateLearningCard(lessons) {
         hideLoadingDialog();
     }
 }
+
+// ... (copy các hàm liên quan từ script.js)
 
 function displayLearningCardResults(lessons) {
     try {
@@ -179,74 +174,42 @@ function deleteLearningCardLesson(index) {
     }
 }
 
-async function copyLearningCardTable(table) {
-    try {
-        if (!currentLessonId) {
-            throw new Error('No lesson ID found. Please generate questions first.');
+function copyLearningCardTable(table) {
+    const tempTable = document.createElement('table');
+    
+    // Skip header and only copy body
+    const tbody = document.createElement('tbody');
+    const rows = table.querySelectorAll('tbody tr');
+    
+    rows.forEach(row => {
+        const newRow = document.createElement('tr');
+        // Copy only the first 3 columns (excluding Action columns)
+        for (let i = 0; i < row.cells.length - 2; i++) {
+            const cell = row.cells[i].cloneNode(true);
+            newRow.appendChild(cell);
         }
-
-        // Existing copy logic
-        const tempTable = document.createElement('table');
-        const tbody = document.createElement('tbody');
-        const rows = table.querySelectorAll('tbody tr');
-        
-        rows.forEach(row => {
-            const newRow = document.createElement('tr');
-            for (let i = 0; i < row.cells.length - 2; i++) {
-                const cell = row.cells[i].cloneNode(true);
-                newRow.appendChild(cell);
-            }
-            tbody.appendChild(newRow);
-        });
-        
-        tempTable.appendChild(tbody);
-        tempTable.style.position = 'absolute';
-        tempTable.style.left = '-9999px';
-        document.body.appendChild(tempTable);
-        
-        const range = document.createRange();
-        range.selectNode(tempTable);
-        window.getSelection().removeAllRanges();
-        window.getSelection().addRange(range);
-        document.execCommand('copy');
-        
-        // Alert copy success first
-        alert('Table copied to clipboard!');
-
-        // Clean up
-        window.getSelection().removeAllRanges();
-        document.body.removeChild(tempTable);
-
-        // Prepare tracking data
-        const trackingData = {
-            lesson_id: currentLessonId,
-            lessons: storagedLessons || [],
-            raw: rawApiResponse,
-            final: learningCardLessons
-        };
-
-        // Log tracking data
-        console.group('Learning Card Tracking');
-        console.log('Tracking Data:', trackingData);
-        console.log('Status: Ready to submit to Larkbase');
-        console.groupEnd();
-
-        // Submit tracking data
-        await TableLearningCardTracking.trackCardGeneration(
-            {
-                lesson_id: currentLessonId,
-                lessons: storagedLessons || []
-            },
-            rawApiResponse,
-            learningCardLessons
-        );
-
-        console.log('Data submitted to Larkbase:', trackingData);
-
-    } catch (error) {
-        console.error('Error copying table:', error);
-        alert('Failed to copy table: ' + error.message);
-    }
+        tbody.appendChild(newRow);
+    });
+    
+    tempTable.appendChild(tbody);
+    
+    // Add temporary table to document (hidden)
+    tempTable.style.position = 'absolute';
+    tempTable.style.left = '-9999px';
+    document.body.appendChild(tempTable);
+    
+    // Copy content
+    const range = document.createRange();
+    range.selectNode(tempTable);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+    
+    // Remove temporary table
+    document.body.removeChild(tempTable);
+    
+    alert('Table copied to clipboard!');
 }
 
 // Add this function for copyCheckedLessons
@@ -264,4 +227,5 @@ function copyCheckedLessons() {
  * ---------------------------------------------------------------------------------------------------------
  */
 // export biến global ra ngoài để sử dụng ở ngoài
-export { learningCardLessons, generateLearningCard };
+export { learningCardLessons }; 
+export { generateLearningCard }; // export hàm ra ngoài để sử dụng ở ngoài

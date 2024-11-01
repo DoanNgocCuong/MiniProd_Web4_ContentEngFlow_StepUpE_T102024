@@ -6,8 +6,8 @@ import TableDraftTracking from './trackings/tableDraftTracking.js';
 
 const API_URL = config.production.apiUrl;
 let storagedLessons;
-let inputDataTemp;
-let rawResponseTemp;
+let inputDataTemp;  
+let rawResponseTemp; 
 
 /**
  * ---------------------------------------------------------------------------------------------------------

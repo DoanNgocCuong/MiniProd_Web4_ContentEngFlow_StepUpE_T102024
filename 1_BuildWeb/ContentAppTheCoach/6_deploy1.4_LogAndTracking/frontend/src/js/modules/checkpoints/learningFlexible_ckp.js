@@ -1,27 +1,21 @@
 import { config } from '../config.js';
 import { showLoadingDialog, hideLoadingDialog } from '../utils.js';
-import TableLearningFlexibleTracking from '../trackings/tableLearningFlexibleTracking.js';
-import { storagedLessons, generateUniqueId } from '../generateQuestion.js';
 
 const API_URL = config.production.apiUrl;
 let learningFlexibleLessons = [];
-let rawApiResponse;
-let currentLessonId = null;
 
 async function generateLearningFlexible(lessons) {
+    const flexibleLessons = lessons.map(lesson => ({
+        question: lesson.question || "Which company are you working for?",
+        structure: lesson.structure || "I'm the ______ from ABC Company.",
+        phrases: [
+            lesson["main phrase"],
+            lesson["optional phrase 1"],
+            lesson["optional phrase 2"]
+        ].filter(Boolean)
+    }));
+
     try {
-        currentLessonId = storagedLessons?.[0]?.lesson_id || generateUniqueId();
-
-        const flexibleLessons = lessons.map(lesson => ({
-            question: lesson.question || "Which company are you working for?",
-            structure: lesson.structure || "I'm the ______ from ABC Company.",
-            phrases: [
-                lesson["main phrase"],
-                lesson["optional phrase 1"],
-                lesson["optional phrase 2"]
-            ].filter(Boolean)
-        }));
-
         showLoadingDialog();
         const response = await fetch(`${API_URL}/generate-learning-flexible`, {
             method: 'POST',
@@ -34,12 +28,8 @@ async function generateLearningFlexible(lessons) {
         }
         
         const data = await response.json();
-        rawApiResponse = data;
-        learningFlexibleLessons = data.map(item => ({
-            ...item,
-            lesson_id: currentLessonId
-        }));
-        displayLearningFlexibleResults(learningFlexibleLessons);
+        learningFlexibleLessons = data;
+        displayLearningFlexibleResults(data);
     } catch (error) {
         console.error('Error generating flexible cards:', error);
         alert('Error generating flexible cards: ' + error.message);
@@ -189,78 +179,44 @@ function openLearningFlexibleEditDialog(lesson, index) {
 }
 
 function deleteLearningFlexibleLesson(index) {
-    learningFlexibleLessons.splice(index, 1);
-    displayLearningFlexibleResults(learningFlexibleLessons);
+    if (confirm('Are you sure you want to delete this item?')) {
+        learningFlexibleLessons.splice(index, 1);
+        displayLearningFlexibleResults(learningFlexibleLessons);
+    }
 }
 
-async function copyLearningFlexibleTable(table) {
-    try {
-        if (!currentLessonId) {
-            throw new Error('No lesson ID found. Please generate questions first.');
+function copyLearningFlexibleTable(table) {
+    const tempTable = document.createElement('table');
+    
+    // Skip header and only copy body
+    const tbody = document.createElement('tbody');
+    const rows = table.querySelectorAll('tbody tr');
+    
+    rows.forEach(row => {
+        const newRow = document.createElement('tr');
+        for (let i = 0; i < row.cells.length - 2; i++) {
+            const cell = row.cells[i].cloneNode(true);
+            newRow.appendChild(cell);
         }
-
-        // Existing copy logic
-        const tempTable = document.createElement('table');
-        const tbody = document.createElement('tbody');
-        const rows = table.querySelectorAll('tbody tr');
-        
-        rows.forEach(row => {
-            const newRow = document.createElement('tr');
-            for (let i = 0; i < row.cells.length - 2; i++) {
-                const cell = row.cells[i].cloneNode(true);
-                newRow.appendChild(cell);
-            }
-            tbody.appendChild(newRow);
-        });
-        
-        tempTable.appendChild(tbody);
-        tempTable.style.position = 'absolute';
-        tempTable.style.left = '-9999px';
-        document.body.appendChild(tempTable);
-        
-        const range = document.createRange();
-        range.selectNode(tempTable);
-        window.getSelection().removeAllRanges();
-        window.getSelection().addRange(range);
-        document.execCommand('copy');
-        
-        // Alert copy success first
-        alert('Table copied to clipboard!');
-
-        // Clean up
-        window.getSelection().removeAllRanges();
-        document.body.removeChild(tempTable);
-
-        // Prepare tracking data
-        const trackingData = {
-            lesson_id: currentLessonId,
-            lessons: storagedLessons || [],
-            raw: rawApiResponse,
-            final: learningFlexibleLessons
-        };
-
-        // Log tracking data
-        console.group('Learning Flexible Tracking');
-        console.log('Tracking Data:', trackingData);
-        console.log('Status: Ready to submit to Larkbase');
-        console.groupEnd();
-
-        // Submit tracking data
-        await TableLearningFlexibleTracking.trackFlexibleGeneration(
-            {
-                lesson_id: currentLessonId,
-                lessons: storagedLessons || []
-            },
-            rawApiResponse,
-            learningFlexibleLessons
-        );
-
-        console.log('Data submitted to Larkbase:', trackingData);
-
-    } catch (error) {
-        console.error('Error copying table:', error);
-        alert('Failed to copy table: ' + error.message);
-    }
+        tbody.appendChild(newRow);
+    });
+    
+    tempTable.appendChild(tbody);
+    
+    tempTable.style.position = 'absolute';
+    tempTable.style.left = '-9999px';
+    document.body.appendChild(tempTable);
+    
+    const range = document.createRange();
+    range.selectNode(tempTable);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+    
+    document.body.removeChild(tempTable);
+    
+    alert('Table copied to clipboard!');
 }
 
 export { learningFlexibleLessons, generateLearningFlexible };
