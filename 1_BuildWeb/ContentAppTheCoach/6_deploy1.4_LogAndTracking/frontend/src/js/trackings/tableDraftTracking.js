@@ -1,6 +1,6 @@
 import { config } from '../config.js';
 
-const API_URL = config.development.apiUrl;
+const API_URL = config.production.apiUrl;
 
 class TableDraftTracking {
     static generateLessonId(topic) {

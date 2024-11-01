@@ -1,6 +1,6 @@
 import { config } from '../config.js';
 
-const API_URL = config.development.apiUrl;
+const API_URL = config.production.apiUrl;
 let meaningCounter = 1;
 
 class TableLearningMeaningTracking {

@@ -1,5 +1,8 @@
 // frontend/src/js/feedback.js
 
+import { config } from './config.js';
+const API_URL = config.production.apiUrl;
+
 /**
  * Send feedback to the API
  * @param {string} feedback - The feedback text to send
@@ -7,7 +10,7 @@
  */
 async function sendFeedbackToAPI(feedback) {
     try {
-        const response = await fetch('http://localhost:3000/api/submit-feedback', {
+        const response = await fetch(`${API_URL}/submit-feedback`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
