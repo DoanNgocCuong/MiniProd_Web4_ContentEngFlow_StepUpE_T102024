@@ -10,24 +10,27 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./backend:/app:cached
-      - /app/node_modules
+      - ./backend:/app:delegated
+      - node_modules_backend:/app/node_modules
     environment:
       - NODE_ENV=production
     restart: unless-stopped
     networks:
       - app-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
-      interval: 30s
-      timeout: 10s
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/health || exit 1"]
+      interval: 15s
+      timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 10s
     deploy:
       resources:
         limits:
-          cpus: '0.50'
+          cpus: '0.75'
           memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
 
   frontend:
     build:
@@ -38,8 +41,8 @@ services:
     ports:
       - "25007:25007"
     volumes:
-      - ./frontend:/app:cached
-      - /app/node_modules
+      - ./frontend:/app:delegated
+      - node_modules_frontend:/app/node_modules
     environment:
       - NODE_ENV=production
     depends_on:
@@ -49,16 +52,19 @@ services:
     networks:
       - app-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:25007"]
-      interval: 30s
-      timeout: 10s
+      test: ["CMD-SHELL", "curl -f http://localhost:25007 || exit 1"]
+      interval: 15s
+      timeout: 5s
       retries: 3
-      start_period: 30s
+      start_period: 10s
     deploy:
       resources:
         limits:
-          cpus: '0.50'
+          cpus: '0.75'
           memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
 
 volumes:
   node_modules_backend:
