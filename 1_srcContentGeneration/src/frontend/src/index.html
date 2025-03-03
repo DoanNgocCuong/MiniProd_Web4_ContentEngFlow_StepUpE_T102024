@@ -102,8 +102,14 @@
 
         <div id="loading-dialog" class="loading-modal">
             <div class="loading-content">
-                <div class="loading-spinner"></div>
-                <p>Processing your request...</p>
+                <h3>Đang xử lý yêu cầu...</h3>
+                
+                <!-- Thêm thanh tiến độ -->
+                <div class="progress-container">
+                    <div id="progress-bar" class="progress-bar"></div>
+                </div>
+                
+                <p id="progress-text">0%</p>
             </div>
         </div>
 

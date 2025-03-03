@@ -1,5 +1,5 @@
 import { config } from '../config.js';
-import { showLoadingDialog, hideLoadingDialog } from '../utils.js';
+import { showLoadingDialog, hideLoadingDialog, updateLoadingProgress } from '../utils.js';
 import TableLearningMeaningTracking from '../trackings/tableLearningMeaningTracking.js';
 import { storagedLessons, generateUniqueId } from '../generateQuestion.js';
 
@@ -21,19 +21,31 @@ async function generateLearningMeaning(lessons) {
         currentLessonId = storagedLessons?.[0]?.lesson_id || generateUniqueId();
 
         showLoadingDialog();
+        
+        // Giả lập các bước xử lý
+        updateLoadingProgress(10); // Bắt đầu gửi request
+        
         const response = await fetch(`${API_URL}/generate-learning-meaning`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ lessons: updatedLessons })
         });
         
+        updateLoadingProgress(50); // Đã nhận response
+        
         const data = await response.json();
+        updateLoadingProgress(75); // Đã parse JSON
+        
         rawApiResponse = data;
         learningMeaningLessons = data.map(item => ({
             ...item,
             lesson_id: currentLessonId
         }));
+        
+        updateLoadingProgress(90); // Gần xong
+        
         displayLearningMeaningResults(learningMeaningLessons);
+        updateLoadingProgress(100); // Hoàn thành
     } catch (error) {
         console.error('Error:', error);
         alert(error.message);
