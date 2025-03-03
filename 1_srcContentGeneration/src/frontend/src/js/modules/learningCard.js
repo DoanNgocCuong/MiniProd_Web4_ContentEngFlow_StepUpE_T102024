@@ -1,7 +1,7 @@
 import { config } from '../config.js';
 import { showLoadingDialog, hideLoadingDialog } from '../utils.js';
 import TableLearningCardTracking from '../trackings/tableLearningCardTracking.js';
-import { storagedLessons, generateUniqueId } from '../generateQuestion.js';
+import { generateUniqueId } from '../generateQuestion.js';
 
 const API_URL = config.production.apiUrl;
 let learningCardLessons = [];
@@ -10,21 +10,15 @@ let currentLessonId = null;
 
 async function generateLearningCard(lessons) {
     try {
-        const updatedLessons = storagedLessons.map(lesson => ({
-            ...lesson,
-            "structure-vi": lesson["structure-vi"],
-            "main phrase-vi": lesson["main phrase-vi"],
-            "optional phrase 1-vi": lesson["optional phrase 1-vi"],
-            "optional phrase 2-vi": lesson["optional phrase 2-vi"]
-        }));
+        console.log('Generating learning cards with edited lessons:', lessons);
 
-        currentLessonId = storagedLessons?.[0]?.lesson_id || generateUniqueId();
+        currentLessonId = lessons?.[0]?.lesson_id || generateUniqueId();
 
         showLoadingDialog();
         const response = await fetch(`${API_URL}/generate-learning-card`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ lessons: updatedLessons })
+            body: JSON.stringify({ lessons: lessons })
         });
         
         if (!response.ok) {
@@ -228,7 +222,7 @@ async function copyLearningCardTable(table) {
         // Prepare tracking data
         const trackingData = {
             lesson_id: currentLessonId,
-            lessons: storagedLessons || [],
+            lessons: learningCardLessons,
             raw: rawApiResponse,
             final: learningCardLessons
         };
@@ -243,7 +237,7 @@ async function copyLearningCardTable(table) {
         await TableLearningCardTracking.trackCardGeneration(
             {
                 lesson_id: currentLessonId,
-                lessons: storagedLessons || []
+                lessons: learningCardLessons
             },
             rawApiResponse,
             learningCardLessons

@@ -58,18 +58,30 @@ exports.generateLearningCard = async (req, res) => {
             
             const lessonPrompt = JSON.stringify({
                 structure_en: lesson.structure,
+                structure_vi: lesson["structure-vi"],
                 main_phrase: lesson["main phrase"],
+                main_phrase_vi: lesson["main phrase-vi"],
                 optional_phrase_1: lesson["optional phrase 1"],
-                optional_phrase_2: lesson["optional phrase 2"]
+                optional_phrase_1_vi: lesson["optional phrase 1-vi"],
+                optional_phrase_2: lesson["optional phrase 2"],
+                optional_phrase_2_vi: lesson["optional phrase 2-vi"]
             }, null, 2);
             
+            // Update the LEARNING_CARD_PROMPT to use provided Vietnamese translations
+            const customPrompt = `${LEARNING_CARD_PROMPT}\n
+Additional context: Use these Vietnamese translations if provided:
+- Structure VI: ${lesson["structure-vi"]}
+- Main Phrase VI: ${lesson["main phrase-vi"]}
+- Optional Phrase 1 VI: ${lesson["optional phrase 1-vi"]}
+- Optional Phrase 2 VI: ${lesson["optional phrase 2-vi"]}`;
+
             // Log prompt trước khi gửi tới OpenAI
             console.log('Sending prompt to OpenAI:', lessonPrompt);
             
             const response = await openai.chat.completions.create({
                 model: 'gpt-4o-mini',
                 messages: [
-                    { role: 'system', content: LEARNING_CARD_PROMPT },
+                    { role: 'system', content: customPrompt },
                     { role: 'user', content: lessonPrompt }
                 ],
                 max_tokens: 3000,
