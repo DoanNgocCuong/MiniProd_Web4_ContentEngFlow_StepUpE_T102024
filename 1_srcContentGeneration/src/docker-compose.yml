@@ -14,15 +14,16 @@ services:
       - node_modules_backend:/app/node_modules
     environment:
       - NODE_ENV=production
+      - CORS_ORIGIN=http://103.253.20.13:25007
     restart: unless-stopped
     networks:
       - app-network
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://103.253.20.13:3000/api/health"]
-      interval: 30s
-      timeout: 30s
-      retries: 5
-      start_period: 60s
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/health', (r) => process.exit(r.statusCode > 299))"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
 
   frontend:
     build:
@@ -37,18 +38,20 @@ services:
       - node_modules_frontend:/app/node_modules
     environment:
       - NODE_ENV=production
-      - DOMAIN=103.253.20.13
+      - BACKEND_URL=http://backend:3000
+      - API_URL=http://backend:3000
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     restart: unless-stopped
     networks:
       - app-network
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://103.253.20.13:25007"]
-      interval: 30s
-      timeout: 30s
-      retries: 5
-      start_period: 60s
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:25007', (r) => process.exit(r.statusCode > 299))"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
 
 volumes:
   node_modules_backend:

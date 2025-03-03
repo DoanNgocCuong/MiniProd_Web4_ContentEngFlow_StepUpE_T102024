@@ -19,10 +19,8 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy only necessary files from builder
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/src ./src
-COPY --from=builder /app/package*.json ./
+# Copy all files from builder
+COPY --from=builder /app/. ./
 
 # Set Node environment
 ENV NODE_ENV=production
@@ -31,4 +29,4 @@ ENV NODE_ENV=production
 EXPOSE 3000
 
 # Use node directly instead of npm for better performance
-CMD ["node", "src/index.js"]
+CMD ["node", "src/server.js"]
