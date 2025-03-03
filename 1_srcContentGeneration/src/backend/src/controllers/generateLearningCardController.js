@@ -1,5 +1,7 @@
 const OpenAI = require('openai');
 const { BATCH_SIZE, MAX_TOKENS } = require('../config/batchConfig');
+const { MAX_CONCURRENT_REQUESTS, ENABLE_PARALLEL_LOGGING, formatTimestamp } = require('../config/maxWorkers');
+const { processInParallelBatches } = require('../utils/openaiProcessor');
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
@@ -55,6 +57,63 @@ Note:
 - Vietnamese word order: Subject + Adjective phrase
 - English word order: Subject + is + (so) + Adjective`;
 
+/**
+ * Process a single lesson with OpenAI
+ * @param {Object} lesson - The lesson data to process
+ * @returns {Promise<Array>} - Promise resolving to lesson results
+ */
+async function processLesson(lesson) {
+    // Validate lesson structure
+    if (!lesson.structure || !lesson["main phrase"]) {
+        console.error('Invalid lesson structure:', lesson);
+        throw new Error('Invalid lesson structure');
+    }
+
+    const lessonPrompt = JSON.stringify({
+        structure_en: lesson.structure,
+        structure_vi: lesson["structure-vi"] || '',
+        main_phrase: lesson["main phrase"],
+        main_phrase_vi: lesson["main phrase-vi"] || '',
+        optional_phrase_1: lesson["optional phrase 1"] || '',
+        optional_phrase_1_vi: lesson["optional phrase 1-vi"] || '',
+        optional_phrase_2: lesson["optional phrase 2"] || '',
+        optional_phrase_2_vi: lesson["optional phrase 2-vi"] || ''
+    }, null, 2);
+
+    if (ENABLE_PARALLEL_LOGGING) {
+        console.log(`${formatTimestamp()} Sending request to OpenAI for card lesson`);
+    }
+    
+    const response = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+            { role: 'system', content: LEARNING_CARD_PROMPT },
+            { role: 'user', content: lessonPrompt }
+        ],
+        max_tokens: MAX_TOKENS,
+        temperature: 0
+    });
+
+    if (ENABLE_PARALLEL_LOGGING) {
+        console.log(`${formatTimestamp()} Received response from OpenAI for card lesson`);
+    }
+
+    if (!response.choices || !response.choices[0]) {
+        throw new Error('Invalid response from OpenAI');
+    }
+
+    const content = response.choices[0].message.content;
+    const cleanedContent = content.trim().replace(/```json|```/g, '');
+    const lessonResults = JSON.parse(cleanedContent);
+
+    // Validate results
+    if (!Array.isArray(lessonResults)) {
+        throw new Error('Response must be an array');
+    }
+
+    return lessonResults;
+}
+
 exports.generateLearningCard = async (req, res) => {
     try {
         // Debug input
@@ -68,69 +127,16 @@ exports.generateLearningCard = async (req, res) => {
             });
         }
 
-        const { lessons } = req.body;
-        const allResults = [];
-        
-        // Process lessons in batches
-        for (let i = 0; i < lessons.length; i += BATCH_SIZE) {
-            const batchLessons = lessons.slice(i, i + BATCH_SIZE);
-            
-            for (const lesson of batchLessons) {
-                // Validate lesson structure
-                if (!lesson.structure || !lesson["main phrase"]) {
-                    console.error('Invalid lesson structure:', lesson);
-                    continue; // Skip invalid lessons
-                }
-
-                try {
-                    const lessonPrompt = JSON.stringify({
-                        structure_en: lesson.structure,
-                        structure_vi: lesson["structure-vi"] || '',
-                        main_phrase: lesson["main phrase"],
-                        main_phrase_vi: lesson["main phrase-vi"] || '',
-                        optional_phrase_1: lesson["optional phrase 1"] || '',
-                        optional_phrase_1_vi: lesson["optional phrase 1-vi"] || '',
-                        optional_phrase_2: lesson["optional phrase 2"] || '',
-                        optional_phrase_2_vi: lesson["optional phrase 2-vi"] || ''
-                    }, null, 2);
-
-                    const response = await openai.chat.completions.create({
-                        model: 'gpt-4o-mini',
-                        messages: [
-                            { role: 'system', content: LEARNING_CARD_PROMPT },
-                            { role: 'user', content: lessonPrompt }
-                        ],
-                        max_tokens: MAX_TOKENS,  // Tăng lên 4096
-                        temperature: 0
-                    });
-
-                    if (!response.choices || !response.choices[0]) {
-                        throw new Error('Invalid response from OpenAI');
-                    }
-
-                    const content = response.choices[0].message.content;
-                    console.log('OpenAI response:', content);
-
-                    const cleanedContent = content.trim().replace(/```json|```/g, '');
-                    const lessonResults = JSON.parse(cleanedContent);
-
-                    // Validate results
-                    if (!Array.isArray(lessonResults)) {
-                        throw new Error('Response must be an array');
-                    }
-
-                    allResults.push(...lessonResults);
-
-                } catch (lessonError) {
-                    console.error('Error processing lesson:', {
-                        lesson,
-                        error: lessonError.message
-                    });
-                    // Continue with next lesson instead of failing completely
-                    continue;
-                }
+        // Process all lessons in parallel with batching
+        const allResults = await processInParallelBatches(
+            req.body.lessons,
+            processLesson,
+            { 
+                batchSize: MAX_CONCURRENT_REQUESTS,
+                itemType: 'card',
+                shouldFlatten: true
             }
-        }
+        );
 
         if (allResults.length === 0) {
             return res.status(500).json({

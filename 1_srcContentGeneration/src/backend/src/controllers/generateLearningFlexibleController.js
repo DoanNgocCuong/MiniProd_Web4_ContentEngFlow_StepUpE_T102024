@@ -1,5 +1,7 @@
 const OpenAI = require('openai');
 const { BATCH_SIZE, MAX_TOKENS } = require('../config/batchConfig');
+const { MAX_CONCURRENT_REQUESTS, ENABLE_PARALLEL_LOGGING, formatTimestamp } = require('../config/maxWorkers');
+const { processInParallelBatches } = require('../utils/openaiProcessor');
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
@@ -104,41 +106,65 @@ function transformToExerciseFormat(gptResponse, phrases) {
     return result;
 }
 
+/**
+ * Process a single lesson with OpenAI
+ * @param {Object} lesson - The lesson data to process
+ * @returns {Promise<Array>} - Promise resolving to lesson results
+ */
+async function processLesson(lesson) {
+    if (ENABLE_PARALLEL_LOGGING) {
+        console.log(`${formatTimestamp()} Sending request to OpenAI for flexible lesson`);
+    }
+    
+    const response = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+            { role: 'system', content: NEW_PROMPT },
+            { role: 'user', content: JSON.stringify(lesson) }
+        ],
+        max_tokens: MAX_TOKENS,
+        temperature: 0
+    });
+    
+    if (ENABLE_PARALLEL_LOGGING) {
+        console.log(`${formatTimestamp()} Received response from OpenAI for flexible lesson`);
+    }
+    
+    const gptResponse = JSON.parse(response.choices[0].message.content);
+    const exerciseResults = transformToExerciseFormat(gptResponse, lesson.phrases);
+    
+    if (exerciseResults.length !== 8) {
+        throw new Error(`Expected 8 results, got ${exerciseResults.length}`);
+    }
+    
+    return exerciseResults;
+}
+
 exports.generateFlexibleCard = async (req, res) => {
     try {
         const { lessons } = req.body;
-        const allResults = [];
         
-        // Process in batches
-        for (let i = 0; i < lessons.length; i += BATCH_SIZE) {
-            const batchLessons = lessons.slice(i, i + BATCH_SIZE);
-            
-            for (const lesson of batchLessons) {
-                const response = await openai.chat.completions.create({
-                    model: 'gpt-4o-mini',
-                    messages: [
-                        { role: 'system', content: NEW_PROMPT },
-                        { role: 'user', content: JSON.stringify(lesson) }
-                    ],
-                    max_tokens: MAX_TOKENS,
-                    temperature: 0
-                });
-                
-                const gptResponse = JSON.parse(response.choices[0].message.content);
-                const exerciseResults = transformToExerciseFormat(gptResponse, lesson.phrases);
-                
-                if (exerciseResults.length === 8) {
-                    allResults.push(...exerciseResults);
-                } else {
-                    throw new Error(`Expected 8 results, got ${exerciseResults.length}`);
-                }
+        // Process all lessons in parallel with batching
+        const allResults = await processInParallelBatches(
+            lessons,
+            processLesson,
+            { 
+                batchSize: MAX_CONCURRENT_REQUESTS,
+                itemType: 'flexible',
+                shouldFlatten: true
             }
+        );
+        
+        if (allResults.length === 0) {
+            return res.status(500).json({
+                error: 'Failed to generate any valid results'
+            });
         }
         
         res.json(allResults);
         
     } catch (error) {
-        console.error('Error in generateFlexibleCard:', error);
+        console.error(`${formatTimestamp()} Error in generateFlexibleCard:`, error);
         res.status(500).json({ error: error.message });
     }
 };
