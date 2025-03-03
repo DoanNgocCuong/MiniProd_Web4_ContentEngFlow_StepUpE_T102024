@@ -117,20 +117,16 @@ async function generateQuestions(prompt) {
     }
 }
 
-async function processApiResponse(data) {
-    try {
-        console.log('Raw API response:', data);
+async function processApiResponse(response) {
+    // Kiểm tra cấu trúc response
+    if (!response || !Array.isArray(response.questions)) {
+        throw new Error('Invalid API response structure');
+    }
 
-        let lessons;
-        if (Array.isArray(data)) {
-            lessons = data;
-        } else if (data.choices && data.choices[0] && data.choices[0].message) {
-            const content = data.choices[0].message.content;
-            const cleanedContent = content.trim().replace(/```json|```/g, '');
-            lessons = JSON.parse(cleanedContent);
-        } else {
-            throw new Error('Invalid API response structure');
-        }
+    try {
+        console.log('Raw API response:', response);
+
+        let lessons = response.questions;
 
         // Thêm lesson_id vào tất cả lessons
         const lesson_id = TableDraftTracking.generateLessonId(inputDataTemp.topic);

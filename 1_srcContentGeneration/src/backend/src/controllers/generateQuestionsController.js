@@ -14,9 +14,9 @@ exports.generateQuestions = async (req, res) => {
             messages: [
                 { 
                     role: 'system', 
-                    content: 'You are an expert at English lesson topic-related content generating. Return an array of question objects in JSON format, not include other character such as ```JSON.' 
+                    content: 'You are an expert at generating content related to English lesson topics. Return an array of question objects in JSON format, without including any other characters such as ```JSON. '
                 },
-                { role: 'user', content: prompt}
+                { role: 'user', content: prompt + '\n Important rules for Vietnamese sentence structure: - Always place ___ at the natural position in Vietnamese sentences. - For adjective phrases: Subject + ___ (correct: "trò chơi này ___", NOT: "___ trò chơi này"). - For verb phrases: Subject + ___ + Object (correct: "tôi ___ bài tập", NOT: "___ tôi bài tập").'}
             ],
             max_tokens: 3000,
             temperature: 0

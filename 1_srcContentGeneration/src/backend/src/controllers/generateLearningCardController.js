@@ -4,160 +4,145 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 });
 
-const LEARNING_CARD_PROMPT = `You are an English exercise content expert. Given structure_en, main_phrase, and up to two optional_phrases, create a JSON array with:
+const LEARNING_CARD_PROMPT = `You are an English-Vietnamese translation expert. Create natural sentences in both languages.
 
-- sentence_en: English sentence
-- sentence_vi: Vietnamese translation 
-- ipa: IPA pronunciation
+Given:
+1. A Vietnamese sentence template with a blank (____) 
+2. Three Vietnamese phrases to fill in
+3. The context and meaning
 
-**Response Format:** Output only in JSON format with no extra characters (such as \`\`\`Json).
+Create natural translations that:
+- Maintain the meaning but use natural word order in each language
+- Don't translate word-by-word
+- Use correct grammar structure for each language
+- For exclamatory sentences, use appropriate English exclamation patterns
 
-**Example Input:**
-{
-    "structure_en": "Our team of _____ specialists is here to help",
-    "main_phrase": "healthcare",
-    "optional_phrase_1": "financial", 
-    "optional_phrase_2": "legal"
+Example:
+Input: {
+    "vi_template": "trò chơi này ____!",
+    "phrases": [
+        "thật thú vị",
+        "thật vui",
+        "thật tuyệt vời"
+    ]
 }
 
 Expected Output:
 [
     {
-        "sentence_en": "Our team of _____ specialists is here to help",
-        "sentence_vi": "Đội ngũ chuyên gia _____ của chúng tôi sẵn sàng hỗ trợ",
-        "ipa": "/ˈaʊər tiːm əv _____ ˈspɛʃəlɪsts ɪz hɪər tuː hɛlp/"
+        "sentence_vi": "trò chơi này thật thú vị!",
+        "sentence_en": "This game is so exciting!",
+        "ipa": "/ðɪs ɡeɪm ɪz soʊ ɪkˈsaɪtɪŋ/"
     },
     {
-        "sentence_en": "healthcare specialists",
-        "sentence_vi": "chuyên gia y tế",
-        "ipa": "/ˈhɛlθˌkɛr ˈspɛʃəlɪsts/"
+        "sentence_vi": "trò chơi này thật vui!",
+        "sentence_en": "This game is so fun!",
+        "ipa": "/ðɪs ɡeɪm ɪz soʊ fʌn/"
     },
     {
-        "sentence_en": "financial specialists", 
-        "sentence_vi": "chuyên gia tài chính",
-        "ipa": "/faɪˈnænʃəl ˈspɛʃəlɪsts/"
-    },
-    {
-        "sentence_en": "legal specialists",
-        "sentence_vi": "chuyên gia pháp lý", 
-        "ipa": "/ˈliːɡəl ˈspɛʃəlɪsts/"
+        "sentence_vi": "trò chơi này thật tuyệt vời!",
+        "sentence_en": "This game is amazing!",
+        "ipa": "/ðɪs ɡeɪm ɪz əˈmeɪzɪŋ/"
     }
-]`;
+]
+
+Note: 
+- For Vietnamese sentences with "thật..." at the end, use "is so..." or "is..." pattern in English
+- Keep the exclamation mark in both languages
+- Maintain the natural word order in each language
+- IPA should be accurate and complete
+- Vietnamese word order: Subject + Adjective phrase
+- English word order: Subject + is + (so) + Adjective`;
 
 exports.generateLearningCard = async (req, res) => {
     try {
-        // Log request data
-        console.log('Received request for learning cards:', req.body);
-        
+        // Debug input
+        console.log('Request body:', JSON.stringify(req.body, null, 2));
+        console.log('OpenAI API Key exists:', !!process.env.OPENAI_API_KEY);
+
+        // Validate input
+        if (!req.body.lessons || !Array.isArray(req.body.lessons)) {
+            return res.status(400).json({
+                error: 'Invalid input: lessons must be an array'
+            });
+        }
+
         const { lessons } = req.body;
         const allResults = [];
         
         for (const lesson of lessons) {
-            // Log mỗi lesson được xử lý
-            console.log('Processing lesson:', lesson);
-            
-            const lessonPrompt = JSON.stringify({
-                structure_en: lesson.structure,
-                structure_vi: lesson["structure-vi"],
-                main_phrase: lesson["main phrase"],
-                main_phrase_vi: lesson["main phrase-vi"],
-                optional_phrase_1: lesson["optional phrase 1"],
-                optional_phrase_1_vi: lesson["optional phrase 1-vi"],
-                optional_phrase_2: lesson["optional phrase 2"],
-                optional_phrase_2_vi: lesson["optional phrase 2-vi"]
-            }, null, 2);
-            
-            // Update the LEARNING_CARD_PROMPT to use provided Vietnamese translations
-            const customPrompt = `${LEARNING_CARD_PROMPT}\n
-Additional context: Use these Vietnamese translations if provided:
-- Structure VI: ${lesson["structure-vi"]}
-- Main Phrase VI: ${lesson["main phrase-vi"]}
-- Optional Phrase 1 VI: ${lesson["optional phrase 1-vi"]}
-- Optional Phrase 2 VI: ${lesson["optional phrase 2-vi"]}`;
+            // Validate lesson structure
+            if (!lesson.structure || !lesson["main phrase"]) {
+                console.error('Invalid lesson structure:', lesson);
+                continue; // Skip invalid lessons
+            }
 
-            // Log prompt trước khi gửi tới OpenAI
-            console.log('Sending prompt to OpenAI:', lessonPrompt);
-            
-            const response = await openai.chat.completions.create({
-                model: 'gpt-4o-mini',
-                messages: [
-                    { role: 'system', content: customPrompt },
-                    { role: 'user', content: lessonPrompt }
-                ],
-                max_tokens: 3000,
-                temperature: 0
-            });
-            
             try {
-                const content = response.choices[0].message.content;
-                // Log raw response
-                console.log('Raw OpenAI response:', content);
-                
-                const cleanedContent = content.trim().replace(/```json|```/g, '');
-                // Log cleaned content
-                console.log('Cleaned content:', cleanedContent);
-                
-                const lessonResults = JSON.parse(cleanedContent);
-                
-                // Add processing for IPA
-                lessonResults.forEach(result => {
-                    result.ipa = result.ipa.replace(/[_]+/g, '');
+                const lessonPrompt = JSON.stringify({
+                    structure_en: lesson.structure,
+                    structure_vi: lesson["structure-vi"] || '',
+                    main_phrase: lesson["main phrase"],
+                    main_phrase_vi: lesson["main phrase-vi"] || '',
+                    optional_phrase_1: lesson["optional phrase 1"] || '',
+                    optional_phrase_1_vi: lesson["optional phrase 1-vi"] || '',
+                    optional_phrase_2: lesson["optional phrase 2"] || '',
+                    optional_phrase_2_vi: lesson["optional phrase 2-vi"] || ''
+                }, null, 2);
+
+                const response = await openai.chat.completions.create({
+                    model: 'gpt-4o-mini',
+                    messages: [
+                        { role: 'system', content: LEARNING_CARD_PROMPT },
+                        { role: 'user', content: lessonPrompt }
+                    ],
+                    max_tokens: 3000,
+                    temperature: 0
                 });
-                
-                // Log parsed results
-                console.log('Parsed results:', lessonResults);
-                
+
+                if (!response.choices || !response.choices[0]) {
+                    throw new Error('Invalid response from OpenAI');
+                }
+
+                const content = response.choices[0].message.content;
+                console.log('OpenAI response:', content);
+
+                const cleanedContent = content.trim().replace(/```json|```/g, '');
+                const lessonResults = JSON.parse(cleanedContent);
+
+                // Validate results
                 if (!Array.isArray(lessonResults)) {
-                    console.error('Response is not an array:', lessonResults);
                     throw new Error('Response must be an array');
                 }
 
-                if (lessonResults.length !== 4) {
-                    console.error('Invalid number of results:', lessonResults.length);
-                    throw new Error('Expected exactly 4 results');
-                }
+                allResults.push(...lessonResults);
 
-                const validResults = lessonResults.filter(result => {
-                    const isValid = result.sentence_en && 
-                                  result.sentence_vi && 
-                                  result.ipa;
-                    
-                    if (!isValid) {
-                        console.error('Invalid result structure:', result);
-                    }
-                    return isValid;
+            } catch (lessonError) {
+                console.error('Error processing lesson:', {
+                    lesson,
+                    error: lessonError.message
                 });
-
-                if (validResults.length === 4) {
-                    allResults.push(...validResults);
-                } else {
-                    throw new Error(`Expected 4 valid results, got ${validResults.length}`);
-                }
-            } catch (parseError) {
-                // Log detailed parse error
-                console.error('Parse error details:', {
-                    error: parseError.message,
-                    stack: parseError.stack,
-                    content: response.choices[0].message.content
-                });
-                throw parseError;
+                // Continue with next lesson instead of failing completely
+                continue;
             }
         }
-        
-        // Log final results
-        console.log('Successfully generated cards:', allResults.length);
+
+        if (allResults.length === 0) {
+            return res.status(500).json({
+                error: 'Failed to generate any valid results'
+            });
+        }
+
         res.json(allResults);
-        
+
     } catch (error) {
-        // Log error với stack trace
-        console.error('Error in generateLearningCard:', {
+        // Detailed error logging
+        console.error('Full error details:', {
             message: error.message,
-            stack: error.stack
+            stack: error.stack,
+            body: req.body
         });
-        
         res.status(500).json({ 
-            error: error.message,
-            details: error.stack
+            error: error.message
         });
     }
 };

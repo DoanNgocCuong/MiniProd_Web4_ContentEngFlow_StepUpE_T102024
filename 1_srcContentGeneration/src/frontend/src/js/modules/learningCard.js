@@ -12,7 +12,11 @@ async function generateLearningCard(lessons) {
     try {
         console.log('Generating learning cards with edited lessons:', lessons);
 
-        currentLessonId = lessons?.[0]?.lesson_id || generateUniqueId();
+        if (!lessons || !Array.isArray(lessons) || lessons.length === 0) {
+            throw new Error('Invalid lessons data');
+        }
+
+        currentLessonId = lessons[0]?.lesson_id || generateUniqueId();
 
         showLoadingDialog();
         const response = await fetch(`${API_URL}/generate-learning-card`, {
@@ -22,10 +26,15 @@ async function generateLearningCard(lessons) {
         });
         
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const errorData = await response.json();
+            throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
         }
         
         const data = await response.json();
+        if (!data || !Array.isArray(data)) {
+            throw new Error('Invalid response format from server');
+        }
+
         rawApiResponse = data;
         learningCardLessons = data.map(item => ({
             ...item,
@@ -33,8 +42,8 @@ async function generateLearningCard(lessons) {
         }));
         displayLearningCardResults(learningCardLessons);
     } catch (error) {
-        console.error('Error:', error);
-        alert(error.message);
+        console.error('Error in generateLearningCard:', error);
+        alert(`Error generating learning cards: ${error.message}`);
     } finally {
         hideLoadingDialog();
     }
