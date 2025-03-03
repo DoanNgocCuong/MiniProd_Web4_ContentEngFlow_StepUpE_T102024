@@ -100,6 +100,15 @@ Example:
 async function generateQuestions(prompt) {
     try {
         showLoadingDialog();
+        
+        // Set default values for tracking when using custom prompt
+        inputDataTemp = {
+            topic: 'Custom Prompt',
+            level: 'N/A',
+            questionCount: 'N/A',
+            extraRequirements: prompt.substring(0, 100) + '...' // First 100 chars of prompt
+        };
+        
         const response = await fetch(`${API_URL}/generate-questions`, {
             method: 'POST',
             headers: {
@@ -107,8 +116,13 @@ async function generateQuestions(prompt) {
             },
             body: JSON.stringify({ prompt })
         });
+        
         const data = await response.json();
-        processApiResponse(data);
+        
+        const processedData = await processApiResponse(data);
+        rawResponseTemp = [...processedData];
+        
+        storagedLessons = processedData;
     } catch (error) {
         alert(error.message);
         console.error('Error:', error.message);

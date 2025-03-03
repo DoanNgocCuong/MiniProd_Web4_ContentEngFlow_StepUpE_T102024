@@ -37,7 +37,7 @@ exports.generateQuestions = async (req, res) => {
             allQuestions = allQuestions.concat(parsedContent);
         }
 
-        res.json(allQuestions);
+        res.json({ questions: allQuestions });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
