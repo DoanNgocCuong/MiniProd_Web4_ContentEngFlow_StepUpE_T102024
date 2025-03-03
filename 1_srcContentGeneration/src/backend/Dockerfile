@@ -1,9 +1,6 @@
 # Use multi-stage build
 FROM node:18-alpine AS builder
 
-# Add build dependencies
-RUN apk add --no-cache python3 make g++
-
 # Set working directory
 WORKDIR /app
 
@@ -19,9 +16,6 @@ COPY . .
 
 # Production stage with minimal image
 FROM node:18-alpine
-
-# Add runtime dependencies only
-RUN apk add --no-cache curl
 
 WORKDIR /app
 
