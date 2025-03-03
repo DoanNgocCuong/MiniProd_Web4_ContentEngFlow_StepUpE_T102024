@@ -1,4 +1,5 @@
 const OpenAI = require('openai');
+const { BATCH_SIZE, MAX_TOKENS } = require('../config/batchConfig');
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
@@ -108,24 +109,29 @@ exports.generateFlexibleCard = async (req, res) => {
         const { lessons } = req.body;
         const allResults = [];
         
-        for (const lesson of lessons) {
-            const response = await openai.chat.completions.create({
-                model: 'gpt-4o-mini',
-                messages: [
-                    { role: 'system', content: NEW_PROMPT },
-                    { role: 'user', content: JSON.stringify(lesson) }
-                ],
-                max_tokens: 3000,
-                temperature: 0
-            });
+        // Process in batches
+        for (let i = 0; i < lessons.length; i += BATCH_SIZE) {
+            const batchLessons = lessons.slice(i, i + BATCH_SIZE);
             
-            const gptResponse = JSON.parse(response.choices[0].message.content);
-            const exerciseResults = transformToExerciseFormat(gptResponse, lesson.phrases);
-            
-            if (exerciseResults.length === 8) {
-                allResults.push(...exerciseResults);
-            } else {
-                throw new Error(`Expected 8 results, got ${exerciseResults.length}`);
+            for (const lesson of batchLessons) {
+                const response = await openai.chat.completions.create({
+                    model: 'gpt-4o-mini',
+                    messages: [
+                        { role: 'system', content: NEW_PROMPT },
+                        { role: 'user', content: JSON.stringify(lesson) }
+                    ],
+                    max_tokens: MAX_TOKENS,
+                    temperature: 0
+                });
+                
+                const gptResponse = JSON.parse(response.choices[0].message.content);
+                const exerciseResults = transformToExerciseFormat(gptResponse, lesson.phrases);
+                
+                if (exerciseResults.length === 8) {
+                    allResults.push(...exerciseResults);
+                } else {
+                    throw new Error(`Expected 8 results, got ${exerciseResults.length}`);
+                }
             }
         }
         

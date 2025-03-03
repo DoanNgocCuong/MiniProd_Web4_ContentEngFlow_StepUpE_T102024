@@ -1,4 +1,5 @@
 const OpenAI = require('openai');
+const { BATCH_SIZE, MAX_TOKENS } = require('../config/batchConfig');
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
@@ -70,59 +71,64 @@ exports.generateLearningCard = async (req, res) => {
         const { lessons } = req.body;
         const allResults = [];
         
-        for (const lesson of lessons) {
-            // Validate lesson structure
-            if (!lesson.structure || !lesson["main phrase"]) {
-                console.error('Invalid lesson structure:', lesson);
-                continue; // Skip invalid lessons
-            }
-
-            try {
-                const lessonPrompt = JSON.stringify({
-                    structure_en: lesson.structure,
-                    structure_vi: lesson["structure-vi"] || '',
-                    main_phrase: lesson["main phrase"],
-                    main_phrase_vi: lesson["main phrase-vi"] || '',
-                    optional_phrase_1: lesson["optional phrase 1"] || '',
-                    optional_phrase_1_vi: lesson["optional phrase 1-vi"] || '',
-                    optional_phrase_2: lesson["optional phrase 2"] || '',
-                    optional_phrase_2_vi: lesson["optional phrase 2-vi"] || ''
-                }, null, 2);
-
-                const response = await openai.chat.completions.create({
-                    model: 'gpt-4o-mini',
-                    messages: [
-                        { role: 'system', content: LEARNING_CARD_PROMPT },
-                        { role: 'user', content: lessonPrompt }
-                    ],
-                    max_tokens: 3000,
-                    temperature: 0
-                });
-
-                if (!response.choices || !response.choices[0]) {
-                    throw new Error('Invalid response from OpenAI');
+        // Process lessons in batches
+        for (let i = 0; i < lessons.length; i += BATCH_SIZE) {
+            const batchLessons = lessons.slice(i, i + BATCH_SIZE);
+            
+            for (const lesson of batchLessons) {
+                // Validate lesson structure
+                if (!lesson.structure || !lesson["main phrase"]) {
+                    console.error('Invalid lesson structure:', lesson);
+                    continue; // Skip invalid lessons
                 }
 
-                const content = response.choices[0].message.content;
-                console.log('OpenAI response:', content);
+                try {
+                    const lessonPrompt = JSON.stringify({
+                        structure_en: lesson.structure,
+                        structure_vi: lesson["structure-vi"] || '',
+                        main_phrase: lesson["main phrase"],
+                        main_phrase_vi: lesson["main phrase-vi"] || '',
+                        optional_phrase_1: lesson["optional phrase 1"] || '',
+                        optional_phrase_1_vi: lesson["optional phrase 1-vi"] || '',
+                        optional_phrase_2: lesson["optional phrase 2"] || '',
+                        optional_phrase_2_vi: lesson["optional phrase 2-vi"] || ''
+                    }, null, 2);
 
-                const cleanedContent = content.trim().replace(/```json|```/g, '');
-                const lessonResults = JSON.parse(cleanedContent);
+                    const response = await openai.chat.completions.create({
+                        model: 'gpt-4o-mini',
+                        messages: [
+                            { role: 'system', content: LEARNING_CARD_PROMPT },
+                            { role: 'user', content: lessonPrompt }
+                        ],
+                        max_tokens: MAX_TOKENS,  // Tăng lên 4096
+                        temperature: 0
+                    });
 
-                // Validate results
-                if (!Array.isArray(lessonResults)) {
-                    throw new Error('Response must be an array');
+                    if (!response.choices || !response.choices[0]) {
+                        throw new Error('Invalid response from OpenAI');
+                    }
+
+                    const content = response.choices[0].message.content;
+                    console.log('OpenAI response:', content);
+
+                    const cleanedContent = content.trim().replace(/```json|```/g, '');
+                    const lessonResults = JSON.parse(cleanedContent);
+
+                    // Validate results
+                    if (!Array.isArray(lessonResults)) {
+                        throw new Error('Response must be an array');
+                    }
+
+                    allResults.push(...lessonResults);
+
+                } catch (lessonError) {
+                    console.error('Error processing lesson:', {
+                        lesson,
+                        error: lessonError.message
+                    });
+                    // Continue with next lesson instead of failing completely
+                    continue;
                 }
-
-                allResults.push(...lessonResults);
-
-            } catch (lessonError) {
-                console.error('Error processing lesson:', {
-                    lesson,
-                    error: lessonError.message
-                });
-                // Continue with next lesson instead of failing completely
-                continue;
             }
         }
 

@@ -1,5 +1,6 @@
 const LarkbaseService = require('../services/larkbaseService');
 const { TABLES } = require('../constants/larkbaseTables');
+const { BATCH_SIZE } = require('../config/batchConfig');
 
 exports.submitMeaning = async (req, res) => {
     try {
@@ -53,3 +54,11 @@ exports.submitMeaning = async (req, res) => {
         });
     }
 };
+
+// Thêm xử lý batch nếu cần
+async function processBatch(records) {
+    for (let i = 0; i < records.length; i += BATCH_SIZE) {
+        const batch = records.slice(i, i + BATCH_SIZE);
+        // Process batch
+    }
+}

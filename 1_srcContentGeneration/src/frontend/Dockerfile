@@ -14,4 +14,4 @@ COPY . .
 EXPOSE 25007
 
 # Update the command to serve from the src directory
-CMD ["http-server", "src", "-p", "25007", "--cors", "-a", "0.0.0.0", "-c-1"]
+CMD ["http-server", "src", "-p", "25007", "--cors", "-a", "0.0.0.0", "-c-1", "--timeout", "120000"]
