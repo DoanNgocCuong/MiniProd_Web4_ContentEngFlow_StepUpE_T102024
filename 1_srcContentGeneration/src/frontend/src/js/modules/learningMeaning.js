@@ -94,26 +94,32 @@ function openLearningMeaningEditDialog(lesson, index) {
 function createLearningMeaningEditDialog(lesson) {
     const dialog = document.createElement('div');
     dialog.className = 'edit-dialog';
+    
+    // Giữ nguyên thẻ HTML bằng cách thay thế các ký tự < và > với entity HTML
+    let sentenceValue = lesson.sentence || '';
+    let answer2DescValue = lesson.answer_2_description || '';
+    let answer3DescValue = lesson.answer_3_description || '';
+    
     dialog.innerHTML = `
         <div class="dialog-content">
             <h3>Edit Learning Meaning</h3>
-            <label for="edit-sentence">Sentence:</label>
-            <input type="text" id="edit-sentence" value="${lesson.sentence || ''}">
+            <label for="edit-sentence">Sentence (với thẻ HTML):</label>
+            <input type="text" id="edit-sentence" value="${sentenceValue.replace(/"/g, '&quot;')}">
             
             <label for="edit-answer1">Answer 1:</label>
-            <input type="text" id="edit-answer1" value="${lesson.answer_1 || ''}">
+            <input type="text" id="edit-answer1" value="${(lesson.answer_1 || '').replace(/"/g, '&quot;')}">
             
             <label for="edit-answer2">Answer 2:</label>
-            <input type="text" id="edit-answer2" value="${lesson.answer_2 || ''}">
+            <input type="text" id="edit-answer2" value="${(lesson.answer_2 || '').replace(/"/g, '&quot;')}">
             
             <label for="edit-answer3">Answer 3:</label>
-            <input type="text" id="edit-answer3" value="${lesson.answer_3 || ''}">
+            <input type="text" id="edit-answer3" value="${(lesson.answer_3 || '').replace(/"/g, '&quot;')}">
             
-            <label for="edit-answer2-desc">Answer 2 Description:</label>
-            <textarea id="edit-answer2-desc">${lesson.answer_2_description || ''}</textarea>
+            <label for="edit-answer2-desc">Answer 2 Description (với thẻ HTML):</label>
+            <textarea id="edit-answer2-desc">${answer2DescValue}</textarea>
             
-            <label for="edit-answer3-desc">Answer 3 Description:</label>
-            <textarea id="edit-answer3-desc">${lesson.answer_3_description || ''}</textarea>
+            <label for="edit-answer3-desc">Answer 3 Description (với thẻ HTML):</label>
+            <textarea id="edit-answer3-desc">${answer3DescValue}</textarea>
             
             <div class="dialog-buttons">
                 <button id="save-edit">Save</button>
@@ -122,7 +128,7 @@ function createLearningMeaningEditDialog(lesson) {
         </div>
     `;
     return dialog;
-  }
+}
   
 function addLearningMeaningEditDialogListeners(dialog, lesson, index) {
     document.getElementById('save-edit').addEventListener('click', () => {
@@ -187,6 +193,7 @@ async function copyLearningMeaningTable(table) {
             const newRow = document.createElement('tr');
             // Bỏ qua 2 cột cuối (Edit/Delete)
             for (let i = 0; i < row.cells.length - 2; i++) {
+                // Clone cell để giữ nguyên nội dung HTML
                 const cell = row.cells[i].cloneNode(true);
                 newRow.appendChild(cell);
             }
@@ -231,47 +238,38 @@ function createLearningMeaningTable(lessons) {
     for(let i = 0; i < lessons.length; i++) {
         const row = document.createElement('tr');
         
-        // Debug thêm
-        if (lessons[i].sentence) {
-            console.log(`Row ${i} sentence contains g tag:`, lessons[i].sentence.includes('<g>'));
-            console.log(`Row ${i} sentence contains r tag:`, lessons[i].sentence.includes('<r>'));
-        }
+        // Chuyển đổi thẻ HTML sang dạng text thô bằng cách thay thế < và >
+        let sentence = lessons[i].sentence || '';
+        sentence = sentence
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+        
+        let answer2Desc = lessons[i].answer_2_description || '';
+        answer2Desc = answer2Desc
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+            
+        let answer3Desc = lessons[i].answer_3_description || '';
+        answer3Desc = answer3Desc
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
         
         const cells = [
             'Hãy dịch cụm in đậm',
-            lessons[i].sentence,
+            sentence,
             lessons[i].answer_1,
             lessons[i].answer_2,
             lessons[i].answer_3,
-            lessons[i].answer_2_description,
-            lessons[i].answer_3_description
+            answer2Desc,
+            answer3Desc
         ];
         
         cells.forEach(content => {
             const td = document.createElement('td');
-            if (content && typeof content === 'string') {
-                // Đảm bảo thẻ HTML được hiển thị đúng
-                td.innerHTML = content;
-                
-                // Thêm style cho các thẻ HTML
-                const gTags = td.querySelectorAll('g');
-                const rTags = td.querySelectorAll('r');
-                
-                gTags.forEach(tag => {
-                    tag.style.fontWeight = 'bold';
-                    tag.style.color = 'green';
-                });
-                
-                rTags.forEach(tag => {
-                    tag.style.fontWeight = 'bold';
-                    tag.style.color = 'red';
-                });
-            } else {
-                td.textContent = content || '';
-            }
+            td.innerHTML = content || '';
             row.appendChild(td);
         });
-        
+
         // Thêm nút Edit và Delete
         const editTd = document.createElement('td');
         const deleteTd = document.createElement('td');
