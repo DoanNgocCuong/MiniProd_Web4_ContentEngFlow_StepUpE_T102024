@@ -7,55 +7,46 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 });
 
-const LEARNING_CARD_PROMPT = `You are an English-Vietnamese translation expert. Create natural sentences in both languages.
+const LEARNING_CARD_PROMPT = `You are an English exercise content expert. Given structure_en, main_phrase, and up to two optional_phrases, create a JSON array with:
 
-Given:
-1. A Vietnamese sentence template with a blank (____) 
-2. Three Vietnamese phrases to fill in
-3. The context and meaning
+- sentence_en: English sentence
+- sentence_vi: Vietnamese translation 
+- ipa: IPA pronunciation
 
-Create natural translations that:
-- Maintain the meaning but use natural word order in each language
-- Don't translate word-by-word
-- Use correct grammar structure for each language
-- For exclamatory sentences, use appropriate English exclamation patterns
+**Response Format:** Output only in JSON format with no extra characters (such as \`\`\`Json).
 
-Example:
-Input: {
-    "vi_template": "trò chơi này ____!",
-    "phrases": [
-        "thật thú vị",
-        "thật vui",
-        "thật tuyệt vời"
-    ]
+**Example Input:**
+{
+    "structure_en": "Our team of _____ specialists is here to help",
+    "main_phrase": "healthcare",
+    "optional_phrase_1": "financial", 
+    "optional_phrase_2": "legal"
 }
 
 Expected Output:
 [
     {
-        "sentence_vi": "trò chơi này thật thú vị!",
-        "sentence_en": "This game is so exciting!",
-        "ipa": "/ðɪs ɡeɪm ɪz soʊ ɪkˈsaɪtɪŋ/"
+        "sentence_en": "Our team of _____ specialists is here to help",
+        "sentence_vi": "Đội ngũ chuyên gia _____ của chúng tôi sẵn sàng hỗ trợ",
+        "ipa": "/ˈaʊər tiːm əv _____ ˈspɛʃəlɪsts ɪz hɪər tuː hɛlp/"
     },
     {
-        "sentence_vi": "trò chơi này thật vui!",
-        "sentence_en": "This game is so fun!",
-        "ipa": "/ðɪs ɡeɪm ɪz soʊ fʌn/"
+        "sentence_en": "healthcare specialists",
+        "sentence_vi": "chuyên gia y tế",
+        "ipa": "/ˈhɛlθˌkɛr ˈspɛʃəlɪsts/"
     },
     {
-        "sentence_vi": "trò chơi này thật tuyệt vời!",
-        "sentence_en": "This game is amazing!",
-        "ipa": "/ðɪs ɡeɪm ɪz əˈmeɪzɪŋ/"
+        "sentence_en": "financial specialists", 
+        "sentence_vi": "chuyên gia tài chính",
+        "ipa": "/faɪˈnænʃəl ˈspɛʃəlɪsts/"
+    },
+    {
+        "sentence_en": "legal specialists",
+        "sentence_vi": "chuyên gia pháp lý", 
+        "ipa": "/ˈliːɡəl ˈspɛʃəlɪsts/"
     }
-]
+]`;
 
-Note: 
-- For Vietnamese sentences with "thật..." at the end, use "is so..." or "is..." pattern in English
-- Keep the exclamation mark in both languages
-- Maintain the natural word order in each language
-- IPA should be accurate and complete
-- Vietnamese word order: Subject + Adjective phrase
-- English word order: Subject + is + (so) + Adjective`;
 
 /**
  * Process a single lesson with OpenAI
