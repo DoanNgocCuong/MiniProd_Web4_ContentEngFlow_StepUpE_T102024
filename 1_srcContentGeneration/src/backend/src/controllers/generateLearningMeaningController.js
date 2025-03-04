@@ -25,7 +25,7 @@ You are an expert at creating English exercise content. You will receive \`CẤU
     "optionalPhrase": "Sales director"
 }
 
-**Expected Output:**
+**Expected Output:** (Feedback FORMAT: <r>[English word]</r> mang nghĩa là "[Nghĩa tiếng Việt]" nên sai nghĩa so với yêu cầu của đề bài.)
 [
     {
         "sentence": "I'm the <g>Đại diện kinh doanh</g> from ABC Company.",

@@ -100,7 +100,7 @@ button:hover {
 }
 
 .tab-btn.active {
-    background-color: #e407f8;
+    background-color: #D2ABDB; /* Changed from #e407f8 to #D2ABDB */
     color: white;
 }
 
@@ -175,7 +175,7 @@ button:hover {
 /* Style for the edit button */
 .edit-btn {
     padding: 5px 10px;
-    background-color: #fd00f1;
+    background-color: #D2ABDB; /* Changed from #D2ABDB to #D2ABDB */
     color: white;
     border: none;
     cursor: pointer;
@@ -187,7 +187,7 @@ button:hover {
 }
 
 .copy-btn {
-    background-color: #ee03f7;
+    background-color: #D2ABDB; /* Changed from #D2ABDB to #D2ABDB */
     border: none;
     color: white;
     padding: 10px 20px;
@@ -433,7 +433,7 @@ button:hover {
     position: absolute;
     top: 20px;
     right: 20px;
-    background-color: #e60808;
+    background-color: #D2ABDB; /* Changed from #e60808 to #D2ABDB */
     color: white;
     padding: 10px 20px;
     border: none;
