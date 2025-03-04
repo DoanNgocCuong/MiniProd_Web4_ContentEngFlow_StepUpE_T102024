@@ -2,6 +2,11 @@ class LearningCache {
     constructor() {
         this.CACHE_PREFIX = 'learning_cache_';
         this.modules = ['qna', 'card', 'meaning', 'flexible'];
+        
+        // Thêm bộ nhớ cache tạm thời để tránh encode/decode
+        this.memoryCache = {
+            meaning: null
+        };
     }
 
     clearAll() {
@@ -32,16 +37,20 @@ class LearningCache {
         }
         
         // Xử lý đặc biệt cho module 'meaning' để bảo vệ HTML tags
-        let processedData = data;
         if (module === 'meaning') {
-            // Mã hóa các thẻ HTML để an toàn khi lưu vào JSON
-            processedData = this.encodeHtmlTags(data);
-            console.log('HTML tags encoded for safe storage in meaning cache');
+            // Lưu vào memory cache thay vì localStorage
+            this.memoryCache.meaning = {
+                data: data,
+                timestamp: Date.now(),
+                lesson_id: lesson_id
+            };
+            console.log('Storing Learning Meaning in memory cache to preserve HTML tags');
+            return;
         }
         
-        // Thêm thông tin thời gian cache và lesson_id
+        // Đối với các module khác, vẫn dùng localStorage
         const cacheData = {
-            data: processedData,
+            data: data,
             timestamp: Date.now(),
             lesson_id: lesson_id
         };
@@ -57,6 +66,17 @@ class LearningCache {
             return null;
         }
         
+        // Đặc biệt xử lý module meaning từ memory cache
+        if (module === 'meaning' && this.memoryCache.meaning) {
+            const cache = this.memoryCache.meaning;
+            if (cache.lesson_id === lesson_id) {
+                console.log(`Using memory cache for ${module}`);
+                return cache.data;
+            }
+            return null;
+        }
+        
+        // Các module khác vẫn dùng localStorage
         const key = this.CACHE_PREFIX + module;
         const cachedString = localStorage.getItem(key);
         
@@ -74,15 +94,7 @@ class LearningCache {
                 return null;
             }
             
-            // Giải mã HTML tags nếu là module meaning
-            let resultData = cachedData.data;
-            if (module === 'meaning') {
-                resultData = this.decodeHtmlTags(resultData);
-                console.log('HTML tags decoded from meaning cache');
-            }
-            
-            console.log(`Cache found for ${module}, cached at: ${new Date(cachedData.timestamp).toLocaleTimeString()}`);
-            return resultData;
+            return cachedData.data;
         } catch (e) {
             console.error(`Error parsing cache for ${module}:`, e);
             return null;
@@ -100,71 +112,18 @@ class LearningCache {
     
     // Xóa cache khi lesson_id thay đổi
     invalidateForNewLesson() {
+        this.memoryCache.meaning = null;
         this.clearAll();
-        console.log('Cache invalidated for new lesson');
+        console.log('All caches invalidated for new lesson');
     }
 
-    // Thêm các phương thức encode/decode HTML tags
+    // Loại bỏ hoặc đơn giản hóa các phương thức mã hóa/giải mã
     encodeHtmlTags(data) {
-        if (!Array.isArray(data)) return data;
-        
-        return data.map(item => {
-            const newItem = {...item};
-            
-            // Đặc biệt xử lý các trường có thể chứa HTML
-            if (newItem.sentence) {
-                newItem.sentence = newItem.sentence
-                    .replace(/<g>/g, '___G_START___')
-                    .replace(/<\/g>/g, '___G_END___')
-                    .replace(/<r>/g, '___R_START___')
-                    .replace(/<\/r>/g, '___R_END___');
-            }
-            
-            if (newItem.answer_2_description) {
-                newItem.answer_2_description = newItem.answer_2_description
-                    .replace(/<r>/g, '___R_START___')
-                    .replace(/<\/r>/g, '___R_END___');
-            }
-            
-            if (newItem.answer_3_description) {
-                newItem.answer_3_description = newItem.answer_3_description
-                    .replace(/<r>/g, '___R_START___')
-                    .replace(/<\/r>/g, '___R_END___');
-            }
-            
-            return newItem;
-        });
+        return data; // Không mã hóa nữa
     }
 
     decodeHtmlTags(data) {
-        if (!Array.isArray(data)) return data;
-        
-        return data.map(item => {
-            const newItem = {...item};
-            
-            // Đặc biệt xử lý các trường có thể chứa HTML
-            if (newItem.sentence) {
-                newItem.sentence = newItem.sentence
-                    .replace(/___G_START___/g, '<g>')
-                    .replace(/___G_END___/g, '</g>')
-                    .replace(/___R_START___/g, '<r>')
-                    .replace(/___R_END___/g, '</r>');
-            }
-            
-            if (newItem.answer_2_description) {
-                newItem.answer_2_description = newItem.answer_2_description
-                    .replace(/___R_START___/g, '<r>')
-                    .replace(/___R_END___/g, '</r>');
-            }
-            
-            if (newItem.answer_3_description) {
-                newItem.answer_3_description = newItem.answer_3_description
-                    .replace(/___R_START___/g, '<r>')
-                    .replace(/___R_END___/g, '</r>');
-            }
-            
-            return newItem;
-        });
+        return data; // Không giải mã nữa
     }
 }
 
