@@ -38,6 +38,9 @@ class LearningCache {
             lesson_id: lesson_id
         };
         
+        // Lưu ý đặc biệt: không xử lý hoặc làm sạch dữ liệu HTML trong module meaning
+        // để bảo toàn các thẻ <g> và <r>
+        
         const key = this.CACHE_PREFIX + module;
         localStorage.setItem(key, JSON.stringify(cacheData));
         console.log(`Cache set for ${module} with lesson_id: ${lesson_id}`);

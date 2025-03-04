@@ -4,6 +4,10 @@ import { config } from './config.js';
 import { showLoadingDialog, hideLoadingDialog } from './utils.js';
 import TableDraftTracking from './trackings/tableDraftTracking.js';
 import learningCache from './modules/cache.js';
+import { generateLearningMeaning } from './modules/learningMeaning.js';
+import { generateLearningCard } from './modules/learningCard.js';
+import { generateLearningFlexible } from './modules/learningFlexible.js';
+import { generateLearningQNA } from './modules/learningQNA.js';
 
 const API_URL = config.production.apiUrl;
 let storagedLessons;
@@ -154,6 +158,10 @@ async function processApiResponse(response) {
         }));
 
         displayGeneratedQuestions(lessons);
+        
+        // Sau khi xử lý xong, tạo lại tất cả các module học tập với dữ liệu mới
+        regenerateAllLearningModules();
+        
         return lessons;
     } catch (error) {
         console.error('Error processing API response:', error);
@@ -186,11 +194,14 @@ function displayGeneratedQuestions(lessons) {
 }
 
 function deleteLesson(index, lessons) {
-    // Remove the lesson from the lessons array
-    lessons.splice(index, 1);
-
-    // Re-display the updated questions
-    displayGeneratedQuestions(lessons);
+    if (confirm('Are you sure you want to delete this lesson?')) {
+        lessons.splice(index, 1);
+        displayGeneratedQuestions(lessons);
+        
+        // Cập nhật lại tất cả các module học tập khi xóa bài học
+        learningCache.invalidateForNewLesson();
+        regenerateAllLearningModules();
+    }
 }
 
 function createLessonTable(lessons) {
@@ -402,6 +413,41 @@ function updateLesson(lesson) {
     lesson['main phrase-vi'] = document.getElementById('edit-main-phrase-vi').value;
     lesson['optional phrase 1-vi'] = document.getElementById('edit-optional1-vi').value;
     lesson['optional phrase 2-vi'] = document.getElementById('edit-optional2-vi').value;
+    
+    // Xóa cache khi người dùng sửa bài học
+    learningCache.invalidateForNewLesson();
+    
+    // Cập nhật cả 4 modules học tập dựa trên dữ liệu mới
+    regenerateAllLearningModules();
+}
+
+// Thêm hàm mới để tạo lại tất cả các module học tập
+function regenerateAllLearningModules() {
+    // Xác định tab đang active
+    const activeTab = document.querySelector('.tab-content.active');
+    const activeTabId = activeTab.id;
+    
+    // Đảm bảo storagedLessons chưa bị thay đổi nếu đã có dữ liệu
+    if (!storagedLessons || storagedLessons.length === 0) {
+        console.log('No lessons available to regenerate learning modules');
+        return;
+    }
+    
+    // Luôn tạo lại dữ liệu cho tất cả các module
+    setTimeout(() => {
+        console.log('Regenerating all learning modules with updated questions');
+        
+        // Bảo toàn dữ liệu đầu vào, không thay đổi
+        const lessonsCopy = JSON.parse(JSON.stringify(storagedLessons));
+        
+        // Truyền dữ liệu gốc không thay đổi cho các module
+        generateLearningMeaning(lessonsCopy);
+        generateLearningCard(lessonsCopy);
+        generateLearningFlexible(lessonsCopy);
+        generateLearningQNA(lessonsCopy);
+        
+        console.log('All learning modules have been refreshed with new question data');
+    }, 300);
 }
 
 // Thêm hàm tạo unique ID
@@ -429,5 +475,6 @@ export {
     storagedLessons,
     generateQuestions,
     processApiResponse,
-    generateUniqueId
+    generateUniqueId,
+    regenerateAllLearningModules
 };

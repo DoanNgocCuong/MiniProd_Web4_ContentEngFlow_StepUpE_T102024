@@ -1,7 +1,8 @@
 import { config } from '../config.js';
-import { showLoadingDialog, hideLoadingDialog } from '../utils.js';
+import { showLoadingDialog, hideLoadingDialog, updateLoadingProgress } from '../utils.js';
 import TableLearningQNATracking from '../trackings/tableLearningQNATracking.js';
 import { storagedLessons, generateUniqueId } from '../generateQuestion.js';
+import learningCache from './cache.js';
 
 const API_URL = config.production.apiUrl;
 let learningQNALessons = [];
@@ -12,24 +13,50 @@ async function generateLearningQNA(lessons) {
     try {
         currentLessonId = storagedLessons?.[0]?.lesson_id || generateUniqueId();
 
+        // Check cache first
+        const cachedData = learningCache.get('qna', currentLessonId);
+        if (cachedData) {
+            console.log('Using cached Learning QNA data');
+            rawApiResponse = cachedData;
+            learningQNALessons = cachedData.map(item => ({
+                ...item,
+                lesson_id: currentLessonId
+            }));
+            displayLearningQNAResults(learningQNALessons);
+            return;
+        }
+
+        console.log('No cache found, generating new Learning QNA data');
         showLoadingDialog();
+        updateLoadingProgress(10);
+        
         const response = await fetch(`${API_URL}/generate-learning-qna`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ lessons })
         });
         
+        updateLoadingProgress(70);
+        
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const errorData = await response.json();
+            throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
         }
         
         const data = await response.json();
+        updateLoadingProgress(90);
+        
         rawApiResponse = data;
         learningQNALessons = data.map(item => ({
             ...item,
             lesson_id: currentLessonId
         }));
+        
+        // Store in cache
+        learningCache.set('qna', data, currentLessonId);
+        
         displayLearningQNAResults(learningQNALessons);
+        updateLoadingProgress(100);
     } catch (error) {
         console.error('Error:', error);
         alert(error.message);

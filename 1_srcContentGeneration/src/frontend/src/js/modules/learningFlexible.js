@@ -1,7 +1,8 @@
 import { config } from '../config.js';
-import { showLoadingDialog, hideLoadingDialog } from '../utils.js';
+import { showLoadingDialog, hideLoadingDialog, updateLoadingProgress } from '../utils.js';
 import TableLearningFlexibleTracking from '../trackings/tableLearningFlexibleTracking.js';
 import { storagedLessons, generateUniqueId } from '../generateQuestion.js';
+import learningCache from './cache.js';
 
 const API_URL = config.production.apiUrl;
 let learningFlexibleLessons = [];
@@ -12,6 +13,21 @@ async function generateLearningFlexible(lessons) {
     try {
         currentLessonId = storagedLessons?.[0]?.lesson_id || generateUniqueId();
 
+        // Check cache first
+        const cachedData = learningCache.get('flexible', currentLessonId);
+        if (cachedData) {
+            console.log('Using cached Learning Flexible data');
+            rawApiResponse = cachedData;
+            learningFlexibleLessons = cachedData.map(item => ({
+                ...item,
+                lesson_id: currentLessonId
+            }));
+            displayLearningFlexibleResults(learningFlexibleLessons);
+            return;
+        }
+
+        console.log('No cache found, generating new Learning Flexible data');
+        
         const flexibleLessons = storagedLessons.map(lesson => ({
             question: lesson.question || "Which company are you working for?",
             structure: lesson.structure || "I'm the ______ from ABC Company.",
@@ -28,23 +44,35 @@ async function generateLearningFlexible(lessons) {
         }));
 
         showLoadingDialog();
+        updateLoadingProgress(10);
+        
         const response = await fetch(`${API_URL}/generate-learning-flexible`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ lessons: flexibleLessons })
         });
         
+        updateLoadingProgress(70);
+        
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const errorData = await response.json();
+            throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
         }
         
         const data = await response.json();
+        updateLoadingProgress(90);
+        
         rawApiResponse = data;
         learningFlexibleLessons = data.map(item => ({
             ...item,
             lesson_id: currentLessonId
         }));
+        
+        // Store in cache
+        learningCache.set('flexible', data, currentLessonId);
+        
         displayLearningFlexibleResults(learningFlexibleLessons);
+        updateLoadingProgress(100);
     } catch (error) {
         console.error('Error generating flexible cards:', error);
         alert('Error generating flexible cards: ' + error.message);

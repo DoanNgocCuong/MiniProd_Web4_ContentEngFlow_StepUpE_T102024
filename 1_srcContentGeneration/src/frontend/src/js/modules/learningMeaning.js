@@ -226,7 +226,7 @@ function createLearningMeaningTable(lessons) {
         
         cells.forEach(content => {
             const td = document.createElement('td');
-            td.innerHTML = content || ''; // Dùng innerHTML để hiển thị đúng các thẻ <g>, <r>
+            td.innerHTML = content || '';
             row.appendChild(td);
         });
   
