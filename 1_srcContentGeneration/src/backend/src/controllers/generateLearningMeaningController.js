@@ -181,26 +181,6 @@ async function processLesson(lesson) {
             // Sửa lỗi nếu cần
             const fixedResults = fixLearningResults(lessonResults, lesson);
             
-            // Tiếp tục xử lý với fixedResults thay vì lessonResults
-            fixedResults[0].sentence = fixedResults[0].sentence.replace(
-                        /<g>.*?<\/g>/,
-                        `<g>${lesson["main phrase-vi"]}</g>`
-                    );
-                    
-            if (fixedResults[1]) {
-                fixedResults[1].sentence = fixedResults[1].sentence.replace(
-                            /<g>.*?<\/g>/,
-                            `<g>${lesson["optional phrase 1-vi"]}</g>`
-                        );
-                    }
-
-            if (fixedResults[2] && lesson["optional phrase 2-vi"]) {
-                fixedResults[2].sentence = fixedResults[2].sentence.replace(
-                    /<g>.*?<\/g>/,
-                    `<g>${lesson["optional phrase 2-vi"]}</g>`
-                );
-            }
-
             const validResults = fixedResults.filter(result => {
                         const isValid = result.sentence && 
                                       result.answer_1 && 
@@ -236,20 +216,23 @@ function fixLearningResults(lessonResults, lesson) {
     // Deep copy để không thay đổi dữ liệu gốc
     const fixedResults = JSON.parse(JSON.stringify(lessonResults));
     
-    // Đảm bảo answer_1 đúng cho từng object
+    // Đảm bảo answer_1 đúng cho từng object nhưng KHÔNG thay đổi sentence
     if (fixedResults[0]) {
         fixedResults[0].answer_1 = lesson.structure;
         console.log('Fixed Object 1 answer_1 to:', fixedResults[0].answer_1);
+        // KHÔNG thay đổi sentence của Object 1
     }
     
     if (fixedResults[1]) {
         fixedResults[1].answer_1 = lesson["main phrase"];
         console.log('Fixed Object 2 answer_1 to:', fixedResults[1].answer_1);
+        // Không cần thay đổi sentence vì model đã tạo đúng
     }
     
     if (fixedResults[2]) {
         fixedResults[2].answer_1 = lesson["optional phrase 1"];
         console.log('Fixed Object 3 answer_1 to:', fixedResults[2].answer_1);
+        // Không cần thay đổi sentence vì model đã tạo đúng
     }
     
     return fixedResults;
@@ -270,6 +253,7 @@ exports.generateLearningMeaning = async (req, res) => {
             }
         );
         
+        console.log('FINAL RESPONSE TO FRONTEND:', JSON.stringify(allResults));
         res.json(allResults);
     } catch (error) {
         console.error(`${formatTimestamp()} Error in generateLearningMeaning:`, error);

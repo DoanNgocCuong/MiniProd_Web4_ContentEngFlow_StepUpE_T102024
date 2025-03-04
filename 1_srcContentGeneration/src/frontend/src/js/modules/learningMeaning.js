@@ -10,6 +10,8 @@ let rawApiResponse;
 let currentLessonId = null;
 
 async function generateLearningMeaning(lessons) {
+    console.log('API RESPONSE:', lessons);
+    
     try {
         // Set lesson_id from input or generate new one
         currentLessonId = lessons[0]?.lesson_id || generateUniqueId();
@@ -204,6 +206,8 @@ async function copyLearningMeaningTable(table) {
   
   // Hàm tạo bảng hiển thị kết quả học nghĩa
 function createLearningMeaningTable(lessons) {
+    console.log('DATA TO RENDER:', lessons); // Xem dữ liệu chính xác trước khi render
+    
     const table = document.createElement('table');
     table.className = 'learning-meaning-table';
     table.appendChild(createLearningMeaningTableHeader());
@@ -211,6 +215,11 @@ function createLearningMeaningTable(lessons) {
     const tbody = document.createElement('tbody');
     
     for(let i = 0; i < lessons.length; i++) {
+        console.log(`Row ${i}:`, {
+            answer1: lessons[i].answer_1,
+            sentence: lessons[i].sentence
+        });
+        
         const row = document.createElement('tr');
         
         // Thay vì convert các thẻ sang HTML entities, mình sẽ hiển thị text thô
@@ -281,3 +290,34 @@ function createLearningMeaningTableHeader() {
   }
   
 export { learningMeaningLessons, generateLearningMeaning }; // export biến global ra ngoài để sử dụng ở ngoài
+
+// Kiểm tra cách hiển thị thẻ <g> và <r>
+function renderLearningMeaning(data) {
+  const container = document.getElementById('learning-meaning-container');
+  
+  data.forEach(item => {
+    const element = document.createElement('div');
+    element.className = 'learning-item';
+    
+    // Tạo node text thay vì sử dụng innerHTML
+    const sentenceDiv = document.createElement('div');
+    sentenceDiv.className = 'sentence';
+    sentenceDiv.textContent = item.sentence; // Sử dụng textContent thay vì innerHTML
+    
+    const answerDiv = document.createElement('div');
+    answerDiv.className = 'answer';
+    answerDiv.textContent = item.answer_1;
+    
+    element.appendChild(sentenceDiv);
+    element.appendChild(answerDiv);
+    
+    container.appendChild(element);
+  });
+}
+
+// Thêm kiểm tra trong cache.js để xem dữ liệu có bị thay đổi không
+function storeLearningMeaningInCache(data) {
+    console.log('BEFORE STORING IN CACHE:', JSON.stringify(data));
+    localStorage.setItem('learningMeaningCache', JSON.stringify(data));
+    console.log('AFTER STORING IN CACHE:', localStorage.getItem('learningMeaningCache'));
+}

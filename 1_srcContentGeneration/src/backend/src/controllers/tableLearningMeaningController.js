@@ -62,3 +62,8 @@ async function processBatch(records) {
         // Process batch
     }
 }
+
+exports.getLearningMeaning = (req, res) => {
+  // Nếu controller này thay thế hoặc escape các thẻ <g> và <r>, 
+  // thì có thể là nguyên nhân của vấn đề
+}
