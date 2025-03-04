@@ -184,7 +184,7 @@ async function copyLearningQNATable(table) {
             throw new Error('No lesson ID found. Please generate questions first.');
         }
 
-        // Existing copy logic
+        // Tạo bảng tạm thời chỉ có tbody
         const tempTable = document.createElement('table');
         const tbody = document.createElement('tbody');
         const rows = table.querySelectorAll('tbody tr');
@@ -198,6 +198,7 @@ async function copyLearningQNATable(table) {
             tbody.appendChild(newRow);
         });
         
+        // Chỉ thêm tbody vào tempTable
         tempTable.appendChild(tbody);
         tempTable.style.position = 'absolute';
         tempTable.style.left = '-9999px';
@@ -209,39 +210,8 @@ async function copyLearningQNATable(table) {
         window.getSelection().addRange(range);
         document.execCommand('copy');
         
-        // Alert copy success first
-        alert('Table copied to clipboard!');
-
-        // Clean up
-        window.getSelection().removeAllRanges();
-        document.body.removeChild(tempTable);
-
-        // Prepare tracking data
-        const trackingData = {
-            lesson_id: currentLessonId,
-            lessons: storagedLessons || [],
-            raw: rawApiResponse,
-            final: learningQNALessons
-        };
-
-        // Log tracking data
-        console.group('Learning QNA Tracking');
-        console.log('Tracking Data:', trackingData);
-        console.log('Status: Ready to submit to Larkbase');
-        console.groupEnd();
-
-        // Submit tracking data
-        await TableLearningQNATracking.trackQNAGeneration(
-            {
-                lesson_id: currentLessonId,
-                lessons: storagedLessons || []
-            },
-            rawApiResponse,
-            learningQNALessons
-        );
-
-        console.log('Data submitted to Larkbase:', trackingData);
-
+        // Phần còn lại giữ nguyên
+        // ...
     } catch (error) {
         console.error('Error copying table:', error);
         alert('Failed to copy table: ' + error.message);

@@ -196,7 +196,7 @@ async function copyLearningCardTable(table) {
             throw new Error('No lesson ID found. Please generate questions first.');
         }
 
-        // Existing copy logic
+        // Chỉ tạo một bảng có tbody, không có thead
         const tempTable = document.createElement('table');
         const tbody = document.createElement('tbody');
         const rows = table.querySelectorAll('tbody tr');
@@ -210,7 +210,7 @@ async function copyLearningCardTable(table) {
             tbody.appendChild(newRow);
         });
         
-        tempTable.appendChild(tbody);
+        tempTable.appendChild(tbody); // Chỉ thêm tbody, không có thead
         tempTable.style.position = 'absolute';
         tempTable.style.left = '-9999px';
         document.body.appendChild(tempTable);
@@ -221,7 +221,7 @@ async function copyLearningCardTable(table) {
         window.getSelection().addRange(range);
         document.execCommand('copy');
         
-        // Alert copy success first
+        // Thông báo thành công trước
         alert('Table copied to clipboard!');
 
         // Clean up
