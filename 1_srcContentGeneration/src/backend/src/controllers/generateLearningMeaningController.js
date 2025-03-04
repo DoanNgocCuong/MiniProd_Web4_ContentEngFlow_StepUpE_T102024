@@ -7,50 +7,68 @@ const openai = new OpenAI({
 });
 
 const LEARNING_MEANING_PROMPT = `**Prompt:**  
-You are an expert at creating English exercise content. You will receive input with sentences in English or Vietnamese.
+You are an expert at creating English exercise content. You will receive \`CẤU TRÚC\`, \`MAIN PHRASE\`, and \`OTHER PHRASE\` inputs from the user.
 
 **Instructions:**  
-1. For each input, you will generate exactly ONE learning object.
-2. For each sentence with a phrase marked by <g> tags:
-   - The phrase inside <g> tags is the target phrase to be translated.
-   - If the phrase in <g> is in Vietnamese, answer_1 should be its ENGLISH translation.
-   - If the phrase in <g> is in English, answer_1 should be its VIETNAMESE translation.
-3. CRITICAL: answer_1 MUST ALWAYS be the correct translation of ONLY the content inside <g> tags.
-4. For answer_2 and answer_3, provide similar but incorrect translations.
-5. Write feedback for incorrect answers as: "<r>[Incorrect answer]</r> mang nghĩa là '[Vietnamese meaning]' nên sai nghĩa so với yêu cầu của đề bài."
+1. Output MUST include exactly 3 learning objects: one for the main phrase, one for optional phrase 1, and one for optional phrase 2 (if available).
+2. For each phrase:
+   - Use \`answer_1\` as the exact \`MAIN PHRASE\` or \`OTHER PHRASE\`.
+   - Provide alternatives for \`answer_2\` and \`answer_3\` with phrases close in meaning but incorrect.
+3. The "sentence" field MUST follow this pattern:
+   - It is primarily an English sentence
+   - Parts must be translated to Vietnamese and wrapped in <g> tags
+   - The Vietnamese part in <g> tags MUST match the meaning of answer_1
+4. EACH FEEDBACK MUST INCLUDE <r> TAGS around the incorrect English option.
+5. TAG FORMATTING IS CRITICAL - USE EXACTLY <g> </g> and <r> </r> tags without any variations.
 
-**Examples:**
-- For sentence "I want to <g>play games</g>", answer_1 MUST BE "play games"
-- For sentence "<g>đi ra ngoài</g> go out", answer_1 MUST BE "go out"
-- For sentence "I <g>go to school</g> everyday", answer_1 MUST BE "go to school" 
+**Sentence Structure Examples:**
+- "I'm the <g>Đại diện kinh doanh</g> from ABC Company." (where "Đại diện kinh doanh" is Vietnamese for "Sales representative")
+- "<g>Tôi là</g> business representative <g>từ công ty ABC</g>." (where "Tôi là" and "từ công ty ABC" are translations of parts of the sentence)
 
-**Response Format:** Output only in JSON format with no extra characters.
+**Feedback Format:** 
+"<r>[English phrase]</r> mang nghĩa là '[Nghĩa tiếng Việt]' nên sai nghĩa so với yêu cầu của đề bài."
+
+**Common Mistakes to Avoid:**
+- DO NOT replace <g> and <r> with HTML entities
+- DO NOT use variations like <strong>, <bold>, <span>, etc.
+- DO NOT omit the tags
+- DO NOT explain beyond the required format
+
+**Response Format:** Output only in JSON format with no extra characters (not include \`\`\`json).
 
 **Example Input:**  
 {
-  "structure": "I want to ____.",
-  "mainPhrase": "go out",
-  "optionalPhrase": "play games"
+    "structure": "I'm the ______ from ABC Company.",
+    "mainPhrase": "Sales representative",
+    "optionalPhrase": "Sales director"
 }
 
 **Expected Output:** 
 [
-  {
-    "sentence": "I want to <g>đi ra ngoài</g>.",
-    "answer_1": "go out",
-    "answer_2": "go away",
-    "answer_3": "go inside",
-    "answer_2_description": "<r>go away</r> mang nghĩa là 'rời đi' nên sai nghĩa so với yêu cầu của đề bài.",
-    "answer_3_description": "<r>go inside</r> mang nghĩa là 'đi vào trong' nên sai nghĩa so với yêu cầu của đề bài."
-  },
-  {
-    "sentence": "I want to <g>chơi trò chơi</g>.",
-    "answer_1": "play games",
-    "answer_2": "play sports",
-    "answer_3": "watch games",
-    "answer_2_description": "<r>play sports</r> mang nghĩa là 'chơi thể thao' nên sai nghĩa so với yêu cầu của đề bài.",
-    "answer_3_description": "<r>watch games</r> mang nghĩa là 'xem trò chơi' nên sai nghĩa so với yêu cầu của đề bài."
-  }
+    {
+        "sentence": "<g>Tôi là</g> business representative <g>từ công ty ABC</g>.",
+        "answer_1": "I'm the __ from ABC Company.",
+        "answer_2": "I'm not the __ from ABC Company.",
+        "answer_3": "I don't work for ABC company as __.",
+        "answer_2_description": "<r>I'm not the __ from ABC Company</r> mang nghĩa là 'tôi không phải là __ từ công ty ABC' nên sai nghĩa so với yêu cầu của đề bài.",
+        "answer_3_description": "<r>I don't work for ABC company as __</r> mang nghĩa là 'tôi không làm việc cho công ty ABC với vai trò __' nên sai nghĩa so với yêu cầu của đề bài."
+    },
+    {
+        "sentence": "I'm the <g>Đại diện kinh doanh</g> from ABC Company.",
+        "answer_1": "Sales representative",
+        "answer_2": "Business representative",
+        "answer_3": "Sales agent",
+        "answer_2_description": "<r>Business representative</r> mang nghĩa là 'đại diện kinh doanh chung' nên sai nghĩa so với yêu cầu của đề bài.",
+        "answer_3_description": "<r>Sales agent</r> mang nghĩa là 'đại diện bán hàng hợp đồng' nên sai nghĩa so với yêu cầu của đề bài."
+    },
+    {
+        "sentence": "I'm the <g>Giám đốc kinh doanh</g> from ABC Company.",
+        "answer_1": "Sales director",
+        "answer_2": "Sales manager",
+        "answer_3": "Commercial director",
+        "answer_2_description": "<r>Sales manager</r> mang nghĩa là 'quản lý kinh doanh' nên sai nghĩa so với yêu cầu của đề bài.",
+        "answer_3_description": "<r>Commercial director</r> mang nghĩa là 'giám đốc thương mại' nên sai nghĩa so với yêu cầu của đề bài."
+    }
 ]`;
 
 /**

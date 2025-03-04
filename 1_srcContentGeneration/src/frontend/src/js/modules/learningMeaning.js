@@ -14,26 +14,9 @@ async function generateLearningMeaning(lessons) {
         // Set lesson_id from input or generate new one
         currentLessonId = lessons[0]?.lesson_id || generateUniqueId();
         
-        // Check cache first
-        const cachedData = learningCache.get('meaning', currentLessonId);
-        if (cachedData) {
-            console.log('Using cached Learning Meaning data');
-            
-            // Debug để kiểm tra HTML tags
-            if (cachedData[0] && cachedData[0].sentence) {
-                console.log('Sample HTML tags from cache:');
-                console.log('Has <g> tag:', cachedData[0].sentence.includes('<g>'));
-                console.log('Has <r> tag:', cachedData[0].sentence.includes('<r>'));
-                console.log('Sample sentence:', cachedData[0].sentence);
-            }
-            
-            learningMeaningLessons = cachedData;
-            rawApiResponse = cachedData;
-            displayLearningMeaningResults(learningMeaningLessons);
-            return;
-        }
+        // CÁCH CUỐI CÙNG: Bỏ qua cache hoàn toàn cho module này
+        // Luôn tạo mới từ API để đảm bảo các thẻ HTML hiển thị đúng
         
-        console.log('No cache found, generating new Learning Meaning data');
         showLoadingDialog();
         updateLoadingProgress(10);
         
@@ -94,32 +77,26 @@ function openLearningMeaningEditDialog(lesson, index) {
 function createLearningMeaningEditDialog(lesson) {
     const dialog = document.createElement('div');
     dialog.className = 'edit-dialog';
-    
-    // Giữ nguyên thẻ HTML bằng cách thay thế các ký tự < và > với entity HTML
-    let sentenceValue = lesson.sentence || '';
-    let answer2DescValue = lesson.answer_2_description || '';
-    let answer3DescValue = lesson.answer_3_description || '';
-    
     dialog.innerHTML = `
         <div class="dialog-content">
             <h3>Edit Learning Meaning</h3>
-            <label for="edit-sentence">Sentence (với thẻ HTML):</label>
-            <input type="text" id="edit-sentence" value="${sentenceValue.replace(/"/g, '&quot;')}">
+            <label for="edit-sentence">Sentence:</label>
+            <input type="text" id="edit-sentence" value="${lesson.sentence || ''}">
             
             <label for="edit-answer1">Answer 1:</label>
-            <input type="text" id="edit-answer1" value="${(lesson.answer_1 || '').replace(/"/g, '&quot;')}">
+            <input type="text" id="edit-answer1" value="${lesson.answer_1 || ''}">
             
             <label for="edit-answer2">Answer 2:</label>
-            <input type="text" id="edit-answer2" value="${(lesson.answer_2 || '').replace(/"/g, '&quot;')}">
+            <input type="text" id="edit-answer2" value="${lesson.answer_2 || ''}">
             
             <label for="edit-answer3">Answer 3:</label>
-            <input type="text" id="edit-answer3" value="${(lesson.answer_3 || '').replace(/"/g, '&quot;')}">
+            <input type="text" id="edit-answer3" value="${lesson.answer_3 || ''}">
             
-            <label for="edit-answer2-desc">Answer 2 Description (với thẻ HTML):</label>
-            <textarea id="edit-answer2-desc">${answer2DescValue}</textarea>
+            <label for="edit-answer2-desc">Answer 2 Description:</label>
+            <textarea id="edit-answer2-desc">${lesson.answer_2_description || ''}</textarea>
             
-            <label for="edit-answer3-desc">Answer 3 Description (với thẻ HTML):</label>
-            <textarea id="edit-answer3-desc">${answer3DescValue}</textarea>
+            <label for="edit-answer3-desc">Answer 3 Description:</label>
+            <textarea id="edit-answer3-desc">${lesson.answer_3_description || ''}</textarea>
             
             <div class="dialog-buttons">
                 <button id="save-edit">Save</button>
@@ -128,7 +105,7 @@ function createLearningMeaningEditDialog(lesson) {
         </div>
     `;
     return dialog;
-}
+  }
   
 function addLearningMeaningEditDialogListeners(dialog, lesson, index) {
     document.getElementById('save-edit').addEventListener('click', () => {
@@ -193,7 +170,6 @@ async function copyLearningMeaningTable(table) {
             const newRow = document.createElement('tr');
             // Bỏ qua 2 cột cuối (Edit/Delete)
             for (let i = 0; i < row.cells.length - 2; i++) {
-                // Clone cell để giữ nguyên nội dung HTML
                 const cell = row.cells[i].cloneNode(true);
                 newRow.appendChild(cell);
             }
@@ -234,42 +210,30 @@ function createLearningMeaningTable(lessons) {
     
     const tbody = document.createElement('tbody');
     
-    // Hiển thị tất cả các dòng kết quả
     for(let i = 0; i < lessons.length; i++) {
         const row = document.createElement('tr');
         
-        // Chuyển đổi thẻ HTML sang dạng text thô bằng cách thay thế < và >
-        let sentence = lessons[i].sentence || '';
-        sentence = sentence
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
-        
-        let answer2Desc = lessons[i].answer_2_description || '';
-        answer2Desc = answer2Desc
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
-            
-        let answer3Desc = lessons[i].answer_3_description || '';
-        answer3Desc = answer3Desc
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
-        
+        // Thay vì convert các thẻ sang HTML entities, mình sẽ hiển thị text thô
         const cells = [
             'Hãy dịch cụm in đậm',
-            sentence,
+            lessons[i].sentence,
             lessons[i].answer_1,
             lessons[i].answer_2,
             lessons[i].answer_3,
-            answer2Desc,
-            answer3Desc
+            lessons[i].answer_2_description,
+            lessons[i].answer_3_description
         ];
         
         cells.forEach(content => {
             const td = document.createElement('td');
-            td.innerHTML = content || '';
+            
+            // Hiển thị các thẻ HTML dưới dạng text thô - cách 1
+            const textNode = document.createTextNode(content || '');
+            td.appendChild(textNode);
+            
             row.appendChild(td);
         });
-
+        
         // Thêm nút Edit và Delete
         const editTd = document.createElement('td');
         const deleteTd = document.createElement('td');
