@@ -1,7 +1,8 @@
 import { config } from '../config.js';
-import { showLoadingDialog, hideLoadingDialog } from '../utils.js';
+import { showLoadingDialog, hideLoadingDialog, updateLoadingProgress } from '../utils.js';
 import TableLearningCardTracking from '../trackings/tableLearningCardTracking.js';
 import { generateUniqueId } from '../generateQuestion.js';
+import learningCache from './cache.js';
 
 const API_URL = config.production.apiUrl;
 let learningCardLessons = [];
@@ -17,13 +18,31 @@ async function generateLearningCard(lessons) {
         }
 
         currentLessonId = lessons[0]?.lesson_id || generateUniqueId();
-
+        
+        // Check cache first
+        const cachedData = learningCache.get('card', currentLessonId);
+        if (cachedData) {
+            console.log('Using cached Learning Card data');
+            rawApiResponse = cachedData;
+            learningCardLessons = cachedData.map(item => ({
+                ...item,
+                lesson_id: currentLessonId
+            }));
+            displayLearningCardResults(learningCardLessons);
+            return;
+        }
+        
+        console.log('No cache found, generating new Learning Card data');
         showLoadingDialog();
+        updateLoadingProgress(10);
+        
         const response = await fetch(`${API_URL}/generate-learning-card`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ lessons: lessons })
         });
+        
+        updateLoadingProgress(70);
         
         if (!response.ok) {
             const errorData = await response.json();
@@ -31,6 +50,8 @@ async function generateLearningCard(lessons) {
         }
         
         const data = await response.json();
+        updateLoadingProgress(90);
+        
         if (!data || !Array.isArray(data)) {
             throw new Error('Invalid response format from server');
         }
@@ -40,7 +61,12 @@ async function generateLearningCard(lessons) {
             ...item,
             lesson_id: currentLessonId
         }));
+        
+        // Store in cache
+        learningCache.set('card', data, currentLessonId);
+        
         displayLearningCardResults(learningCardLessons);
+        updateLoadingProgress(100);
     } catch (error) {
         console.error('Error in generateLearningCard:', error);
         alert(`Error generating learning cards: ${error.message}`);

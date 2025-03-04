@@ -2,6 +2,7 @@ import { config } from '../config.js';
 import { showLoadingDialog, hideLoadingDialog, updateLoadingProgress } from '../utils.js';
 import TableLearningMeaningTracking from '../trackings/tableLearningMeaningTracking.js';
 import { storagedLessons, generateUniqueId } from '../generateQuestion.js';
+import learningCache from './cache.js';
 
 const API_URL = config.production.apiUrl;
 let learningMeaningLessons = [];
@@ -10,42 +11,47 @@ let currentLessonId = null;
 
 async function generateLearningMeaning(lessons) {
     try {
-        const updatedLessons = storagedLessons.map(lesson => ({
-            ...lesson,
-            "structure-vi": lesson["structure-vi"],
-            "main phrase-vi": lesson["main phrase-vi"],
-            "optional phrase 1-vi": lesson["optional phrase 1-vi"],
-            "optional phrase 2-vi": lesson["optional phrase 2-vi"]
-        }));
-
-        currentLessonId = storagedLessons?.[0]?.lesson_id || generateUniqueId();
-
-        showLoadingDialog();
+        // Set lesson_id from input or generate new one
+        currentLessonId = lessons[0]?.lesson_id || generateUniqueId();
         
-        // Giả lập các bước xử lý
-        updateLoadingProgress(10); // Bắt đầu gửi request
+        // Check cache first
+        const cachedData = learningCache.get('meaning', currentLessonId);
+        if (cachedData) {
+            console.log('Using cached Learning Meaning data');
+            learningMeaningLessons = cachedData;
+            rawApiResponse = cachedData; // We also cache the raw response
+            displayLearningMeaningResults(learningMeaningLessons);
+            return;
+        }
+        
+        console.log('No cache found, generating new Learning Meaning data');
+        showLoadingDialog();
+        updateLoadingProgress(10);
         
         const response = await fetch(`${API_URL}/generate-learning-meaning`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ lessons: updatedLessons })
+            body: JSON.stringify({ lessons })
         });
         
-        updateLoadingProgress(50); // Đã nhận response
+        updateLoadingProgress(70);
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+        }
         
         const data = await response.json();
-        updateLoadingProgress(75); // Đã parse JSON
+        updateLoadingProgress(90);
         
         rawApiResponse = data;
-        learningMeaningLessons = data.map(item => ({
-            ...item,
-            lesson_id: currentLessonId
-        }));
+        learningMeaningLessons = data;
         
-        updateLoadingProgress(90); // Gần xong
+        // Store in cache
+        learningCache.set('meaning', data, currentLessonId);
         
         displayLearningMeaningResults(learningMeaningLessons);
-        updateLoadingProgress(100); // Hoàn thành
+        updateLoadingProgress(100);
     } catch (error) {
         console.error('Error:', error);
         alert(error.message);

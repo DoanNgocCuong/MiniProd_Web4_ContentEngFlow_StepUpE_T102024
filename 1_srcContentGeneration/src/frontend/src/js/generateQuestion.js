@@ -3,6 +3,7 @@
 import { config } from './config.js';
 import { showLoadingDialog, hideLoadingDialog } from './utils.js';
 import TableDraftTracking from './trackings/tableDraftTracking.js';
+import learningCache from './modules/cache.js';
 
 const API_URL = config.production.apiUrl;
 let storagedLessons;
@@ -16,6 +17,9 @@ let rawResponseTemp;
  */
 
 async function handleGenerateClick() {
+    // Xóa cache khi tạo câu hỏi mới
+    learningCache.invalidateForNewLesson();
+    
     const activeTab = document.querySelector('.tab-content.active');
     const isStandardForm = activeTab.id === 'standard-form';
 

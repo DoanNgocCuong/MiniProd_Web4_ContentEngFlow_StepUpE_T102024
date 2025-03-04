@@ -7,6 +7,7 @@ import { generateLearningCard } from './modules/learningCard.js';
 import { generateLearningFlexible } from './modules/learningFlexible.js';
 import { generateLearningQNA } from './modules/learningQNA.js';
 import { initializeFeedback } from './feedback.js';
+import learningCache from './modules/cache.js';
 
 /**
  * ---------------------------------------------------------------------------------------------------------
@@ -69,25 +70,28 @@ function updateTabState(tabBtns, tabContents, activeTabId) {
  */
 
 document.querySelectorAll('.tab-btn').forEach(button => {
-   button.addEventListener('click', () => {
-       // Remove active class from all buttons and hide all content
+   button.addEventListener('click', function() {
+       const tabId = this.dataset.tab;
+       
+       // Active tab trong UI
        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+       this.classList.add('active');
+       
        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-
-       // Add active class to the clicked button and show the corresponding content
-       button.classList.add('active');
-       const tabId = button.getAttribute('data-tab');
        document.getElementById(tabId).classList.add('active');
 
-       // Call the appropriate function based on the tab clicked
-       if (tabId === 'learning-meaning') {
-           generateLearningMeaning(storagedLessons); // Call the function for Learning Meaning
-       } else if (tabId === 'learning-card') {
-           generateLearningCard(storagedLessons); // Call the function for Learning Card
-       } else if (tabId === 'flexible-phrase') {
-           generateLearningFlexible(storagedLessons); // Call the function for Flexible Phrase
-       } else if (tabId === 'learning-qna') {
-           generateLearningQNA(storagedLessons); // Call the function for Q&A
+       // Kiểm tra nếu đã có dữ liệu từ generateQuestion
+       if (storagedLessons && storagedLessons.length > 0) {
+           // Call the appropriate function based on the tab clicked
+           if (tabId === 'learning-meaning') {
+               generateLearningMeaning(storagedLessons); // Cache sẽ được kiểm tra trong hàm này
+           } else if (tabId === 'learning-card') {
+               generateLearningCard(storagedLessons); // Cache sẽ được kiểm tra trong hàm này
+           } else if (tabId === 'flexible-phrase') {
+               generateLearningFlexible(storagedLessons); // Cache sẽ được kiểm tra trong hàm này
+           } else if (tabId === 'learning-qna') {
+               generateLearningQNA(storagedLessons); // Cache sẽ được kiểm tra trong hàm này
+           }
        }
    });
 });
