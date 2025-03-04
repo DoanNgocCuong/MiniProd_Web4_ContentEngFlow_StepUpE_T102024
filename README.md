@@ -28,3 +28,17 @@ To https://github.com/Hngdcmnh/content-the-coach
 ---
 ![image_UpdateProcessBar_DangThanhThayChoHinhTron.png](image_UpdateProcessBar_DangThanhThayChoHinhTron.png)
 ---
+
+# Tối ưu XỬ LÝ. 
+
+1. TỐI ƯU DOCKER TỪ 100s còn 2-10s 
+2. Tối ưu = max workers = 5 API cùng lúc. 
+3. Tối ưu Cache: 
+- Tự động làm mới cache khi có thay đổi dữ liệu. 
+- Gen sẵn tất cả bài học ngay sau khi Gen Questions
+- Chuyển đổi tab tức thì không cần đợi API
+- Tăng tốc x2-x3 quá trình sinh nội dung mới
+
+
+
+
