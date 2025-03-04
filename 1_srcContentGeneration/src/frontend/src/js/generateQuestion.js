@@ -427,7 +427,7 @@ function regenerateAllLearningModules() {
     const activeTab = document.querySelector('.tab-content.active');
     const activeTabId = activeTab.id;
     
-    // Đảm bảo storagedLessons chưa bị thay đổi nếu đã có dữ liệu
+    // Đảm bảo storagedLessons có dữ liệu
     if (!storagedLessons || storagedLessons.length === 0) {
         console.log('No lessons available to regenerate learning modules');
         return;
@@ -437,14 +437,12 @@ function regenerateAllLearningModules() {
     setTimeout(() => {
         console.log('Regenerating all learning modules with updated questions');
         
-        // Bảo toàn dữ liệu đầu vào, không thay đổi
-        const lessonsCopy = JSON.parse(JSON.stringify(storagedLessons));
-        
-        // Truyền dữ liệu gốc không thay đổi cho các module
-        generateLearningMeaning(lessonsCopy);
-        generateLearningCard(lessonsCopy);
-        generateLearningFlexible(lessonsCopy);
-        generateLearningQNA(lessonsCopy);
+        // Cách sao chép an toàn hơn cho dữ liệu chứa HTML
+        // Truyền trực tiếp storagedLessons cho các module để tránh mất dữ liệu HTML
+        generateLearningMeaning(storagedLessons);
+        generateLearningCard(storagedLessons);
+        generateLearningFlexible(storagedLessons);
+        generateLearningQNA(storagedLessons);
         
         console.log('All learning modules have been refreshed with new question data');
     }, 300);

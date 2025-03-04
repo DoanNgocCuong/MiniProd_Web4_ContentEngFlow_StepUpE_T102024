@@ -18,8 +18,13 @@ async function generateLearningMeaning(lessons) {
         const cachedData = learningCache.get('meaning', currentLessonId);
         if (cachedData) {
             console.log('Using cached Learning Meaning data');
+            // Kiểm tra một số mẫu dữ liệu để đảm bảo các thẻ HTML còn nguyên
+            if (cachedData[0] && cachedData[0].sentence) {
+                console.log('Sample data from cache:', cachedData[0].sentence);
+            }
+            
             learningMeaningLessons = cachedData;
-            rawApiResponse = cachedData; // We also cache the raw response
+            rawApiResponse = cachedData;
             displayLearningMeaningResults(learningMeaningLessons);
             return;
         }
@@ -224,9 +229,19 @@ function createLearningMeaningTable(lessons) {
             lessons[i].answer_3_description   // Giữ nguyên các thẻ <r>
         ];
         
+        // Debug để kiểm tra các thẻ HTML
+        if (lessons[i].sentence && (lessons[i].sentence.includes('<g>') || lessons[i].sentence.includes('<r>'))) {
+            console.log('HTML tags found in sentence:', lessons[i].sentence);
+        }
+        
         cells.forEach(content => {
             const td = document.createElement('td');
-            td.innerHTML = content || '';
+            // Kiểm tra và đảm bảo rằng content là string
+            if (content && typeof content === 'string') {
+                td.innerHTML = content;
+            } else {
+                td.textContent = content || '';
+            }
             row.appendChild(td);
         });
   

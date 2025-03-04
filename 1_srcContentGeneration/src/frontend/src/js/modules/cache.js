@@ -31,15 +31,20 @@ class LearningCache {
             return;
         }
         
+        // Xử lý đặc biệt cho module 'meaning' để bảo vệ HTML tags
+        let processedData = data;
+        if (module === 'meaning') {
+            // Mã hóa các thẻ HTML để an toàn khi lưu vào JSON
+            processedData = this.encodeHtmlTags(data);
+            console.log('HTML tags encoded for safe storage in meaning cache');
+        }
+        
         // Thêm thông tin thời gian cache và lesson_id
         const cacheData = {
-            data: data,
+            data: processedData,
             timestamp: Date.now(),
             lesson_id: lesson_id
         };
-        
-        // Lưu ý đặc biệt: không xử lý hoặc làm sạch dữ liệu HTML trong module meaning
-        // để bảo toàn các thẻ <g> và <r>
         
         const key = this.CACHE_PREFIX + module;
         localStorage.setItem(key, JSON.stringify(cacheData));
@@ -69,8 +74,15 @@ class LearningCache {
                 return null;
             }
             
+            // Giải mã HTML tags nếu là module meaning
+            let resultData = cachedData.data;
+            if (module === 'meaning') {
+                resultData = this.decodeHtmlTags(resultData);
+                console.log('HTML tags decoded from meaning cache');
+            }
+            
             console.log(`Cache found for ${module}, cached at: ${new Date(cachedData.timestamp).toLocaleTimeString()}`);
-            return cachedData.data;
+            return resultData;
         } catch (e) {
             console.error(`Error parsing cache for ${module}:`, e);
             return null;
@@ -90,6 +102,69 @@ class LearningCache {
     invalidateForNewLesson() {
         this.clearAll();
         console.log('Cache invalidated for new lesson');
+    }
+
+    // Thêm các phương thức encode/decode HTML tags
+    encodeHtmlTags(data) {
+        if (!Array.isArray(data)) return data;
+        
+        return data.map(item => {
+            const newItem = {...item};
+            
+            // Đặc biệt xử lý các trường có thể chứa HTML
+            if (newItem.sentence) {
+                newItem.sentence = newItem.sentence
+                    .replace(/<g>/g, '___G_START___')
+                    .replace(/<\/g>/g, '___G_END___')
+                    .replace(/<r>/g, '___R_START___')
+                    .replace(/<\/r>/g, '___R_END___');
+            }
+            
+            if (newItem.answer_2_description) {
+                newItem.answer_2_description = newItem.answer_2_description
+                    .replace(/<r>/g, '___R_START___')
+                    .replace(/<\/r>/g, '___R_END___');
+            }
+            
+            if (newItem.answer_3_description) {
+                newItem.answer_3_description = newItem.answer_3_description
+                    .replace(/<r>/g, '___R_START___')
+                    .replace(/<\/r>/g, '___R_END___');
+            }
+            
+            return newItem;
+        });
+    }
+
+    decodeHtmlTags(data) {
+        if (!Array.isArray(data)) return data;
+        
+        return data.map(item => {
+            const newItem = {...item};
+            
+            // Đặc biệt xử lý các trường có thể chứa HTML
+            if (newItem.sentence) {
+                newItem.sentence = newItem.sentence
+                    .replace(/___G_START___/g, '<g>')
+                    .replace(/___G_END___/g, '</g>')
+                    .replace(/___R_START___/g, '<r>')
+                    .replace(/___R_END___/g, '</r>');
+            }
+            
+            if (newItem.answer_2_description) {
+                newItem.answer_2_description = newItem.answer_2_description
+                    .replace(/___R_START___/g, '<r>')
+                    .replace(/___R_END___/g, '</r>');
+            }
+            
+            if (newItem.answer_3_description) {
+                newItem.answer_3_description = newItem.answer_3_description
+                    .replace(/___R_START___/g, '<r>')
+                    .replace(/___R_END___/g, '</r>');
+            }
+            
+            return newItem;
+        });
     }
 }
 
