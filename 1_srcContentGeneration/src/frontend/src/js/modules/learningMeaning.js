@@ -18,9 +18,13 @@ async function generateLearningMeaning(lessons) {
         const cachedData = learningCache.get('meaning', currentLessonId);
         if (cachedData) {
             console.log('Using cached Learning Meaning data');
-            // Kiểm tra một số mẫu dữ liệu để đảm bảo các thẻ HTML còn nguyên
+            
+            // Debug để kiểm tra HTML tags
             if (cachedData[0] && cachedData[0].sentence) {
-                console.log('Sample data from cache:', cachedData[0].sentence);
+                console.log('Sample HTML tags from cache:');
+                console.log('Has <g> tag:', cachedData[0].sentence.includes('<g>'));
+                console.log('Has <r> tag:', cachedData[0].sentence.includes('<r>'));
+                console.log('Sample sentence:', cachedData[0].sentence);
             }
             
             learningMeaningLessons = cachedData;
@@ -54,6 +58,13 @@ async function generateLearningMeaning(lessons) {
         
         // Store in cache
         learningCache.set('meaning', data, currentLessonId);
+        
+        // Khi nhận dữ liệu từ API thành công, kiểm tra HTML tags
+        if (data && data.length > 0 && data[0].sentence) {
+            console.log('API response contains HTML tags:');
+            console.log('Has <g> tag:', data[0].sentence.includes('<g>'));
+            console.log('Has <r> tag:', data[0].sentence.includes('<r>'));
+        }
         
         displayLearningMeaningResults(learningMeaningLessons);
         updateLoadingProgress(100);
@@ -216,35 +227,51 @@ function createLearningMeaningTable(lessons) {
     
     const tbody = document.createElement('tbody');
     
-    // Hiển thị tất cả các dòng kết quả thay vì theo cặp
+    // Hiển thị tất cả các dòng kết quả
     for(let i = 0; i < lessons.length; i++) {
         const row = document.createElement('tr');
+        
+        // Debug thêm
+        if (lessons[i].sentence) {
+            console.log(`Row ${i} sentence contains g tag:`, lessons[i].sentence.includes('<g>'));
+            console.log(`Row ${i} sentence contains r tag:`, lessons[i].sentence.includes('<r>'));
+        }
+        
         const cells = [
             'Hãy dịch cụm in đậm',
-            lessons[i].sentence,          // Giữ nguyên các thẻ <g>, <r>
+            lessons[i].sentence,
             lessons[i].answer_1,
             lessons[i].answer_2,
             lessons[i].answer_3,
-            lessons[i].answer_2_description,  // Giữ nguyên các thẻ <r>
-            lessons[i].answer_3_description   // Giữ nguyên các thẻ <r>
+            lessons[i].answer_2_description,
+            lessons[i].answer_3_description
         ];
-        
-        // Debug để kiểm tra các thẻ HTML
-        if (lessons[i].sentence && (lessons[i].sentence.includes('<g>') || lessons[i].sentence.includes('<r>'))) {
-            console.log('HTML tags found in sentence:', lessons[i].sentence);
-        }
         
         cells.forEach(content => {
             const td = document.createElement('td');
-            // Kiểm tra và đảm bảo rằng content là string
             if (content && typeof content === 'string') {
+                // Đảm bảo thẻ HTML được hiển thị đúng
                 td.innerHTML = content;
+                
+                // Thêm style cho các thẻ HTML
+                const gTags = td.querySelectorAll('g');
+                const rTags = td.querySelectorAll('r');
+                
+                gTags.forEach(tag => {
+                    tag.style.fontWeight = 'bold';
+                    tag.style.color = 'green';
+                });
+                
+                rTags.forEach(tag => {
+                    tag.style.fontWeight = 'bold';
+                    tag.style.color = 'red';
+                });
             } else {
                 td.textContent = content || '';
             }
             row.appendChild(td);
         });
-  
+        
         // Thêm nút Edit và Delete
         const editTd = document.createElement('td');
         const deleteTd = document.createElement('td');
