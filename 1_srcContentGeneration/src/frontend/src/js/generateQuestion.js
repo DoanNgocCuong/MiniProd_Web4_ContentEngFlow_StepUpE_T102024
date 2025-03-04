@@ -423,22 +423,8 @@ function updateLesson(lesson) {
 
 // Thêm hàm mới để tạo lại tất cả các module học tập
 function regenerateAllLearningModules() {
-    // Xác định tab đang active
-    const activeTab = document.querySelector('.tab-content.active');
-    const activeTabId = activeTab.id;
-    
-    // Đảm bảo storagedLessons có dữ liệu
-    if (!storagedLessons || storagedLessons.length === 0) {
-        console.log('No lessons available to regenerate learning modules');
-        return;
-    }
-    
-    // Luôn tạo lại dữ liệu cho tất cả các module
     setTimeout(() => {
-        console.log('Regenerating all learning modules with updated questions');
-        
-        // Cách sao chép an toàn hơn cho dữ liệu chứa HTML
-        // Truyền trực tiếp storagedLessons cho các module để tránh mất dữ liệu HTML
+        // Truyền trực tiếp storagedLessons cho các module
         generateLearningMeaning(storagedLessons);
         generateLearningCard(storagedLessons);
         generateLearningFlexible(storagedLessons);
