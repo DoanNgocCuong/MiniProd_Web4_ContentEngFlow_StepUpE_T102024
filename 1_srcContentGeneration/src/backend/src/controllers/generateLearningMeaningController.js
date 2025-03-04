@@ -10,12 +10,15 @@ const LEARNING_MEANING_PROMPT = `**Prompt:**
 You are an expert at creating English exercise content. You will receive \`CẤU TRÚC\`, \`MAIN PHRASE\`, and \`OTHER PHRASE\` inputs from the user.
 
 **Instructions:**  
-1. For each phrase:
+1. Output must include exactly 3 learning objects: one for the main phrase, one for optional phrase 1, and one for optional phrase 2 (if available).
+2. For each phrase:
    - Use \`answer_1\` as the exact \`MAIN PHRASE\` or \`OTHER PHRASE\`.
    - Provide alternatives for \`answer_2\` and \`answer_3\` with phrases close in meaning but incorrect.
-2. For each incorrect answer:
+3. For each incorrect answer:
    - Feedback format: "<r>[English word]</r> mang nghĩa là "[Nghĩa tiếng Việt]" nên sai nghĩa so với yêu cầu của đề bài." 
-
+   - FEEDBACK MUST FOLLOW THIS FORMAT WITH THE WRONG WORD, WITHOUT ANY FURTHER EXPLANATION 
+   (Sẽ không giải thích thêm như : <r>Hey</r> mang nghĩa là 'chào' nhưng thường được dùng trong ngữ cảnh thân mật hơn nên sai nghĩa so với yêu cầu của đề bài.
+   mà chỉ giải thích là: <r>Hey</r> mang nghĩa là 'chào' nên sai nghĩa so với yêu cầu của đề bài.)
 **Response Format:** Output only in JSON format with no extra characters (not include \`\`\`json).
 
 **Example Input:**  
@@ -25,8 +28,15 @@ You are an expert at creating English exercise content. You will receive \`CẤU
     "optionalPhrase": "Sales director"
 }
 
-**Expected Output:** (Feedback FORMAT: <r>[English word]</r> mang nghĩa là "[Nghĩa tiếng Việt]" nên sai nghĩa so với yêu cầu của đề bài.)
-[
+**Expected Output:** 
+[    {
+        "sentence": "<g>Tôi là</g> business representative <g>từ công ty ABC</g>.",
+        "answer_1": "I'm the __ from ABC Company.",
+        "answer_2": "I'm not the __ from ABC Company.",
+        "answer_3": "I don't work for ABC company as __.",
+        "answer_2_description": "<r>I'm not the __ from ABC Company</r> mang nghĩa là 'tôi không phải là __ từ công ty ABC' nên sai nghĩa so với yêu cầu của đề bài.",
+        "answer_3_description": "<r>I don't work for ABC company as __</r> mang nghĩa là 'tôi không làm việc cho công ty ABC với vai trò __' nên sai nghĩa so với yêu cầu của đề bài."
+    },
     {
         "sentence": "I'm the <g>Đại diện kinh doanh</g> from ABC Company.",
         "answer_1": "Sales representative",
@@ -85,7 +95,7 @@ async function processLesson(lesson) {
     const cleanedContent = content.trim().replace(/```json|```/g, '');
     const lessonResults = JSON.parse(cleanedContent);
     
-    if (Array.isArray(lessonResults) && lessonResults.length === 2) {
+    if (Array.isArray(lessonResults) && lessonResults.length >= 2) {
         lessonResults[0].sentence = lessonResults[0].sentence.replace(
             /<g>.*?<\/g>/,
             `<g>${lesson["main phrase-vi"]}</g>`
@@ -95,6 +105,13 @@ async function processLesson(lesson) {
             lessonResults[1].sentence = lessonResults[1].sentence.replace(
                 /<g>.*?<\/g>/,
                 `<g>${lesson["optional phrase 1-vi"]}</g>`
+            );
+        }
+        
+        if (lessonResults[2] && lesson["optional phrase 2-vi"]) {
+            lessonResults[2].sentence = lessonResults[2].sentence.replace(
+                /<g>.*?<\/g>/,
+                `<g>${lesson["optional phrase 2-vi"]}</g>`
             );
         }
 
@@ -112,15 +129,15 @@ async function processLesson(lesson) {
             return isValid;
         });
 
-        if (validResults.length === 2) {
+        if (validResults.length >= 2) {
             return validResults;
         } else {
-            console.error('Expected 2 valid results, got:', validResults.length);
+            console.error('Expected at least 2 valid results, got:', validResults.length);
             throw new Error('Invalid number of results from OpenAI');
         }
     } else {
         console.error('Invalid response format:', lessonResults);
-        throw new Error('Response must be an array with exactly 2 learning meaning objects');
+        throw new Error('Response must be an array with at least 2 learning meaning objects');
     }
 }
 

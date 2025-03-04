@@ -24,3 +24,7 @@ remote: Resolving deltas: 100% (19/19), done.
 To https://github.com/Hngdcmnh/content-the-coach
    4b5a6f6..123d09d  deploy1.4 -> deploy1.4
 (base) PS D:\OneDrive - Hanoi University of Science and Technology\GIT2\MiniProd_ContentEngFlow_StepUpE_T102024> 
+
+---
+![image_UpdateProcessBar_DangThanhThayChoHinhTron.png](image_UpdateProcessBar_DangThanhThayChoHinhTron.png)
+---

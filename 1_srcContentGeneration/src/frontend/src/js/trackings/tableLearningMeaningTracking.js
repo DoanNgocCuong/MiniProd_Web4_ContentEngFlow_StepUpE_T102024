@@ -6,46 +6,32 @@ let meaningCounter = 1;
 class TableLearningMeaningTracking {
     static async trackMeaningGeneration(inputData, rawResponse, finalTable) {
         try {
-            // 1. Validate lesson_id tồn tại
-            if (!inputData || !inputData.lesson_id) {
-                throw new Error('Invalid input data: lesson_id is required');
-            }
-
-            // 2. Tạo meaning_id mới cho mỗi lần tracking
-            const meaning_id = `meaning_${Date.now()}_${meaningCounter++}`;
-
-            // 3. Format data với lesson_id từ input
-            const meaningData = {
-                meaning_id: meaning_id,                          // ID unique cho mỗi lần generate meaning
-                lesson_id: inputData.lesson_id,                  // Foreign key liên kết với bài học gốc
-                lesson_input: JSON.stringify(inputData.lessons), // Data gốc từ generateQuestion
-                raw: JSON.stringify(rawResponse),                // Response từ API meaning
-                final: JSON.stringify(finalTable)                // Data sau khi edit/delete
-            };
-
-            console.log('Submitting meaning data:', meaningData);
-
-            // 4. Submit lên server
-            const response = await fetch(`${API_URL}/submit-learning-meaning`, {
+            console.log(`Tracking ${finalTable.length} learning meaning results`);
+            
+            // Tạo meaning_id duy nhất cho tất cả các kết quả của bài học này
+            const meaning_id = `MEANING_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+            
+            // Gọi API để lưu dữ liệu
+            const response = await fetch(`${API_URL}/submit-meaning`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(meaningData)
+                body: JSON.stringify({
+                    meaning_id: meaning_id,
+                    lesson_id: inputData.lesson_id,
+                    lesson_input: JSON.stringify(inputData.lessons),
+                    raw: rawResponse,
+                    final: finalTable
+                })
             });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(`Failed to submit meaning tracking: ${errorData.error || response.statusText}`);
-            }
-
-            console.log('Meaning tracking submitted successfully');
-            
-            return meaning_id;
-
+            const data = await response.json();
+            console.log('Tracking response:', data);
+            return data;
         } catch (error) {
-            console.error('Error in trackMeaningGeneration:', error);
-            throw error;
+            console.error('Error tracking meaning generation:', error);
+            return null;
         }
     }
 }

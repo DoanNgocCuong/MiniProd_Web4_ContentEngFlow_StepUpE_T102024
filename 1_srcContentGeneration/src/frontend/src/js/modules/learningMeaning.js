@@ -217,10 +217,10 @@ function createLearningMeaningTable(lessons) {
     
     const tbody = document.createElement('tbody');
     
-    for(let i = 0; i < lessons.length; i += 2) {
-        // Main phrase row
-        const mainPhraseRow = document.createElement('tr');
-        const mainCells = [
+    // Hiển thị tất cả các dòng kết quả thay vì theo cặp
+    for(let i = 0; i < lessons.length; i++) {
+        const row = document.createElement('tr');
+        const cells = [
             'Hãy dịch cụm in đậm',
             lessons[i].sentence,          // Giữ nguyên các thẻ <g>, <r>
             lessons[i].answer_1,
@@ -230,10 +230,10 @@ function createLearningMeaningTable(lessons) {
             lessons[i].answer_3_description   // Giữ nguyên các thẻ <r>
         ];
         
-        mainCells.forEach(content => {
+        cells.forEach(content => {
             const td = document.createElement('td');
-            td.textContent = content || ''; 
-            mainPhraseRow.appendChild(td);
+            td.innerHTML = content || ''; // Dùng innerHTML để hiển thị đúng các thẻ <g>, <r>
+            row.appendChild(td);
         });
   
         // Thêm nút Edit và Delete
@@ -254,58 +254,15 @@ function createLearningMeaningTable(lessons) {
         
         editTd.appendChild(editButton);
         deleteTd.appendChild(deleteButton);
-        mainPhraseRow.appendChild(editTd);
-        mainPhraseRow.appendChild(deleteTd);
+        row.appendChild(editTd);
+        row.appendChild(deleteTd);
         
-        tbody.appendChild(mainPhraseRow);
-  
-        // Optional phrase row
-        if (lessons[i + 1]) {
-            const optionalPhraseRow = document.createElement('tr');
-            const optionalCells = [
-                'Hãy dịch cụm in đậm',
-                lessons[i + 1].sentence,          // Giữ nguyên các thẻ <g>, <r>
-                lessons[i + 1].answer_1,
-                lessons[i + 1].answer_2,
-                lessons[i + 1].answer_3,
-                lessons[i + 1].answer_2_description,  // Giữ nguyên các thẻ <r>
-                lessons[i + 1].answer_3_description   // Giữ nguyên các thẻ <r>
-            ];
-            
-            optionalCells.forEach(content => {
-                const td = document.createElement('td');
-                td.textContent = content || ''; // Dùng textContent thay vì innerHTML để giữ nguyên các thẻ <g>, <r>
-                optionalPhraseRow.appendChild(td);
-            });
-  
-            // Thêm nút Edit và Delete cho optional phrase
-            const optEditTd = document.createElement('td');
-            const optDeleteTd = document.createElement('td');
-            
-            const optEditButton = document.createElement('button');
-            optEditButton.className = 'edit-btn';
-            optEditButton.textContent = 'Edit';
-            optEditButton.dataset.index = i + 1;
-            optEditButton.onclick = () => openLearningMeaningEditDialog(lessons[i + 1], i + 1);
-            
-            const optDeleteButton = document.createElement('button');
-            optDeleteButton.className = 'delete-btn';
-            optDeleteButton.textContent = 'Delete';
-            optDeleteButton.dataset.index = i + 1;
-            optDeleteButton.onclick = () => deleteLearningMeaningLesson(i + 1, lessons);
-            
-            optEditTd.appendChild(optEditButton);
-            optDeleteTd.appendChild(optDeleteButton);
-            optionalPhraseRow.appendChild(optEditTd);
-            optionalPhraseRow.appendChild(optDeleteTd);
-            
-            tbody.appendChild(optionalPhraseRow);
-        }
+        tbody.appendChild(row);
     }
     
     table.appendChild(tbody);
     return table;
-  }
+}
   // Hàm tạo header cho bảng learning meaning - thêm 2 cột Actions
 function createLearningMeaningTableHeader() {
     const thead = document.createElement('thead');
