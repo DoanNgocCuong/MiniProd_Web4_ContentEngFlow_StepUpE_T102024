@@ -1,5 +1,7 @@
 version: '3.8'
 
+name: content-generation
+
 services:
   backend:
     build:
@@ -17,7 +19,7 @@ services:
       - CORS_ORIGIN=http://103.253.20.13:25007
     restart: unless-stopped
     networks:
-      - app-network
+      - content-gen-network
     healthcheck:
       test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/health', (r) => process.exit(r.statusCode > 299))"]
       interval: 10s
@@ -45,7 +47,7 @@ services:
         condition: service_healthy
     restart: unless-stopped
     networks:
-      - app-network
+      - content-gen-network
     healthcheck:
       test: ["CMD", "node", "-e", "require('http').get('http://localhost:25007', (r) => process.exit(r.statusCode > 299))"]
       interval: 10s
@@ -58,5 +60,5 @@ volumes:
   node_modules_frontend:
 
 networks:
-  app-network:
-    driver: bridge
+  content-gen-network:
+    name: content-gen-network
