@@ -62,7 +62,7 @@ cường ơi, check lại giúp chị cái web gen câu hỏi của The Coach nh
 - UUer input toan bo profile => ... 
 - Full luong tu 
 ```
-1. MỤC TIÊU CHÍNH THÔNG LUỒNG
+2. MỤC TIÊU CHÍNH THÔNG LUỒNG
 ✅ Input: User Profile
 ✅ Gen 10 Chủ đề + 50 Tình huống + 1 ✅ QC tự động LLMs check 
 ✅ Gen 4 bài Chunking mỗi tình huống (15 tình huống đầu A2, 15 tình huống sau B1, 10 tình huống cuối B2 -> mục tiêu tránh trùng lặp).  

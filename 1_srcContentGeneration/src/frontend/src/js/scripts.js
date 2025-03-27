@@ -7,7 +7,7 @@ import { generateLearningCard } from './modules/learningCard.js';
 import { generateLearningFlexible } from './modules/learningFlexible.js';
 import { generateLearningQNA } from './modules/learningQNA.js';
 import { initializeFeedback } from './feedback.js';
-import learningCache from './modules/cache.js';
+import { learningPathManager } from './learningPath.js';
 
 /**
  * ---------------------------------------------------------------------------------------------------------
@@ -16,10 +16,66 @@ import learningCache from './modules/cache.js';
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM Content Loaded');
+
+    // Kiểm tra từng element
+    const generateBtn = document.getElementById('generate-btn');
+    const copySelectedBtn = document.getElementById('copy-selected-lessons');
+    const userProfileForm = document.getElementById('user-profile-form');
+
+    // Log để debug
+    console.log('Elements found:', {
+        generateBtn: !!generateBtn,
+        copySelectedBtn: !!copySelectedBtn,
+        userProfileForm: !!userProfileForm
+    });
+
+    // Chỉ thêm event listeners nếu elements tồn tại
+    if (generateBtn) {
+        generateBtn.addEventListener('click', handleGenerateClick);
+    } else {
+        console.error('Generate button not found');
+    }
+
+    if (copySelectedBtn) {
+        copySelectedBtn.addEventListener('click', copyCheckedLessons);
+    } else {
+        console.error('Copy selected button not found');
+    }
+
+    if (userProfileForm) {
+        console.log('Adding submit listener to user profile form');
+        userProfileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            console.log('Form submitted');
+            
+            const formData = {
+                industry: document.getElementById('industry')?.value || '',
+                job: document.getElementById('job')?.value || '',
+                englishLevel: document.getElementById('englishLevel')?.value || '',
+                learningGoals: document.getElementById('learningGoals')?.value || ''
+            };
+            
+            console.log('Form data:', formData);
+            
+            const userProfile = Object.entries(formData)
+                .map(([key, value]) => `${key}: [${value}]`)
+                .join('\n');
+            
+            try {
+                await learningPathManager.generatePath(userProfile);
+            } catch (error) {
+                console.error('Error generating learning path:', error);
+                alert('Error generating learning path: ' + error.message);
+            }
+        });
+    } else {
+        console.error('User profile form not found');
+    }
+
+    // Khởi tạo các chức năng khác nếu cần
     initializeTabs();
-    initializeFeedback(); // Initialize feedback functionality
-    document.getElementById('generate-btn').addEventListener('click', handleGenerateClick);
-    document.getElementById('copy-selected-lessons').addEventListener('click', copyCheckedLessons);
+    initializeFeedback();
 });
 
 // Hàm khởi tạo các tab trong giao diện

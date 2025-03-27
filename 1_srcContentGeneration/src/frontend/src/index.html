@@ -5,8 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Question Generator</title>
+    <title>Learning Path Generator</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/learningPath.css">
 </head>
 
 <body>
@@ -22,6 +23,33 @@
                 <button id="send-feedback-btn">Send Feedback</button>
             </div>
         </div>
+
+        <!-- User Profile Section - Moved to top -->
+        <section id="user-profile-section">
+            <h2>User Profile</h2>
+            <div class="user-profile-form">
+                <form id="user-profile-form">
+                    <div class="form-group">
+                        <label for="industry">Industry:</label>
+                        <input type="text" id="industry" placeholder="[IT]" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="job">Job:</label>
+                        <input type="text" id="job" placeholder="[CTO]" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="englishLevel">English Level:</label>
+                        <input type="text" id="englishLevel" placeholder="[A2]" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="learningGoals">Learning Goals:</label>
+                        <textarea id="learningGoals" placeholder="[workplace communication] [job interviews] [salary review]" required></textarea>
+                    </div>
+                    <button type="submit">Generate Learning Path</button>
+                </form>
+            </div>
+            <div id="learning-path-container"></div>
+        </section>
 
         <section id="input-section">
             <h2>Generate Questions</h2>
@@ -48,15 +76,15 @@
 
                     <label for="extra-requirements">Extra Requirements:</label>
                     <textarea id="extra-requirements" name="extra-requirements"></textarea>
-            </div>
+                </div>
 
-            <div id="custom-prompt" class="tab-content">
-                <label for="custom-prompt-text">Custom Prompt:</label>
-                <textarea id="custom-prompt-text" name="custom-prompt-text" rows="6"
-                    placeholder="Enter your custom prompt here..."></textarea>
-            </div>
-            <!-- Generate Questions Button -->
-            <button type="button" id="generate-btn">Generate Questions</button>
+                <div id="custom-prompt" class="tab-content">
+                    <label for="custom-prompt-text">Custom Prompt:</label>
+                    <textarea id="custom-prompt-text" name="custom-prompt-text" rows="6"
+                        placeholder="Enter your custom prompt here..."></textarea>
+                </div>
+                <!-- Generate Questions Button -->
+                <button type="button" id="generate-btn">Generate Questions</button>
             </form>
         </section>
 
@@ -72,18 +100,17 @@
                 <button class="tab-btn" data-tab="learning-card">Learning Card</button>
                 <button class="tab-btn" data-tab="flexible-phrase">Flexible Phrase</button>
                 <button class="tab-btn" data-tab="learning-qna">Q&A</button>
+                <button class="tab-btn" data-tab="learning-path">Learning Path</button>
             </div>
             
             <div id="exercise-content">
                 <div id="learning-meaning" class="tab-content active">
                     <textarea id="custom-prompt-text" rows="4" placeholder="Enter your custom prompt here..."></textarea>
                     <div id="learning-meaning-container"></div>
-
                 </div>
                 <div id="learning-card" class="tab-content">
                     <textarea id="custom-prompt-text" rows="4" placeholder="Enter your custom prompt here..."></textarea>
                     <div id="learning-card-container"></div>
-
                 </div>
                 <div id="flexible-phrase" class="tab-content">
                     <textarea id="flexible-phrase-input" rows="4" placeholder="Enter your custom prompt here..."></textarea>
@@ -93,6 +120,7 @@
                     <textarea id="custom-prompt-text" rows="4" placeholder="Enter your custom prompt here..."></textarea>
                     <div id="learning-qna-container"></div>
                 </div>
+
             </div>
         </section>
 
@@ -102,9 +130,9 @@
 
         <div id="loading-dialog" class="loading-modal">
             <div class="loading-content">
-                <h3>Đang xử lý yêu cầu...</h3>
+                <h3>Processing your request...</h3>
                 
-                <!-- Thêm thanh tiến độ -->
+                <!-- Added progress bar -->
                 <div class="progress-container">
                     <div id="progress-bar" class="progress-bar"></div>
                 </div>

@@ -1,0 +1,186 @@
+/* Learning Path Container */
+.learning-path-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* User Profile Form */
+.user-profile-form {
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+#generate-path-btn {
+    background: #4CAF50;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    transition: background 0.3s ease;
+}
+
+#generate-path-btn:hover {
+    background: #45a049;
+}
+
+/* Results Sections */
+.profile-section,
+.partners-section,
+.learning-path-section,
+.milestones-section {
+    background: #fff;
+    margin-bottom: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Section Headers */
+.section-header {
+    color: #2c3e50;
+    font-size: 24px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+}
+
+/* Partners List */
+.partners-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.partner-item {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+}
+
+.partner-item h4 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.partner-item ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.partner-item li {
+    padding: 5px 0;
+    color: #666;
+}
+
+/* Learning Path Weeks */
+.weeks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.week-item {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 6px;
+    border-left: 4px solid #4CAF50;
+}
+
+.week-item h4 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.week-item ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.week-item li {
+    padding: 8px 0;
+    color: #666;
+    border-bottom: 1px solid #eee;
+}
+
+/* Milestones */
+.milestones-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.milestone-item {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.milestone-item h4 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.milestone-item p {
+    color: #666;
+}
+
+/* Copy Button */
+.copy-btn {
+    background: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.3s ease;
+}
+
+.copy-btn:hover {
+    background: #2980b9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .partners-list,
+    .milestones-list {
+        grid-template-columns: 1fr;
+    }
+
+    .learning-path-container {
+        padding: 10px;
+    }
+}
