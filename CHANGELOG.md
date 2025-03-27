@@ -54,3 +54,22 @@ cường ơi, check lại giúp chị cái web gen câu hỏi của The Coach nh
 1. Tối ưu hóa thêm maxWorkers
 2. Thêm tính năng offline mode
 3. Cải thiện UI/UX loading dialog
+
+
+# Deploy 2.1 - Update full luong tu User
+- Lak: https://csg2ej4iz2hz.sg.larksuite.com/wiki/N4awwdSlniF6H9kDpkRlXHHQgEh?from=from_copylink
+- Figma: https://www.figma.com/board/L64qlDmfbPXPc91fizNBSI/AI-gen-flow?node-id=26-513&t=11PpsKabQXSCyMrn-1
+- UUer input toan bo profile => ... 
+- Full luong tu 
+```
+1. MỤC TIÊU CHÍNH THÔNG LUỒNG
+✅ Input: User Profile
+✅ Gen 10 Chủ đề + 50 Tình huống + 1 ✅ QC tự động LLMs check 
+✅ Gen 4 bài Chunking mỗi tình huống (15 tình huống đầu A2, 15 tình huống sau B1, 10 tình huống cuối B2 -> mục tiêu tránh trùng lặp).  
+✅ Gen bài Onion từ 4 bài Chunking 
+✅ Gen bài PTY từ 1 bài Chunking
+✅ Gen ảnh + audio tương ứng  [Tạm chưa ưu tiên]
+✅ Output đầy đủ (JSON/markdown)
+2. IMPROVE PROMPT ĐỂ XEM MỨC ĐỘ ĐẠT Ở TỪNG PHẦN ĐẾN ĐÂU. 
+✅ Người QC => Report ACC từng bước. 
+```

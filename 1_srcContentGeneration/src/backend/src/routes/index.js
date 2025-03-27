@@ -12,6 +12,7 @@ const learningMeaningController = require('../controllers/generateLearningMeanin
 const learningCardController = require('../controllers/generateLearningCardController');
 const learningFlexibleController = require('../controllers/generateLearningFlexibleController');
 const learningQNAController = require('../controllers/generateLearningQNAController');
+const generateLearningPathController = require('../controllers/generateLearningPathController');
 
 const tableFeedbackController = require('../controllers/tableFeedbackController');
 const tableDraftController = require('../controllers/tableDraftController');
@@ -29,6 +30,7 @@ router.post('/generate-learning-meaning', learningMeaningController.generateLear
 router.post('/generate-learning-card', learningCardController.generateLearningCard);
 router.post('/generate-learning-flexible', learningFlexibleController.generateFlexibleCard);
 router.post('/generate-learning-qna', learningQNAController.generateLearningQNA);
+router.post('/generate-learning-path', generateLearningPathController.generateLearningPath);
 
 // Submit feedback
 router.post('/submit-feedback', tableFeedbackController.submitFeedback);
