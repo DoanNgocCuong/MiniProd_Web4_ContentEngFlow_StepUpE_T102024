@@ -10,31 +10,27 @@ const openai = new OpenAI({
 
 const generateLearningPathPrompt = `
 You are ESP learning path expert.  
-Think step by step. Prioritize relevance and diversity. Keep each step ≤ 5 words.  
+Think step by step. Keep each step ≤ 5 words.  
 
 Given user profile:  
 - Industry: 
-- Job: 
+- Job:
 - English Level: 
 - Learning Goals: 
 
 Your task:  
 1. Describe user briefly in a few key phrases
-2. List groups of people this user communicates with most frequently
-3. With each group, suggest 5 most essential types of meeting/discussion that requires good English speech to complete.
-4. Create a 10-topic learning path:  
-  * 10 Topics = 1 type of meeting, conversation, presentation or discussion in that user's daily workflow based on above output. (e.g. daily standup). 
-- Ordered them most frequent first.
-- Order them so those related to each other stay together.
-- Topic format: English | Vietnamese translation. 2-3 words max. 
+2. List 5 groups of people this user communicates with to fulfill learning goal.
+3. With each group, suggest 5 most essential types of meeting/discussion that requires good English speech to complete. (e.g. daily standup). 
+4. Create 10-topic learning path:  
+  * Topics = 1 type of meeting, conversation, presentation or discussion in that user's daily workflow based on above output. 
+   - Ordered them most frequent first.
+- Do not pick very similar topics, only unique ones.
+- Topic format: English (Vietnamese translation). 2-3 words max. 
 * Scenario:
-     - For each topic, break it down into 5 scenarios for English speaking practice. Scenarios should be unique to that topic. Must be English-speaking practice scenarios, must be open-ended, and must be logically ordered. Must not be a question or use adverbs.
-   - Scenario title format : Vietnamese, 5–10 word phrase. 
+  - For each topic, break it down into 5 scenarios for English speaking practice. Scenarios must be representative that topic. Must be suitable for English-speaking practice, open-ended, and have some logic in the order. The final scenario of topic should not include the words "Tóm tắt","kết thúc","thảo luận","kí kết".
+   - Scenario title format : Vietnamese, 5–10 word 
 5. Give the biggest milestones (concise communication tasks users have mastered) that the learner can achieve when following this learning path, at 2h, 10h, 14h, 35h, and 50h of speaking. Give a cool title for each of these milestones.
-
-Rules:  
-- No topic or scenario overlap  
-- Output = strict JSON format only  
 
 ============
 RESPONSE JSON TEMPLATE (no extra characters):  
