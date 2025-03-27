@@ -21,13 +21,13 @@ let rawResponseTemp;
  */
 
 async function handleGenerateClick() {
-    // Xóa cache khi tạo câu hỏi mới
     learningCache.invalidateForNewLesson();
     
     const activeTab = document.querySelector('.tab-content.active');
     const isStandardForm = activeTab.id === 'standard-form';
 
     try {
+        let generateQuestionInput;
         if (isStandardForm) {
             inputDataTemp = {
                 topic: document.getElementById('topic').value,
@@ -36,28 +36,41 @@ async function handleGenerateClick() {
                 extraRequirements: document.getElementById('extra-requirements').value
             };
 
-            const prompt = createGenerateQuestionPrompt();
-            
-            showLoadingDialog();
-            const response = await fetch(`${API_URL}/generate-questions`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ prompt })
-            });
-            
-            const data = await response.json();
-            
-            const processedData = await processApiResponse(data);
-            rawResponseTemp = [...processedData];
-            
-            storagedLessons = processedData;
-
+            generateQuestionInput = createGenerateQuestionInput(inputDataTemp);
         } else {
-            const prompt = document.getElementById('custom-prompt-text').value;
-            generateQuestions(prompt);
+            generateQuestionInput = document.getElementById('custom-prompt-text').value;
+            
+            if (!generateQuestionInput.match(/^Generate \d+ English/i)) {
+                generateQuestionInput = `Generate questions with the following prompt: ${generateQuestionInput}`;
+                console.log('generateQuestionInput', generateQuestionInput);
+            }
+            
+            inputDataTemp = {
+                topic: 'Custom Prompt',
+                level: 'N/A',
+                questionCount: generateQuestionInput.match(/Generate (\d+)/i)?.[1] || 'N/A',
+                extraRequirements: generateQuestionInput.substring(0, 100) + '...'
+            };
         }
+
+        showLoadingDialog();
+        const response = await fetch(`${API_URL}/generate-questions`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ generateQuestionInput })
+        });
+        
+        const data = await response.json();
+        if (data.error) {
+            throw new Error(data.error);
+        }
+        
+        const processedData = await processApiResponse(data);
+        rawResponseTemp = [...processedData];
+        storagedLessons = processedData;
+
     } catch (error) {
         console.error('Error in handleGenerateClick:', error);
         alert(error.message);
@@ -66,82 +79,23 @@ async function handleGenerateClick() {
     }
 }
 
-function createGenerateQuestionPrompt() {
-    const topic = document.getElementById('topic').value;
-    const level = document.getElementById('level').value;
-    const questionCount = document.getElementById('question-count').value;
-    const extraRequirements = document.getElementById('extra-requirements').value;
-
-    return `Generate ${questionCount} English lesson questions on "${topic}" at ${level} level, 
-and MUST meet the following additional requirements: ${extraRequirements}. 
-
-Instructions: 
-
-{
-  "question": "Question text",
-  "structure": "Answer format with blank (____), ONLY 1 blank for the answer",
-  "main phrase": "Key phrase to fit blank (no proper nouns and must be a phrase 1, 2, 3, 4 words)", 
-  "optional phrase 1": "Alternative phrase option 1 (no proper nouns and must be a phrase 1, 2, 3, 4 words)",
-  "optional phrase 2": "Alternative phrase option 2 (no proper nouns and must be a phrase 1, 2, 3, 4 words)",
-  "question-vi": "Vietnamese translation of question",
-  "structure-vi": "Vietnamese translation of structure",
-  "main phrase-vi": "Vietnamese translation of main phrase",
-  "optional phrase 1-vi": "Vietnamese translation of option 1",
-  "optional phrase 2-vi": "Vietnamese translation of option 2"
-}
-
-Example:
-{
-  "question": "Which company are you working for?",
-  "structure": "I'm the ____ from ABC Company.",
-  "main phrase": "Sales representative",
-  "optional phrase 1": "Sales director", 
-  "optional phrase 2": "Sales associate",
-  "question-vi": "Bạn đang làm việc cho công ty nào vậy?",
-  "structure-vi": "Tôi là ____ từ công ty ABC.",
-  "main phrase-vi": "Đại diện kinh doanh",
-  "optional phrase 1-vi": "Giám đốc kinh doanh",
-  "optional phrase 2-vi": "Nhân viên bán hàng"
-}`;
-}
-
-async function generateQuestions(prompt) {
-    try {
-        showLoadingDialog();
-        
-        // Set default values for tracking when using custom prompt
-        inputDataTemp = {
-            topic: 'Custom Prompt',
-            level: 'N/A',
-            questionCount: 'N/A',
-            extraRequirements: prompt.substring(0, 100) + '...' // First 100 chars of prompt
-        };
-        
-        const response = await fetch(`${API_URL}/generate-questions`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ prompt })
-        });
-        
-        const data = await response.json();
-        
-        const processedData = await processApiResponse(data);
-        rawResponseTemp = [...processedData];
-        
-        storagedLessons = processedData;
-    } catch (error) {
-        alert(error.message);
-        console.error('Error:', error.message);
-    } finally {
-        hideLoadingDialog();
+function createGenerateQuestionInput(formData) {
+    const { topic, level, questionCount, extraRequirements } = formData;
+    let generateQuestionInput = `Generate ${questionCount} English questions about ${topic}`;
+    
+    if (level) {
+        generateQuestionInput += ` at ${level} level`;
     }
+    
+    if (extraRequirements) {
+        generateQuestionInput += `. Additional requirements: ${extraRequirements}`;
+    }
+
+    return generateQuestionInput;
 }
 
 async function processApiResponse(response) {
-    // Kiểm tra cấu trúc response
-    if (!response || !Array.isArray(response.questions)) {
+    if (!response || !response.questions || !Array.isArray(response.questions)) {
         throw new Error('Invalid API response structure');
     }
 
@@ -149,17 +103,15 @@ async function processApiResponse(response) {
         console.log('Raw API response:', response);
 
         let lessons = response.questions;
-
-        // Thêm lesson_id vào tất cả lessons
         const lesson_id = TableDraftTracking.generateLessonId(inputDataTemp.topic);
+        
+        // Thêm lesson_id vào mỗi câu hỏi
         lessons = lessons.map(item => ({
             ...item,
             lesson_id: lesson_id
         }));
 
         displayGeneratedQuestions(lessons);
-        
-        // Sau khi xử lý xong, tạo lại tất cả các module học tập với dữ liệu mới
         regenerateAllLearningModules();
         
         return lessons;
@@ -302,7 +254,7 @@ async function copyTableToClipboard(table) {
         // Alert copy success first
         alert('Table copied to clipboard!');
 
-        // Extract current table data (final version after edits)
+        // Extract final table data
         const finalTableData = Array.from(table.querySelectorAll('tbody tr')).map(row => ({
             question: row.cells[0].textContent,
             structure: row.cells[1].textContent,
@@ -316,20 +268,18 @@ async function copyTableToClipboard(table) {
             'optional phrase 2-vi': row.cells[9].textContent
         }));
 
-        // Submit to Larkbase
+        // Submit to Larkbase với input string
         await TableDraftTracking.trackDraftGeneration(
-            inputDataTemp,      // Input form data
-            rawResponseTemp,    // Version đầu tiên với đầy đủ câu hỏi
-            finalTableData      // Version cuối (có thể ít câu hỏi hơn do đã xóa)
+            inputDataTemp,
+            rawResponseTemp,
+            finalTableData
         );
-
 
         console.log('Data submitted to Larkbase:', {
             input: inputDataTemp,
-            raw: rawResponseTemp,    // Full version
-            final: finalTableData    // Edited/deleted version
+            raw: rawResponseTemp,
+            final: finalTableData
         });
-        
 
     } catch (error) {
         console.error('Error in copyTableToClipboard:', error);
@@ -457,8 +407,6 @@ function addCopyButton(container, table) {
 export { 
     handleGenerateClick,
     storagedLessons,
-    generateQuestions,
-    processApiResponse,
     generateUniqueId,
     regenerateAllLearningModules
 };
