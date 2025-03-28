@@ -1,4 +1,5 @@
 import { config } from '../config.js';
+import { DataTable } from './DataTable.js';
 
 export class DetailChunkingButton {
     constructor(scenario, question, containerId) {
@@ -54,58 +55,34 @@ export class DetailChunkingButton {
 
     _displayDetailChunking(exercise) {
         const container = document.getElementById(this.containerId);
-        container.innerHTML = `
-            <div class="detail-chunking-container">
-                <div class="detail-chunking-item">
-                    <div class="question-section">
-                        <div class="section-label">Question & Answer</div>
-                        <div class="en-section">
-                            <p class="question-text">${exercise.question}</p>
-                            <p class="structure-text">${exercise.structure}</p>
-                        </div>
-                        <div class="vn-section">
-                            <p class="question-text-vn">${exercise['question-vi']}</p>
-                            <p class="structure-text-vn">${exercise['structure-vi']}</p>
-                        </div>
-                    </div>
+        
+        const headers = [
+            'Question', 'Structure', 'Main Phrase',
+            'Alternative Option 1', 'Alternative Option 2',
+            'Question (VI)', 'Structure (VI)', 'Main Phrase (VI)',
+            'Alternative Option 1 (VI)', 'Alternative Option 2 (VI)'
+        ];
 
-                    <div class="phrases-section">
-                        <div class="section-label">Answer Options</div>
-                        <div class="phrase-group">
-                            <div class="phrase main-phrase">
-                                <div class="phrase-en">
-                                    <span class="phrase-label">Main phrase:</span>
-                                    <span class="phrase-text">${exercise['main phrase']}</span>
-                                </div>
-                                <div class="phrase-vn">
-                                    <span class="phrase-text-vn">${exercise['main phrase-vi']}</span>
-                                </div>
-                            </div>
+        const data = [{
+            question: exercise.question,
+            structure: exercise.structure,
+            'main phrase': exercise['main phrase'],
+            'optional phrase 1': exercise['optional phrase 1'],
+            'optional phrase 2': exercise['optional phrase 2'],
+            'question-vi': exercise['question-vi'],
+            'structure-vi': exercise['structure-vi'],
+            'main phrase-vi': exercise['main phrase-vi'],
+            'optional phrase 1-vi': exercise['optional phrase 1-vi'],
+            'optional phrase 2-vi': exercise['optional phrase 2-vi']
+        }];
 
-                            <div class="phrase option-1">
-                                <div class="phrase-en">
-                                    <span class="phrase-label">Option 1:</span>
-                                    <span class="phrase-text">${exercise['optional phrase 1']}</span>
-                                </div>
-                                <div class="phrase-vn">
-                                    <span class="phrase-text-vn">${exercise['optional phrase 1-vi']}</span>
-                                </div>
-                            </div>
+        const table = new DataTable(headers, data, {
+            onEdit: (row) => this._openEditDialog(row),
+            onDelete: () => container.innerHTML = ''
+        });
 
-                            <div class="phrase option-2">
-                                <div class="phrase-en">
-                                    <span class="phrase-label">Option 2:</span>
-                                    <span class="phrase-text">${exercise['optional phrase 2']}</span>
-                                </div>
-                                <div class="phrase-vn">
-                                    <span class="phrase-text-vn">${exercise['optional phrase 2-vi']}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
+        container.innerHTML = '';
+        container.appendChild(table.render());
     }
 
     render() {
