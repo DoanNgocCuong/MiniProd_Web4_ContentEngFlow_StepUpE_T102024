@@ -3,6 +3,7 @@ import { config } from './config.js';
 import { showLoadingDialog, hideLoadingDialog, updateLoadingProgress } from './utils.js';
 import { generateUniqueId } from './generateQuestion.js';
 import learningCache from './modules/cache.js';
+import { ChunkingButton } from './components/ChunkingButton.js';
 
 
 // Cấu trúc Class: Chia thành 2 class chính:
@@ -26,6 +27,7 @@ class LearningPathManager {
         this.cache = learningCache;
         this.currentUserId = null;
         this.data = null;
+        this.userProfile = null;
     }
 
     /**
@@ -35,6 +37,7 @@ class LearningPathManager {
     async generatePath(userProfile) {
         console.log('generatePath called with:', userProfile);
         try {
+            this.userProfile = userProfile;
             this.currentUserId = generateUniqueId();
             console.log('Generated userId:', this.currentUserId);
             await this._processLearningPath(userProfile);
@@ -119,7 +122,7 @@ class LearningPathManager {
      */
     async _displayResults() {
         const renderer = new LearningPathRenderer();
-        await renderer.render(this.data);
+        await renderer.render(this.data, this.userProfile);
     }
 }
 
@@ -134,16 +137,16 @@ class LearningPathRenderer {
     /**
      * Render toàn bộ learning path
      */
-    async render(data) {
+    async render(data, userProfile) {
         if (!data) throw new Error('Invalid learning path data');
 
         try {
             this.container.innerHTML = '';
             
-            // Render từng section
+            // Render từng section với userProfile
             this._renderProfileSection(data.user_profile_description);
             this._renderPartnersSection(data.communication_partners);
-            this._renderPathSection(data.learning_path);
+            this._renderPathSection(data.learning_path, userProfile);
             this._renderMilestonesSection(data.milestones);
             
             // Thêm nút copy
@@ -198,7 +201,7 @@ class LearningPathRenderer {
      * Render section Learning Path
      * @private
      */
-    _renderPathSection(path) {
+    _renderPathSection(path, userProfile) {
         const section = document.createElement('div');
         section.className = 'learning-path-section';
         section.innerHTML = `
@@ -206,16 +209,31 @@ class LearningPathRenderer {
             <div class="weeks-list">
                 ${path.map(week => `
                     <div class="week-item">
-                        <h4>Week ${week.week}: ${week.topic}</h4>
+                        <div class="week-header">
+                            <h4>Week ${week.week}: ${week.topic}</h4>
+                            <div id="chunking-btn-container-${week.week}"></div>
+                        </div>
                         <ul>
                             ${week.scenarios.map(scenario => `
                                 <li>${scenario.scenario}</li>
                             `).join('')}
                         </ul>
+                        <div id="chunking-questions-week-${week.week}" class="chunking-questions"></div>
                     </div>
                 `).join('')}
             </div>
         `;
+
+        // Pass both userProfile and week data to ChunkingButton
+        path.forEach(week => {
+            const container = section.querySelector(`#chunking-btn-container-${week.week}`);
+            const chunkingButton = new ChunkingButton(
+                userProfile,
+                week
+            );
+            container.appendChild(chunkingButton.render());
+        });
+
         this.container.appendChild(section);
     }
 
