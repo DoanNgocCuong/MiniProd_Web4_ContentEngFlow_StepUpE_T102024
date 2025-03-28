@@ -22,21 +22,6 @@ curl --location 'http://103.253.20.13:3000/api/generate-20-chunking-from-5-scena
 ### Expected Response:
 ```json
 {
-  "learningPath": {
-    "topic": "Project updates",
-    "scenarios": [
-      {
-        "scenario": "Giới thiệu dự án hiện tại",
-        "questions": [
-          "Could you tell me about your current project?",
-          "What are the main objectives of this project?",
-          "How long have you been working on this project?",
-          "What is your role in this project?"
-        ]
-      }
-      // ... 4 more scenarios with 4 questions each
-    ]
-  }
+  "chunkingPhrases": "{\n  \"topic\": \"Project updates\",\n  \"scenarios\": [\n    {\n      \"scenario\": \"Introducing the current project\",\n      \"questions\": [\n        \"Can you describe the main goal of the current project?\",\n        \"What technologies are we using in this project?\",\n        \"Who are the key team members involved in this project?\",\n        \"What is the expected timeline for this project?\"\n      ]\n    },\n    {\n      \"scenario\": \"Discussing work progress\",\n      \"questions\": [\n        \"How is the project progressing so far?\",\n        \"What tasks have been completed this week?\",\n        \"Are there any delays in the project timeline?\",\n        \"What challenges have you faced in your work?\"\n      ]\n    },\n    {\n      \"scenario\": \"Resolving emerging issues\",\n      \"questions\": [\n        \"What issues have come up recently in the project?\",\n        \"How do you plan to address these issues?\",\n        \"Have you discussed these problems with the team?\",\n        \"What support do you need to solve these issues?\"\n      ]\n    },\n    {\n      \"scenario\": \"Proposing project improvements\",\n      \"questions\": [\n        \"What improvements do you think we can make to the project?\",\n        \"How can we enhance team communication?\",\n        \"Are there any tools that could help us work better?\",\n        \"What feedback have you received from the team about the project?\"\n      ]\n    },\n    {\n      \"scenario\": \"Planning for next week\",\n      \"questions\": [\n        \"What are the main goals for next week?\",\n        \"Which tasks should we prioritize in the upcoming week?\",\n        \"How can we ensure we stay on track next week?\",\n        \"What resources do we need for next week's work?\"\n      ]\n    }\n  ]\n}"
 }
-```
 ```

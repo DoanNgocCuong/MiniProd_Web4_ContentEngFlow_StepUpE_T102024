@@ -1,6 +1,6 @@
 // author: Doan Ngoc Cuong
 // date: 2025-03-27
-// backend/src/controllers/ generateLearningPathController.js
+// backend/src/controllers/ generatechunkingPhrasesController.js
 
 const OpenAI = require('openai');
 
@@ -57,34 +57,43 @@ exports.generate20ChunkingFrom5Scenario = async (req, res) => {
             return res.status(400).json({ error: 'userProfile5Scenario is required' });
         }
 
-        // Removed scenarios validation
+        // Log để debug
+        console.log('Received userProfile5Scenario:', userProfile5Scenario);
 
         const response = await openai.chat.completions.create({
-            model: 'gpt-4-turbo-preview', // Fixed model name
+            model: 'gpt-4o-mini',
             messages: [
                 { 
                     role: 'system', 
                     content: generate20Chunking5ScenarioPrompt
                 },
-                { role: 'user', content: JSON.stringify(userProfile5Scenario) }
+                { 
+                    role: 'user', 
+                    // Không cần JSON.stringify vì đã là string
+                    content: userProfile5Scenario 
+                }
             ],
-            max_tokens: 9000,
+            max_tokens: 4096,
             temperature: 0
         });
 
         const content = response.choices[0].message.content;
         
+        // Log để debug
+        console.log('OpenAI response:', content);
+
         // Validate response format
         try {
             JSON.parse(content);
         } catch (e) {
+            console.error('JSON parse error:', e);
             return res.status(500).json({ error: 'Invalid response format from AI' });
         }
 
-        res.json({ learningPath: content });
+        res.json({ chunkingPhrases: content });
     } catch (error) {
-        // Improved error handling
-        console.error('Error in generate20ChunkingFrom5Scenario:', error);
+        // Improved error handling with more details
+        console.error('Detailed error:', error);
         
         if (error.response) {
             return res.status(error.response.status).json({ 
@@ -95,7 +104,7 @@ exports.generate20ChunkingFrom5Scenario = async (req, res) => {
         
         res.status(500).json({ 
             error: 'Internal server error',
-            message: 'An unexpected error occurred'
+            message: error.message || 'An unexpected error occurred'
         });
     }
 };
