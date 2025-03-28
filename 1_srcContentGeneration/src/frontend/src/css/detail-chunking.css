@@ -1,0 +1,120 @@
+.generate-detail-chunking-btn {
+    padding: 0.2rem 0.6rem;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.detail-chunking-container {
+    margin-top: 0.5rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    border-left: 3px solid #2196F3;
+}
+
+.detail-chunking-item {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.section-label {
+    font-weight: 600;
+    color: #1976D2;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.question-section, .phrases-section {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.en-section, .vn-section {
+    margin-bottom: 0.5rem;
+}
+
+.question-text, .structure-text {
+    color: #2c3e50;
+    margin-bottom: 0.25rem;
+}
+
+.question-text-vn, .structure-text-vn {
+    color: #666;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.phrase-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.phrase {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+}
+
+.phrase-en, .phrase-vn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.phrase-label {
+    min-width: 80px;
+    font-weight: 500;
+    color: #2c3e50;
+    font-size: 0.9rem;
+}
+
+.phrase-text {
+    color: #2196F3;
+}
+
+.phrase-text-vn {
+    color: #666;
+    font-style: italic;
+    font-size: 0.9rem;
+    margin-left: 80px;
+}
+
+.main-phrase {
+    border-left: 3px solid #4CAF50;
+}
+
+.main-phrase .phrase-text {
+    color: #4CAF50;
+    font-weight: 500;
+}
+
+.question-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.question-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.detail-content {
+    margin-left: 1rem;
+    border-left: 2px solid #e0e0e0;
+    padding-left: 1rem;
+} 

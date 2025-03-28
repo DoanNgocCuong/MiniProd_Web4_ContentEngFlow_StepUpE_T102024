@@ -1,4 +1,5 @@
 import { config } from '../config.js';
+import { DetailChunkingButton } from './DetailChunkingButton.js';
 
 export class ChunkingButton {
     constructor(userProfile, weekData) {
@@ -84,14 +85,37 @@ export class ChunkingButton {
                     <div class="scenario-questions">
                         <h6>${scenario.scenario}</h6>
                         <ul>
-                            ${scenario.questions.map(q => `
-                                <li>${q}</li>
+                            ${scenario.questions.map((q, index) => `
+                                <li class="question-item">
+                                    <div class="question-content">
+                                        <span>${q}</span>
+                                        <div id="detail-btn-${scenario.scenario.replace(/\s+/g, '-')}-${index}" 
+                                             class="detail-btn-container"></div>
+                                    </div>
+                                    <div id="detail-content-${scenario.scenario.replace(/\s+/g, '-')}-${index}" 
+                                         class="detail-content"></div>
+                                </li>
                             `).join('')}
                         </ul>
                     </div>
                 `).join('')}
             </div>
         `;
+
+        // Add Detail Chunking buttons for each question
+        questions.scenarios.forEach(scenario => {
+            scenario.questions.forEach((question, index) => {
+                const btnContainer = document.getElementById(
+                    `detail-btn-${scenario.scenario.replace(/\s+/g, '-')}-${index}`
+                );
+                const detailButton = new DetailChunkingButton(
+                    scenario.scenario,
+                    question,
+                    `detail-content-${scenario.scenario.replace(/\s+/g, '-')}-${index}`
+                );
+                btnContainer.appendChild(detailButton.render());
+            });
+        });
     }
 
     render() {
