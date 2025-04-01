@@ -1,5 +1,5 @@
 // Import các dependencies
-import { config } from './config.js';
+import { config, currentConfig } from './config.js';
 import { showLoadingDialog, hideLoadingDialog, updateLoadingProgress } from './utils.js';
 import { generateUniqueId } from './generateQuestion.js';
 import learningCache from './modules/cache.js';

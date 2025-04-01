@@ -1,3 +1,5 @@
+const env = process.env.NODE_ENV || 'development';
+
 // Xuất một object config chứa các cấu hình API URL cho từng môi trường
 export const config = {
     // Môi trường development (phát triển): 
@@ -20,5 +22,8 @@ export const config = {
       apiUrl: 'http://103.253.20.13:3000/api' // IP public
     }
 };
+
+// Export the current environment's config
+export const currentConfig = config[env];
 
 export default config;

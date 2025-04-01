@@ -1,6 +1,5 @@
 import { config } from '../config.js';
 import { DataTable } from './DataTable.js';
-import { MiniExerciseButton } from './ExerciseButton.js';
 
 export class DetailChunkingButton {
     constructor(scenario, question, containerId) {
@@ -84,10 +83,6 @@ export class DetailChunkingButton {
 
         container.innerHTML = '';
         container.appendChild(table.render());
-
-        // Thêm Mini Exercise Button
-        const exerciseButton = new MiniExerciseButton(this.containerId, [exercise]);
-        container.appendChild(exerciseButton.render());
     }
 
     render() {
