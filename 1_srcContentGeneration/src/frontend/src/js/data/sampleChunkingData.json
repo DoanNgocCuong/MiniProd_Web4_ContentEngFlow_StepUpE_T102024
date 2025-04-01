@@ -1,0 +1,63 @@
+{
+  "topic": "Daily standup (Họp đứng hàng ngày)",
+  "scenarios": [
+    {
+      "scenario": "Chia sẻ tiến độ công việc",
+      "questions": [
+        {
+          "question": "Can you describe what you accomplished since our last meeting?",
+          "question-vi": "Bạn có thể mô tả những gì đã hoàn thành từ cuộc họp trước không?",
+          "structure": "Since our last meeting, I have accomplished ____.",
+          "structure-vi": "Kể từ cuộc họp trước, tôi đã hoàn thành ____.",
+          "main phrase": "completed several key tasks",
+          "main phrase-vi": "hoàn thành một số nhiệm vụ chính",
+          "optional phrase 1": "made significant progress",
+          "optional phrase 1-vi": "đạt được tiến độ đáng kể",
+          "optional phrase 2": "achieved our milestones",
+          "optional phrase 2-vi": "đạt được các mốc quan trọng"
+        },
+        {
+          "question": "What tasks are you currently working on?",
+          "question-vi": "Bạn đang làm những công việc gì?",
+          "structure": "I am currently working on ____.",
+          "structure-vi": "Hiện tại tôi đang làm việc với ____.",
+          "main phrase": "implementing new features",
+          "main phrase-vi": "triển khai các tính năng mới",
+          "optional phrase 1": "fixing reported bugs",
+          "optional phrase 1-vi": "sửa các lỗi được báo cáo",
+          "optional phrase 2": "improving system performance",
+          "optional phrase 2-vi": "cải thiện hiệu suất hệ thống"
+        }
+      ]
+    },
+    {
+      "scenario": "Thảo luận vấn đề gặp phải",
+      "questions": [
+        {
+          "question": "What specific issues have you encountered recently?",
+          "question-vi": "Gần đây bạn gặp những vấn đề cụ thể nào?",
+          "structure": "The main issue I've encountered is ____.",
+          "structure-vi": "Vấn đề chính tôi gặp phải là ____.",
+          "main phrase": "integration problems with the API",
+          "main phrase-vi": "các vấn đề tích hợp với API",
+          "optional phrase 1": "performance bottlenecks",
+          "optional phrase 1-vi": "các nút thắt về hiệu suất",
+          "optional phrase 2": "compatibility issues",
+          "optional phrase 2-vi": "các vấn đề về tương thích"
+        },
+        {
+          "question": "How did these problems affect your work?",
+          "question-vi": "Những vấn đề này ảnh hưởng như thế nào đến công việc của bạn?",
+          "structure": "These issues have affected ____.",
+          "structure-vi": "Những vấn đề này đã ảnh hưởng đến ____.",
+          "main phrase": "our project timeline",
+          "main phrase-vi": "tiến độ dự án của chúng tôi",
+          "optional phrase 1": "team productivity",
+          "optional phrase 1-vi": "năng suất của nhóm",
+          "optional phrase 2": "system stability",
+          "optional phrase 2-vi": "sự ổn định của hệ thống"
+        }
+      ]
+    }
+  ]
+} 

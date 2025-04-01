@@ -20,16 +20,6 @@
         "[Example] Budget planning",
         "[Example] Goal setting"
       ]
-    },
-    {
-      "group": "[Example Group 3] Stakeholders",
-      "scenarios": [
-        "[Example] Project presentations",
-        "[Example] Status updates",
-        "[Example] Risk discussions",
-        "[Example] Requirement gathering",
-        "[Example] Feedback sessions"
-      ]
     }
   ],
   "learning_path": [
