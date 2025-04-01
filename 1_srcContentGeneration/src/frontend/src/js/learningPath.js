@@ -4,6 +4,8 @@ import { showLoadingDialog, hideLoadingDialog, updateLoadingProgress } from './u
 import { generateUniqueId } from './generateQuestion.js';
 import learningCache from './modules/cache.js';
 import { ChunkingButton } from './components/ChunkingButton.js';
+import { DetailChunkingButton } from './components/DetailChunkingButton.js';
+import sampleLearningPath from './data/sampleLearningPath.json';
 
 
 // Cấu trúc Class: Chia thành 2 class chính:
@@ -28,6 +30,18 @@ class LearningPathManager {
         this.currentUserId = null;
         this.data = null;
         this.userProfile = null;
+        
+        // Load sample data immediately
+        this._loadSampleData();
+    }
+
+    _loadSampleData() {
+        this.currentUserId = generateUniqueId();
+        this.data = {
+            ...sampleLearningPath,
+            user_id: this.currentUserId
+        };
+        this._displayResults();
     }
 
     /**
@@ -210,8 +224,10 @@ class LearningPathRenderer {
                 ${path.map(week => `
                     <div class="week-item">
                         <div class="week-header">
-                            <h4>Week ${week.week}: ${week.topic}</h4>
-                            <div id="chunking-btn-container-${week.week}"></div>
+                            <div class="week-title">
+                                <h4>Week ${week.week}: ${week.topic}</h4>
+                            </div>
+                            <div id="chunking-btn-container-${week.week}" class="chunking-btn-container"></div>
                         </div>
                         <ul>
                             ${week.scenarios.map(scenario => `
@@ -289,6 +305,80 @@ class LearningPathRenderer {
             console.error('Copy Error:', error);
             alert('Failed to copy learning path: ' + error.message);
         }
+    }
+
+    _displayQuestions(questions) {
+        const container = document.getElementById(`chunking-questions-week-${this.weekData.week}`);
+        if (!container) {
+            console.error(`Container for week ${this.weekData.week} not found`);
+            return;
+        }
+
+        // Sample data for UI testing
+        const sampleQuestions = {
+            scenarios: [
+                {
+                    scenario: "Project Updates Meeting",
+                    questions: [
+                        "How do you usually start your project update meetings?",
+                        "What key points do you typically cover in these meetings?",
+                        "How do you handle questions during the presentation?",
+                        "What's your approach to discussing project challenges?"
+                    ]
+                },
+                {
+                    scenario: "Team Progress Discussion",
+                    questions: [
+                        "Could you describe your team's recent achievements?",
+                        "What obstacles has your team encountered?",
+                        "How do you track individual progress?",
+                        "What methods do you use for team collaboration?"
+                    ]
+                }
+            ]
+        };
+
+        // Use sample data for UI testing, switch to actual questions when API is ready
+        const displayData = questions || sampleQuestions;
+
+        container.innerHTML = `
+            <div class="questions-container">
+                <h5>Speaking Practice Questions</h5>
+                ${displayData.scenarios.map(scenario => `
+                    <div class="scenario-questions">
+                        <h6>${scenario.scenario}</h6>
+                        <ul>
+                            ${scenario.questions.map((q, index) => `
+                                <li class="question-item">
+                                    <div class="question-content">
+                                        <span>${q}</span>
+                                        <div id="detail-btn-${scenario.scenario.replace(/\s+/g, '-')}-${index}" 
+                                             class="detail-btn-container"></div>
+                                    </div>
+                                    <div id="detail-content-${scenario.scenario.replace(/\s+/g, '-')}-${index}" 
+                                         class="detail-content"></div>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+
+        // Add Detail Chunking buttons for each question
+        displayData.scenarios.forEach(scenario => {
+            scenario.questions.forEach((question, index) => {
+                const btnContainer = document.getElementById(
+                    `detail-btn-${scenario.scenario.replace(/\s+/g, '-')}-${index}`
+                );
+                const detailButton = new DetailChunkingButton(
+                    scenario.scenario,
+                    question,
+                    `detail-content-${scenario.scenario.replace(/\s+/g, '-')}-${index}`
+                );
+                btnContainer.appendChild(detailButton.render());
+            });
+        });
     }
 }
 
