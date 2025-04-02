@@ -3,4 +3,6 @@ export interface UserProfileInput {
     job: string;
     englishLevel: string;
     learningGoals: string[];
+    gender?: string;
+    nativeLanguage?: string;
 } 
