@@ -18,19 +18,8 @@ Output:
 
 http://103.253.20.13:3000/api/generate-20-chunking-from-5-scenario
 
-Payload: 
 ```bash
-USER PROFILE:
-- Industry: undefined
-- Job: undefined
-- English Level: undefined
-- Learning Goals: undefined
----
-{
-      "week": 1,
-      "topic": "Project updates (Cập nhật dự án)",
-      "scenarios": [{"scenario":"Giới thiệu dự án mới"},{"scenario":"Báo cáo tiến độ hàng tuần"},{"scenario":"Thảo luận vấn đề kỹ thuật"},{"scenario":"Đề xuất giải pháp cải tiến"},{"scenario":"Phản hồi từ nhóm phát triển"}]
-}
+{"userProfile5Scenario":"USER PROFILE:\n- Industry: undefined\n- Job: undefined\n- English Level: undefined\n- Learning Goals: undefined\n---\n{\n      \"week\": 1,\n      \"topic\": \"Project updates (Cập nhật dự án)\",\n      \"scenarios\": [{\"scenario\":\"Giới thiệu dự án mới\"},{\"scenario\":\"Thảo luận tiến độ hiện tại\"},{\"scenario\":\"Giải quyết vấn đề phát sinh\"},{\"scenario\":\"Đề xuất cải tiến dự án\"},{\"scenario\":\"Lên kế hoạch cho tuần tới\"}]\n}"}
 ```
 
 ```bash

@@ -1,7 +1,7 @@
 import { config } from '../config.js';
 import { DetailChunkingFromQuestionButton } from './DetailChunkingFromQuestionButton.js';
 
-export class GenerateQuestionFromTopicAndScenarioButton {
+export class From1TopicGen20QuestionChunking {
     constructor(userProfile, weekData) {
         this.userProfile = userProfile;
         this.weekData = weekData;
@@ -20,6 +20,10 @@ export class GenerateQuestionFromTopicAndScenarioButton {
         this.button = this._createButton();
     }
 
+    /**
+     * Create generate questions button
+     * @private
+     */
     _createButton() {
         const button = document.createElement('button');
         button.className = 'generate-questions-btn';
@@ -30,6 +34,10 @@ export class GenerateQuestionFromTopicAndScenarioButton {
         return button;
     }
 
+    /**
+     * Handle button click event
+     * @private
+     */
     async _handleClick(e) {
         const btn = e.target;
         btn.disabled = true;
@@ -51,15 +59,31 @@ export class GenerateQuestionFromTopicAndScenarioButton {
         }
     }
 
+    /**
+     * Fetch questions from API
+     * @private
+     */
     async _fetchFromAPI() {
         try {
-            const response = await fetch(`${this.API_URL}/generate-questions`, {
+            // Format userProfile according to API requirements
+            const formattedUserProfile = this.userProfile.split('\n')
+                .map(line => {
+                    const [key, value] = line.split(':');
+                    return `- ${key.trim()}: ${value ? value.trim() : 'undefined'}`;
+                })
+                .join('\n');
+
+            // Create the request body with exact format from API docs
+            const requestBody = {
+                userProfile5Scenario: `USER PROFILE:\n${formattedUserProfile}\n---\n${JSON.stringify(this.weekData, null, 6)}`
+            };
+
+            console.log('Request body:', requestBody); // For debugging
+
+            const response = await fetch(`${this.API_URL}/generate-20-chunking-from-5-scenario`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    userProfile: this.userProfile,
-                    weekData: this.weekData
-                })
+                body: JSON.stringify(requestBody)
             });
 
             if (!response.ok) {
@@ -67,12 +91,17 @@ export class GenerateQuestionFromTopicAndScenarioButton {
                 throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
             }
 
-            return await response.json();
+            const data = await response.json();
+            return JSON.parse(data.chunkingPhrases);
         } catch (error) {
             throw new Error(`API request failed: ${error.message}`);
         }
     }
 
+    /**
+     * Display questions in the UI
+     * @private
+     */
     _displayQuestions(data) {
         const container = document.getElementById(this.containerId);
         if (!container) {
@@ -122,7 +151,10 @@ export class GenerateQuestionFromTopicAndScenarioButton {
         });
     }
 
+    /**
+     * Render the button
+     */
     render() {
         return this.button;
     }
-} 
+}
