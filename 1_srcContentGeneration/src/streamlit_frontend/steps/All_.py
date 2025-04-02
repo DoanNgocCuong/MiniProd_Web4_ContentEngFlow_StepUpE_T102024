@@ -2,9 +2,9 @@ import streamlit as st
 import json
 import pandas as pd
 from .A_FromUserProfileGenLearningPath import LearningPathGenerator
-from .B_From1TopicGen20QuestionChunking import QuestionGenerator
-from .C_From1QuestionGenDetailChunking import QuestionDetailGenerator
-from .D_FromDetailChunkingGen4Exercise import ExerciseGenerator
+from .B1_From1TopicGen20QuestionChunking import QuestionGenerator
+from .B2_From1QuestionGenDetailChunking import QuestionDetailGenerator
+from .B3_FromDetailChunkingGen4Exercise import ExerciseGenerator
 from .base_generator import BaseGenerator
 
 class CombinedGenerator(BaseGenerator):

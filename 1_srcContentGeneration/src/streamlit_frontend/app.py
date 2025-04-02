@@ -1,11 +1,11 @@
 import streamlit as st
 import sys
 import os
-from streamlit_frontend.steps.A_FromUserProfileGenLearningPath import main as learning_path_main
-from streamlit_frontend.steps.B_From1TopicGen20QuestionChunking import main as question_main
-from streamlit_frontend.steps.C_From1QuestionGenDetailChunking import main as detail_main
-from streamlit_frontend.steps.D_FromDetailChunkingGen4Exercise import main as exercise_main
-from streamlit_frontend.steps.All_ import CombinedGenerator
+from steps.A_FromUserProfileGenLearningPath import main as learning_path_main
+from steps.B1_From1TopicGen20QuestionChunking import main as question_main
+from steps.B2_From1QuestionGenDetailChunking import main as detail_main
+from steps.B3_FromDetailChunkingGen4Exercise import main as exercise_main
+from steps.All_ import CombinedGenerator
 
 # Initialize session state for settings
 if 'api_url' not in st.session_state:
@@ -21,12 +21,6 @@ st.set_page_config(
 
 # Add the parent directory to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-# Import the modules
-from streamlit_frontend.steps.A_FromUserProfileGenLearningPath import LearningPathGenerator
-from streamlit_frontend.steps.B_From1TopicGen20QuestionChunking import QuestionGenerator
-from streamlit_frontend.steps.C_From1QuestionGenDetailChunking import QuestionDetailGenerator
-from streamlit_frontend.steps.All_ import CombinedGenerator
 
 def load_css():
     """Load CSS from external file."""

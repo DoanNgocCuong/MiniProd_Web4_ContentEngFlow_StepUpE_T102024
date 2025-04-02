@@ -1,0 +1,97 @@
+.edit-btn {
+    background-color: #E694FF;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-btn:hover {
+    background-color: #D975FF;
+}
+
+.delete-btn {
+    background-color: #FF4B4B;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+    background-color: #FF2E2E;
+}
+
+.stDataFrame {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+}
+
+.stDataFrame table {
+    width: 100%;
+    border: 1px solid #e6e6e6;
+}
+
+.stDataFrame th {
+    background-color: #f0f2f6;
+    text-align: left;
+    padding: 12px;
+    font-weight: 600;
+    border-bottom: 2px solid #e6e6e6;
+}
+
+.stDataFrame td {
+    padding: 12px;
+    border-bottom: 1px solid #e6e6e6;
+    vertical-align: middle;
+}
+
+.stDataFrame tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Column specific styles */
+.description-col {
+    width: 15%;
+    font-weight: 500;
+}
+
+.sentence-col {
+    width: 25%;
+}
+
+.ipa-col {
+    width: 15%;
+    font-family: 'Arial IPA', 'Doulos SIL', sans-serif;
+    font-style: italic;
+}
+
+.answer-col {
+    width: 10%;
+}
+
+.description-answer-col {
+    width: 20%;
+}
+
+.actions-col {
+    width: 15%;
+    text-align: center;
+}
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+    .stDataFrame {
+        overflow-x: auto;
+    }
+    
+    .stDataFrame table {
+        min-width: 800px;
+    }
+} 
