@@ -134,7 +134,9 @@ export class From1TopicGen20QuestionChunking {
                                             <div id="detail-btn-${scenario.scenario.replace(/\s+/g, '-')}-${index}" 
                                                  class="detail-btn-container"></div>
                                         </div>
-                                        <div id="${detailContainerId}" class="detail-content"></div>
+                                        <div class="detail-wrapper">
+                                            <div id="${detailContainerId}" class="detail-content" style="display: block; min-height: 50px;"></div>
+                                        </div>
                                     </li>
                                 `;
                             }).join('')}

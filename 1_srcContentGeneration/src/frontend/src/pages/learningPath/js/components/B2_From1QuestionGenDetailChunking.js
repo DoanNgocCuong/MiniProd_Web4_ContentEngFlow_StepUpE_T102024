@@ -116,6 +116,12 @@ export class From1QuestionGenDetailChunking {
             position: window.getComputedStyle(container).position
         });
 
+        // Force container to be visible
+        container.style.display = 'block';
+        container.style.visibility = 'visible';
+        container.style.opacity = '1';
+        container.classList.add('show');
+
         // Create detail HTML using the correct CSS classes
         const detailHtml = `
             <div class="detail-chunking-container">
@@ -176,6 +182,9 @@ export class From1QuestionGenDetailChunking {
         console.log('3. Current container content:', container.innerHTML);
         container.innerHTML = detailHtml;
         
+        // Force reflow
+        container.offsetHeight;
+        
         // Verify content was added
         console.log('4. New container content length:', container.innerHTML.length);
         console.log('5. Container dimensions:', {
@@ -201,6 +210,14 @@ export class From1QuestionGenDetailChunking {
         }
         console.log('6. Parent elements:', parentPath);
         console.log('=== END DISPLAY DETAIL ===');
+
+        // Force reflow again after a small delay
+        setTimeout(() => {
+            container.style.display = 'block';
+            container.style.visibility = 'visible';
+            container.style.opacity = '1';
+            container.classList.add('show');
+        }, 100);
     }
 
     /**
