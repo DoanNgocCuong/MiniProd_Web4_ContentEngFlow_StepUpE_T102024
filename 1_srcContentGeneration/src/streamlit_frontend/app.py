@@ -1,6 +1,15 @@
 import streamlit as st
 import sys
 import os
+from streamlit_frontend.steps.A_FromUserProfileGenLearningPath import main as learning_path_main
+from streamlit_frontend.steps.B_From1TopicGen20QuestionChunking import main as question_main
+from streamlit_frontend.steps.C_From1QuestionGenDetailChunking import main as detail_main
+from streamlit_frontend.steps.D_FromDetailChunkingGen4Exercise import main as exercise_main
+from streamlit_frontend.steps.All_ import CombinedGenerator
+
+# Initialize session state for settings
+if 'api_url' not in st.session_state:
+    st.session_state.api_url = "http://103.253.20.13:3000"
 
 # Set page config must be the first Streamlit command
 st.set_page_config(
@@ -13,8 +22,11 @@ st.set_page_config(
 # Add the parent directory to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# Import the learning path generator module
-from streamlit_frontend.steps.A_FromUserProfileGenLearningPath import main as learning_path_main
+# Import the modules
+from streamlit_frontend.steps.A_FromUserProfileGenLearningPath import LearningPathGenerator
+from streamlit_frontend.steps.B_From1TopicGen20QuestionChunking import QuestionGenerator
+from streamlit_frontend.steps.C_From1QuestionGenDetailChunking import QuestionDetailGenerator
+from streamlit_frontend.steps.All_ import CombinedGenerator
 
 def load_css():
     """Load CSS from external file."""
@@ -31,20 +43,53 @@ def initialize_app():
     with st.sidebar:
         st.title("Navigation")
         page = st.radio(
-            "Go to",
-            ["Learning Path Generator", "Settings"]
+            "Select a page",
+            [
+                "Complete Generator",
+                "Learning Path Generator",
+                "Question Generator",
+                "Question Detail Generator",
+                "Exercise Generator",
+                "Settings"
+            ]
         )
 
     # Main content area
-    if page == "Learning Path Generator":
+    if page == "Complete Generator":
+        generator = CombinedGenerator()
+        generator.render()
+    elif page == "Learning Path Generator":
         learning_path_main()
+    elif page == "Question Generator":
+        question_main()
+    elif page == "Question Detail Generator":
+        detail_main()
+    elif page == "Exercise Generator":
+        exercise_main()
     elif page == "Settings":
-        st.title("Settings")
-        st.write("Settings page content will go here")
+        render_settings()
 
     # Footer
     st.markdown("---")
     st.markdown("Made with ❤️ for improving your English communication skills")
+
+def render_settings():
+    """Render the settings page."""
+    st.title("⚙️ Settings")
+    st.markdown("Configure application settings here.")
+    
+    # API Configuration
+    st.header("API Configuration")
+    api_url = st.text_input(
+        "API URL",
+        value=st.session_state.api_url,
+        help="Enter the base URL for the API"
+    )
+    
+    # Save settings button
+    if st.button("Save Settings"):
+        st.session_state.api_url = api_url
+        st.success("Settings saved successfully!")
 
 def main():
     """Main entry point for the application."""
