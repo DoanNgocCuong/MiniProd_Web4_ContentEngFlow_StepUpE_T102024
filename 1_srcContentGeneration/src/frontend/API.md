@@ -30,7 +30,13 @@ http://103.253.20.13:3000/api/generate-20-chunking-from-5-scenario
 ---
 # B2. User Profile + 1Week-1Topic-1Scenario-1Question => Detail Chunking 
 
-Generate detailed content for a specific question."""
+
+http://103.253.20.13:3000/api/generate-questions
+
+Payload:
+```bash
+{
+    "generateQuestionInput": "Generate detailed content for a specific question."""
         # Prepare user profile
         user_profile = f"""USER PROFILE:
 - Industry: [{kwargs['industry']}]
@@ -43,39 +49,9 @@ Generate detailed content for a specific question."""
             "topic": kwargs['topic'],
             "scenario": kwargs['scenario'],
             "question": kwargs['question']
-        }
-
-```json
-{
-  "question": "Câu hỏi tiếng Anh",
-  "structure": "Cấu trúc câu trả lời với ____",
-  "main phrase": "Cụm từ chính",
-  "optional phrase 1": "Phương án 1",
-  "optional phrase 2": "Phương án 2",
-  "question-vi": "Câu hỏi tiếng Việt",
-  "structure-vi": "Cấu trúc câu trả lời tiếng Việt với ____",
-  "main phrase-vi": "Cụm từ chính tiếng Việt",
-  "optional phrase 1-vi": "Phương án 1 tiếng Việt",
-  "optional phrase 2-vi": "Phương án 2 tiếng Việt"
+        }"
 }
-```
 
-## API Documentation
-
-http://103.253.20.13:3000/api/generate-questions
-
-Payload:
-```bash
-{
-    "generateQuestionInput": "Generate 1 English question about [topic] in the context of [scenario] for [job_role] in [industry] industry. Question MUST BE: [question]"
-}
-```
-
-Example:
-```bash
-{
-    "generateQuestionInput": "Generate 1 English question about Project updates (Cập nhật dự án) in the context of Cập nhật tiến độ dự án for CTO in IT industry. Question MUST BE: Can you explain the main objective of the new project?"
-}
 ```
 
 Response:

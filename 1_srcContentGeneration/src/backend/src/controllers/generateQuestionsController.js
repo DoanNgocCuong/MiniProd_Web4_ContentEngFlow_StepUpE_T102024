@@ -87,13 +87,7 @@ exports.generateQuestions = async (req, res) => {
 
         // Lấy số lượng câu hỏi từ input
         const questionCountMatch = generateQuestionInput.match(/Generate (\d+) English/i);
-        if (!questionCountMatch) {
-            return res.status(400).json({ 
-                error: 'Invalid input format. Should start with "Generate X English..."' 
-            });
-        }
-
-        const questionCount = parseInt(questionCountMatch[1]);
+        const questionCount = questionCountMatch ? parseInt(questionCountMatch[1]) : 1;
         const batches = Math.ceil(questionCount / BATCH_SIZE);
         let allQuestions = [];
 
