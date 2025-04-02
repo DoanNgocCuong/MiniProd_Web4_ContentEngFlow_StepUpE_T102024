@@ -184,3 +184,20 @@
         padding: 10px;
     }
 }
+
+.week-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.week-title {
+    flex: 1;
+}
+
+.chunking-btn-container {
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+}
