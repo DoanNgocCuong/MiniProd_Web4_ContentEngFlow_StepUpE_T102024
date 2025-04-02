@@ -117,24 +117,27 @@ export class From1TopicGen20QuestionChunking {
             })
             .join('\n');
 
+        // Create HTML structure
         container.innerHTML = `
             <div class="questions-container">
-                <h5>Speaking Practice Questions</h5>
+                <h5 class="questions-title">Speaking Practice Questions</h5>
                 ${data.scenarios.map(scenario => `
                     <div class="scenario-questions">
-                        <h6>${scenario.scenario}</h6>
-                        <ul>
-                            ${scenario.questions.map((q, index) => `
-                                <li class="question-item">
-                                    <div class="question-content">
-                                        <span>${q}</span>
-                                        <div id="detail-btn-${scenario.scenario.replace(/\s+/g, '-')}-${index}" 
-                                             class="detail-btn-container"></div>
-                                    </div>
-                                    <div id="detail-content-${scenario.scenario.replace(/\s+/g, '-')}-${index}" 
-                                         class="detail-content"></div>
-                                </li>
-                            `).join('')}
+                        <h6 class="scenario-title">${scenario.scenario}</h6>
+                        <ul class="questions-list">
+                            ${scenario.questions.map((q, index) => {
+                                const detailContainerId = `detail-content-${scenario.scenario.replace(/\s+/g, '-')}-${index}`;
+                                return `
+                                    <li class="question-item">
+                                        <div class="question-content">
+                                            <span class="question-text">${q}</span>
+                                            <div id="detail-btn-${scenario.scenario.replace(/\s+/g, '-')}-${index}" 
+                                                 class="detail-btn-container"></div>
+                                        </div>
+                                        <div id="${detailContainerId}" class="detail-content"></div>
+                                    </li>
+                                `;
+                            }).join('')}
                         </ul>
                     </div>
                 `).join('')}
@@ -150,14 +153,21 @@ export class From1TopicGen20QuestionChunking {
                 const detailContainer = document.getElementById(
                     `detail-content-${scenario.scenario.replace(/\s+/g, '-')}-${index}`
                 );
+                
                 if (btnContainer && detailContainer) {
+                    console.log('Creating detail button for container:', detailContainer.id);
                     const detailButton = new From1QuestionGenDetailChunking(
-                        formattedUserProfile,  // Use formatted userProfile
+                        formattedUserProfile,
                         scenario.scenario,
                         question,
-                        `detail-content-${scenario.scenario.replace(/\s+/g, '-')}-${index}`
+                        detailContainer.id
                     );
                     btnContainer.appendChild(detailButton.render());
+                } else {
+                    console.error('Container not found:', {
+                        btnContainer: `detail-btn-${scenario.scenario.replace(/\s+/g, '-')}-${index}`,
+                        detailContainer: `detail-content-${scenario.scenario.replace(/\s+/g, '-')}-${index}`
+                    });
                 }
             });
         });

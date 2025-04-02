@@ -96,39 +96,111 @@ export class From1QuestionGenDetailChunking {
      * @private
      */
     _displayDetail(detail) {
-        console.log('Looking for container:', this.containerId);
+        console.log('=== START DISPLAY DETAIL ===');
+        console.log('1. Looking for container:', this.containerId);
         const container = document.getElementById(this.containerId);
+        
         if (!container) {
-            console.error(`Container ${this.containerId} not found`);
+            console.error('Container not found:', this.containerId);
             return;
         }
-        console.log('Container found, displaying detail:', detail);
+        
+        console.log('2. Container found:', {
+            id: container.id,
+            className: container.className,
+            parentElement: container.parentElement.tagName,
+            parentClass: container.parentElement.className,
+            visibility: window.getComputedStyle(container).visibility,
+            display: window.getComputedStyle(container).display,
+            zIndex: window.getComputedStyle(container).zIndex,
+            position: window.getComputedStyle(container).position
+        });
 
-        container.innerHTML = `
-            <div class="detail-container">
-                <div class="question-section">
-                    <h6>Question (English)</h6>
-                    <p>${detail.question}</p>
-                    <h6>Question (Vietnamese)</h6>
-                    <p>${detail['question-vi']}</p>
-                </div>
-                <div class="structure-section">
-                    <h6>Structure (English)</h6>
-                    <p>${detail.structure}</p>
-                    <h6>Structure (Vietnamese)</h6>
-                    <p>${detail['structure-vi']}</p>
-                </div>
-                <div class="phrases-section">
-                    <h6>Main Phrase</h6>
-                    <p>${detail['main phrase']} (${detail['main phrase-vi']})</p>
-                    <h6>Alternative Phrases</h6>
-                    <ul>
-                        <li>${detail['optional phrase 1']} (${detail['optional phrase 1-vi']})</li>
-                        <li>${detail['optional phrase 2']} (${detail['optional phrase 2-vi']})</li>
-                    </ul>
+        // Create detail HTML using the correct CSS classes
+        const detailHtml = `
+            <div class="detail-chunking-container">
+                <div class="detail-chunking-item">
+                    <div class="question-section">
+                        <div class="en-section">
+                            <div class="section-label">Question (English)</div>
+                            <div class="question-text">${detail.question}</div>
+                        </div>
+                        <div class="vn-section">
+                            <div class="section-label">Question (Vietnamese)</div>
+                            <div class="question-text-vn">${detail['question-vi']}</div>
+                        </div>
+                    </div>
+
+                    <div class="question-section">
+                        <div class="en-section">
+                            <div class="section-label">Structure (English)</div>
+                            <div class="structure-text">${detail.structure}</div>
+                        </div>
+                        <div class="vn-section">
+                            <div class="section-label">Structure (Vietnamese)</div>
+                            <div class="structure-text-vn">${detail['structure-vi']}</div>
+                        </div>
+                    </div>
+
+                    <div class="phrases-section">
+                        <div class="section-label">Phrases</div>
+                        <div class="phrase-group">
+                            <div class="phrase main-phrase">
+                                <div class="phrase-en">
+                                    <span class="phrase-label">Main:</span>
+                                    <span class="phrase-text">${detail['main phrase']}</span>
+                                </div>
+                                <div class="phrase-text-vn">${detail['main phrase-vi']}</div>
+                            </div>
+                            <div class="phrase">
+                                <div class="phrase-en">
+                                    <span class="phrase-label">Optional 1:</span>
+                                    <span class="phrase-text">${detail['optional phrase 1']}</span>
+                                </div>
+                                <div class="phrase-text-vn">${detail['optional phrase 1-vi']}</div>
+                            </div>
+                            <div class="phrase">
+                                <div class="phrase-en">
+                                    <span class="phrase-label">Optional 2:</span>
+                                    <span class="phrase-text">${detail['optional phrase 2']}</span>
+                                </div>
+                                <div class="phrase-text-vn">${detail['optional phrase 2-vi']}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         `;
+
+        // Clear previous content and add new content
+        console.log('3. Current container content:', container.innerHTML);
+        container.innerHTML = detailHtml;
+        
+        // Verify content was added
+        console.log('4. New container content length:', container.innerHTML.length);
+        console.log('5. Container dimensions:', {
+            offsetHeight: container.offsetHeight,
+            clientHeight: container.clientHeight,
+            scrollHeight: container.scrollHeight,
+            offsetWidth: container.offsetWidth
+        });
+        
+        // Check if any parent elements might be hiding the content
+        let parent = container.parentElement;
+        let parentPath = [];
+        while (parent && parent !== document.body) {
+            parentPath.push({
+                tag: parent.tagName,
+                class: parent.className,
+                display: window.getComputedStyle(parent).display,
+                visibility: window.getComputedStyle(parent).visibility,
+                height: window.getComputedStyle(parent).height,
+                overflow: window.getComputedStyle(parent).overflow
+            });
+            parent = parent.parentElement;
+        }
+        console.log('6. Parent elements:', parentPath);
+        console.log('=== END DISPLAY DETAIL ===');
     }
 
     /**
