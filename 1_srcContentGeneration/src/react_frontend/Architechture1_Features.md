@@ -27,12 +27,12 @@ graph LR
 
 **Input:**
 - User Profile
-- Week number + Topic name + 5 Scenarios
+- Week number + 1 Topic name + 5 Scenarios
 
 **Output:**
 - 20 Chunking Questions
 
-## B2. Question => Detail Chunking
+## B2. 1 Question => 1 Detail Chunking
 ```mermaid
 graph LR
     A[1 Question] -->|/api/generate-detail| B[Detail Chunking]
@@ -43,9 +43,7 @@ graph LR
 - Week number + Topic name + 1 Scenarios + 1 Chunking Questions
 
 **Output:**
-- English Question
-- Vietnamese Translation
-- Answer Structure
+- Detail Chunking: Question + 3 phrases Chunking: Eng and Vietnamese
 
 ## B3. Detail Chunking => 4 Exercise Types
 ```mermaid

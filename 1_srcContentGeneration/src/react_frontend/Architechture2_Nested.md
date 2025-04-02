@@ -311,7 +311,7 @@ const ChunkingFeature = () => {
 
 Trong trường hợp của bạn, với flow:
 ```
-Profile → Learning Path → Chunking → Detail → Exercises
+Profile → Learning Path → Questions → Detail Chunking → Exercises
 ```
 
 Tôi nghiêng về **Nested Pattern** vì:
