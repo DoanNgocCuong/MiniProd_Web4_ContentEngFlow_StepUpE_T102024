@@ -1,5 +1,8 @@
 # Start of Selection
 .env
+1_srcContentGeneration/src/streamlit_frontend/.venv/
+1_srcContentGeneration/src/streamlit_frontend/__pycache__/
+1_srcContentGeneration/src/streamlit_frontend/*.pyc
 
 # Do not save the node_modules folder created by NodeJS
 node_modules/

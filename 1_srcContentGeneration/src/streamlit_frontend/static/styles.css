@@ -1,0 +1,43 @@
+/* Main container styles */
+.main {
+    padding: 2rem;
+}
+
+/* Button styles */
+.stButton>button {
+    width: 100%;
+}
+
+/* Expander styles */
+.stExpander {
+    background-color: #f0f2f6;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+/* Additional custom styles */
+.stMarkdown {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.stTitle {
+    color: #1f1f1f;
+}
+
+.stHeader {
+    color: #2c3e50;
+}
+
+/* Success message styles */
+.stSuccess {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+/* Error message styles */
+.stError {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+} 
