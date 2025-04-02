@@ -1,0 +1,18 @@
+{
+    "questions": [
+        {
+            "question": "Can you describe what you accomplished since our last meeting?",
+            "structure": "Since our last meeting, I have accomplished ____.",
+            "main phrase": "completed the database optimization which improved query performance by 30%",
+            "optional phrase 1": "implemented the new authentication system",
+            "optional phrase 2": "resolved API integration challenges",
+            "question-vi": "Bạn có thể mô tả những gì bạn đã hoàn thành kể từ cuộc họp trước của chúng ta không?",
+            "structure-vi": "Kể từ cuộc họp trước, tôi đã hoàn thành ____.",
+            "main phrase-vi": "hoàn thành việc tối ưu hóa cơ sở dữ liệu giúp cải thiện hiệu suất truy vấn lên 30%",
+            "optional phrase 1-vi": "triển khai hệ thống xác thực mới",
+            "optional phrase 2-vi": "giải quyết các thách thức tích hợp API"
+        }
+    ],
+    "total": 1,
+    "requestedCount": 1
+} 

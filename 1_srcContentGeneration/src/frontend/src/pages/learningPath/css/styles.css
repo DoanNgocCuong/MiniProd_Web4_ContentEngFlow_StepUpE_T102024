@@ -1,0 +1,592 @@
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f9fc;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+html, body {
+    overflow-y: scroll; /* Force scrolling, even if there's not much content */
+}
+/* Main container styling */
+.main-container {
+    width: 100%;
+    max-width: 1500px; /* Adjust as needed */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+/* Input section styling */
+#input-section {
+    margin-bottom: 30px;
+}
+/* Output section styling */
+#output-section {
+    margin-top: 30px;
+}
+/* Question container styling */
+#question-container {
+    width: 100%;
+    overflow-x: auto; /* Allows horizontal scrolling on small screens */
+
+    gap: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.box {
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    padding: 15px;
+    margin-bottom: 15px;
+}
+/* Form element styling */
+label {
+    font-weight: bold;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+/* Input styling */
+input, select, textarea {
+    width: 95%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+/* Button styling */
+button {
+    padding: 10px 15px;
+    background-color: #e90909;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+}
+button:hover {
+    background-color: #30cfe4;
+}
+/* Responsive design */
+@media (max-width: 768px) {
+    #question-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Tab Styling */
+.tab-switch {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    background-color: #f2f2f2;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.tab-btn.active {
+    background-color: #D2ABDB; /* Changed from #e407f8 to #D2ABDB */
+    color: white;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Table styling */
+.lesson-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+/* Hover effect for table rows */
+.lesson-table tr:hover {
+    background-color: #f1f1f1; /* Light gray background on hover */
+}
+
+/* Striped rows */
+.lesson-table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Light background for even rows */
+}
+
+/* Padding and borders */
+.lesson-table th, .lesson-table td {
+    padding: 8px; /* Add padding for better spacing */
+    border: 1px solid #ddd; /* Light border for table cells */
+    text-align: left; /* Align text to the left */
+}
+
+/* Column widths */
+.lesson-table th:nth-child(1), .lesson-table td:nth-child(1) { width: 10%; }  /* Checkbox */
+.lesson-table th:nth-child(2), .lesson-table td:nth-child(2) { width: 10%; } /* Question */
+.lesson-table th:nth-child(3), .lesson-table td:nth-child(3) { width: 10%; }  /* Structure */
+.lesson-table th:nth-child(4), .lesson-table td:nth-child(4) { width: 10%; }  /* Main Phrase */
+.lesson-table th:nth-child(5), .lesson-table td:nth-child(5) { width: 10%; }  /* Alternative Option 1 */
+.lesson-table th:nth-child(6), .lesson-table td:nth-child(6) { width: 10%; }  /* Alternative Option 2 */
+.lesson-table th:nth-child(7), .lesson-table td:nth-child(7) { width: 10%; }  /* Question (VI) */
+.lesson-table th:nth-child(8), .lesson-table td:nth-child(8) { width: 10%; }  /* Structure (VI) */
+.lesson-table th:nth-child(9), .lesson-table td:nth-child(9) { width: 10%; }  /* Main Phrase (VI) */
+.lesson-table th:nth-child(10), .lesson-table td:nth-child(10) { width: 10%; } /* Alternative Option 1 (VI) */
+.lesson-table th:nth-child(11), .lesson-table td:nth-child(11) { width: 6%; }  /* Alternative Option 2 (VI) */
+.lesson-table th:nth-child(12), .lesson-table td:nth-child(12) { width: 6%; }  /* Actions */
+
+/* Make the table scrollable horizontally */
+#question-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* Responsive design for smaller screens */
+@media screen and (max-width: 1200px) {
+    .lesson-table {
+        font-size: 14px;
+    }
+    
+    .lesson-table th, .lesson-table td {
+        padding: 6px;
+    }
+}
+
+/* Optional: Add a hover effect for better row distinction */
+.lesson-table tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Style for the edit button */
+.edit-btn {
+    padding: 5px 10px;
+    background-color: #D2ABDB; /* Changed from #D2ABDB to #D2ABDB */
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.edit-btn:hover {
+    background-color: #45a049;
+}
+
+.copy-btn {
+    background-color: #D2ABDB; /* Changed from #D2ABDB to #D2ABDB */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+    margin: 20px auto;
+    cursor: pointer;
+}
+
+/* Edit dialog styling */
+.edit-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.dialog-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 500px;
+}
+
+.dialog-content h3 {
+    margin-top: 0;
+}
+
+.dialog-content label {
+    display: block;
+    margin-top: 10px;
+}
+
+.dialog-content input {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+.dialog-buttons {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.dialog-buttons button {
+    margin-left: 10px;
+}
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+    .lesson-table {
+        font-size: 14px;
+    }
+    
+    .lesson-table th, .lesson-table td {
+        padding: 8px;
+    }
+
+    .edit-btn {
+        padding: 3px 6px;
+        font-size: 10px;
+    }
+}
+
+/* Learning Meaning Section Styling */
+#learning-meaning-section {
+    margin-top: 30px;
+}
+
+.learning-meaning-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.learning-meaning-table th, .learning-meaning-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.learning-meaning-table th {
+    background-color: #f2f2f2;
+}
+
+/* Optional: Add a hover effect for better row distinction */
+.learning-meaning-table tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Loading Modal Styling */
+.loading-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-content {
+    position: relative;
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.loading-content h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Thanh tiến độ */
+.progress-container {
+    width: 100%;
+    height: 20px;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    margin: 15px 0;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%; /* Bắt đầu với 0% */
+    background: linear-gradient(to right, #4CAF50, #2196F3);
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+#progress-text {
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+}
+
+/* Animation */
+@keyframes progress-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.progress-bar.animated {
+    background: linear-gradient(45deg, #4CAF50, #2196F3, #03A9F4, #4CAF50);
+    background-size: 300% 300%;
+    animation: progress-animation 2s linear infinite;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 900;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* Feedback modal styling */
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 30px;  /* Tăng padding để có thêm không gian */
+    width: 90%;     /* Giảm width xuống */
+    max-width: 500px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước */
+}
+
+#feedback-text {
+    width: 100%;
+    height: 150px;
+    margin: 15px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+    box-sizing: border-box; /* Quan trọng: đảm bảo padding không làm tràn */
+    font-family: inherit; /* Kế thừa font từ parent */
+    line-height: 1.5; /* Cải thiện độ cao dòng */
+}
+
+/* Đảm bảo tiêu đề không bị tràn */
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+/* Close button positioning */
+.close-modal {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    line-height: 1;
+    padding: 5px;
+}
+
+/* Send feedback button */
+#send-feedback-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    width: auto;  /* Cho phép nút có kích thước tự nhiên */
+    display: inline-block;
+}
+
+#send-feedback-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Feedback button styling */
+#feedback-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #D2ABDB; /* Changed from #e60808 to #D2ABDB */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    z-index: 800;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+#feedback-btn:hover {
+    background-color: #ff5252;  /* Darker shade for hover */
+}
+
+/* Chunking Button Styles */
+.chunking-btn-container {
+    margin-left: 20px;
+}
+
+.generate-chunking-btn {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.generate-chunking-btn:hover {
+    background-color: #45a049;
+}
+
+.generate-chunking-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Chunking Questions Styles */
+.questions-container {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.scenario-questions {
+    margin-bottom: 25px;
+    background-color: white;
+    padding: 15px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.scenario-questions h6 {
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 16px;
+    border-bottom: 2px solid #D2ABDB;
+    padding-bottom: 8px;
+}
+
+.question-item {
+    margin-bottom: 12px;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.question-item:hover {
+    background-color: #f8f9fa;
+}
+
+.question-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.question-text {
+    flex: 1;
+    margin-right: 15px;
+}
+
+.question-english {
+    color: #2c3e50;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.question-vietnamese {
+    color: #666;
+    font-size: 0.95em;
+    font-style: italic;
+}
+
+/* Chunking Details Styles */
+.chunking-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+}
+
+.chunking-section h4 {
+    color: #2c3e50;
+    margin: 0 0 15px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #D2ABDB;
+}
+
+.chunking-row {
+    margin: 12px 0;
+}
+
+.chunking-row strong {
+    display: block;
+    color: #444;
+    margin-bottom: 5px;
+}
+
+.chunking-row p {
+    margin: 5px 0;
+    color: #666;
+    padding: 8px;
+    background-color: white;
+    border-radius: 4px;
+    border: 1px solid #eee;
+}
+
+.chunking-row ul {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0;
+}
+
+.chunking-row li {
+    padding: 8px;
+    margin: 5px 0;
+    background-color: white;
+    border-radius: 4px;
+    border: 1px solid #eee;
+    color: #666;
+}
+
+.detail-content {
+    display: none;
+    margin-top: 10px;
+}
+
+.detail-content.active {
+    display: block;
+}
