@@ -109,6 +109,14 @@ export class From1TopicGen20QuestionChunking {
             return;
         }
 
+        // Format userProfile for detail generation
+        const formattedUserProfile = this.userProfile.split('\n')
+            .map(line => {
+                const [key, value] = line.split(':');
+                return `- ${key.trim()}: ${value ? value.trim() : 'undefined'}`;
+            })
+            .join('\n');
+
         container.innerHTML = `
             <div class="questions-container">
                 <h5>Speaking Practice Questions</h5>
@@ -139,8 +147,12 @@ export class From1TopicGen20QuestionChunking {
                 const btnContainer = document.getElementById(
                     `detail-btn-${scenario.scenario.replace(/\s+/g, '-')}-${index}`
                 );
-                if (btnContainer) {
+                const detailContainer = document.getElementById(
+                    `detail-content-${scenario.scenario.replace(/\s+/g, '-')}-${index}`
+                );
+                if (btnContainer && detailContainer) {
                     const detailButton = new From1QuestionGenDetailChunking(
+                        formattedUserProfile,  // Use formatted userProfile
                         scenario.scenario,
                         question,
                         `detail-content-${scenario.scenario.replace(/\s+/g, '-')}-${index}`

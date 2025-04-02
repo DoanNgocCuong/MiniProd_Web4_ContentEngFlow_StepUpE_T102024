@@ -34,11 +34,15 @@ export class From1QuestionGenDetailChunking {
         btn.textContent = 'Generating...';
 
         try {
+            console.log('Fetching detail for container:', this.containerId);
             const data = await this._fetchFromAPI();
+            console.log('API response:', data);
+            
             if (!data || !data.questions) {
                 throw new Error('Invalid data format received');
             }
             
+            console.log('Displaying detail in container:', this.containerId);
             this._displayDetail(data.questions[0]);
         } catch (error) {
             console.error('Error:', error);
@@ -55,19 +59,11 @@ export class From1QuestionGenDetailChunking {
      */
     async _fetchFromAPI() {
         try {
-            // Format userProfile according to API requirements
-            const formattedUserProfile = this.userProfile.split('\n')
-                .map(line => {
-                    const [key, value] = line.split(':');
-                    return `- ${key.trim()}: ${value ? value.trim() : 'undefined'}`;
-                })
-                .join('\n');
-
             // Create the request body with exact format from API docs
             const requestBody = {
                 generateQuestionInput: `Generate detailed content for a specific question.`
                     + `\n# Prepare user profile\n`
-                    + `user_profile = f"""USER PROFILE:\n${formattedUserProfile}"""\n\n`
+                    + `user_profile = f"""USER PROFILE:\n${this.userProfile}"""\n\n`
                     + `# Prepare question data\n`
                     + `question_data = {\n`
                     + `    "topic": "${this.scenario}",\n`
@@ -100,11 +96,13 @@ export class From1QuestionGenDetailChunking {
      * @private
      */
     _displayDetail(detail) {
+        console.log('Looking for container:', this.containerId);
         const container = document.getElementById(this.containerId);
         if (!container) {
             console.error(`Container ${this.containerId} not found`);
             return;
         }
+        console.log('Container found, displaying detail:', detail);
 
         container.innerHTML = `
             <div class="detail-container">
