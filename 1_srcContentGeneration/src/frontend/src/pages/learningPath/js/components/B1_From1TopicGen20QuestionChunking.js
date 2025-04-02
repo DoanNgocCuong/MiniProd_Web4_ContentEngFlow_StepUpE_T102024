@@ -1,5 +1,5 @@
 import { config } from '../config.js';
-import { DetailChunkingFromQuestionButton } from './DetailChunkingFromQuestionButton.js';
+import { From1QuestionGenDetailChunking } from './B2_From1QuestionGenDetailChunking.js';
 
 export class From1TopicGen20QuestionChunking {
     constructor(userProfile, weekData) {
@@ -140,7 +140,7 @@ export class From1TopicGen20QuestionChunking {
                     `detail-btn-${scenario.scenario.replace(/\s+/g, '-')}-${index}`
                 );
                 if (btnContainer) {
-                    const detailButton = new DetailChunkingFromQuestionButton(
+                    const detailButton = new From1QuestionGenDetailChunking(
                         scenario.scenario,
                         question,
                         `detail-content-${scenario.scenario.replace(/\s+/g, '-')}-${index}`

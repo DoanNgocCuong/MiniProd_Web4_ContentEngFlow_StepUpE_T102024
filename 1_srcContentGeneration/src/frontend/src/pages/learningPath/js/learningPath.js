@@ -2,7 +2,7 @@
 import { config } from './config.js';
 import { FromUserProfileGenLearningPath } from './components/A_FromUserProfileGenLearningPath.js';
 import { From1TopicGen20QuestionChunking } from './components/B1_From1TopicGen20QuestionChunking.js';
-import { DetailChunkingFromQuestionButton } from './components/DetailChunkingFromQuestionButton.js';
+import { From1QuestionGenDetailChunking } from './components/B2_From1QuestionGenDetailChunking.js';
 
 /**
  * Class xử lý việc render learning path
@@ -99,6 +99,7 @@ class LearningPathRenderer {
                             `).join('')}
                         </ul>
                         <div id="chunking-questions-week-${week.week}" class="chunking-questions"></div>
+                        <div id="detail-chunking-week-${week.week}" class="detail-chunking"></div>
                     </div>
                 `).join('')}
             </div>

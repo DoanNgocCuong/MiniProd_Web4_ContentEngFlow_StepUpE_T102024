@@ -35,22 +35,7 @@ http://103.253.20.13:3000/api/generate-questions
 
 Payload:
 ```bash
-{
-    "generateQuestionInput": "Generate detailed content for a specific question."""
-        # Prepare user profile
-        user_profile = f"""USER PROFILE:
-- Industry: [{kwargs['industry']}]
-- Job: [{kwargs['job_role']}]
-- English Level: [{kwargs['english_level']}]
-- Learning Goals: [{kwargs['learning_goals']}]"""
-
-        # Prepare question data
-        question_data = {
-            "topic": kwargs['topic'],
-            "scenario": kwargs['scenario'],
-            "question": kwargs['question']
-        }"
-}
+{"generateQuestionInput":"Generate detailed content for a specific question.\n# Prepare user profile\nuser_profile = f\"\"\"USER PROFILE:\n- industry: [AI]\n- job: [CTO]\n- englishLevel: [B1]\n- learningGoals: [cdcdc]\"\"\"\n\n# Prepare question data\nquestion_data = {\n    \"topic\": \"Giới thiệu dự án hiện tại\",\n    \"scenario\": \"Giới thiệu dự án hiện tại\",\n    \"question\": \"Can you describe the main goals of the current project?\"\n}"}
 
 ```
 
