@@ -95,7 +95,23 @@
         </div>
     </div>
 
+    <!-- Load scripts -->
     <script type="module" src="./js/learningPath.js"></script>
+    <script>
+        // Fallback for browsers that don't support ES modules
+        window.addEventListener('load', function() {
+            if (!window.learningPathManager) {
+                console.error('Learning Path Manager not loaded properly');
+                // Try to load it again or show an error message
+                const generatePathBtn = document.getElementById('generate-path-btn');
+                if (generatePathBtn) {
+                    generatePathBtn.addEventListener('click', function() {
+                        alert('Please refresh the page and try again. If the problem persists, contact support.');
+                    });
+                }
+            }
+        });
+    </script>
 </body>
 </html>
 

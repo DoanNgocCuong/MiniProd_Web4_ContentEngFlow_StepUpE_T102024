@@ -1,4 +1,6 @@
-const env = process.env.NODE_ENV || 'development';
+// Xác định môi trường dựa trên URL hoặc biến môi trường
+const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const env = isDevelopment ? 'development' : 'production';
 
 // Xuất một object config chứa các cấu hình API URL cho từng môi trường
 export const config = {

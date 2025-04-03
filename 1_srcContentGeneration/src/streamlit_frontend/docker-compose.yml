@@ -1,23 +1,30 @@
 version: '3'
 
 services:
-  learning-path-app:
-    build: .
+  learning-path-app-the-coach-streamlit:
+    container_name: learning-path-app-the-coach-streamlit
+    image: learning-path-app-the-coach-streamlit:latest
+    build: 
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "8501:8501"
+      - "25052:25052"
     environment:
       - API_URL=http://103.253.20.13:3000
+      - PYTHONUNBUFFERED=1
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8501"]
+      test: ["CMD", "curl", "-f", "http://localhost:25052"]
       interval: 30s
       timeout: 10s
       retries: 3
     volumes:
       - ./logs:/app/logs
+      - ./static:/app/static
     networks:
       - app-network
 
 networks:
   app-network:
+    name: learning-path-app-the-coach-network
     driver: bridge 

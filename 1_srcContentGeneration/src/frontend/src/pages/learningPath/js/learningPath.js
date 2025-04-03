@@ -182,18 +182,6 @@ class LearningPathManager {
         console.log('LearningPathManager initialized');
         this.pathGenerator = new FromUserProfileGenLearningPath();
         this.renderer = new LearningPathRenderer();
-        
-        // Thêm event listener cho button click
-        const generateButton = document.getElementById('generate-path-btn');
-        if (generateButton) {
-            console.log('Adding click listener to generate button');
-            generateButton.onclick = async () => {
-                console.log('Button clicked');
-                await this._handleFormSubmit();
-            };
-        } else {
-            console.error('Generate button not found');
-        }
     }
 
     /**
@@ -229,16 +217,20 @@ class LearningPathManager {
 // Export class để sử dụng
 export const learningPathManager = new LearningPathManager();
 
+// Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    const generateBtn = document.getElementById('generate-btn');
-    if (generateBtn) {
-        generateBtn.addEventListener('click', handleGenerateClick);
+    console.log('DOM Content Loaded');
+    const generatePathBtn = document.getElementById('generate-path-btn');
+    if (generatePathBtn) {
+        console.log('Generate path button found');
+        generatePathBtn.addEventListener('click', () => {
+            console.log('Generate path button clicked');
+            learningPathManager._handleFormSubmit();
+        });
+    } else {
+        console.error('Generate path button not found');
     }
 });
-
-function handleGenerateClick() {
-    // Implementation of handleGenerateClick function
-}
 
 function handleGenerateDetailClick(detail) {
     console.log('=== START HANDLE GENERATE DETAIL CLICK ===');
