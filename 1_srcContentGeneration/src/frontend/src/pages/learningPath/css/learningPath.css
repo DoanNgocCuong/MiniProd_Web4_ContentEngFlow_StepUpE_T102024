@@ -201,3 +201,424 @@
     display: flex;
     align-items: center;
 }
+
+/* Exercise Container Styles */
+.exercise-buttons-container {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.exercise-title {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.exercise-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.exercise-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.exercise-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-color: #007bff;
+}
+
+.exercise-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.btn-text {
+    font-size: 0.9rem;
+    color: #495057;
+}
+
+/* Exercise Display Styles */
+.exercise-display {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.exercise {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.exercise h4 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+/* Fill in the Blank Exercise */
+.fill-blank .answer-input {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 1rem 0;
+    border: 2px solid #e9ecef;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+/* Multiple Choice Exercise */
+.multiple-choice .options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.option:hover {
+    background: #e9ecef;
+}
+
+/* True/False Exercise */
+.true-false .options {
+    display: flex;
+    gap: 2rem;
+    margin: 1rem 0;
+}
+
+/* Matching Exercise */
+.matching-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin: 1rem 0;
+}
+
+.matching-item {
+    padding: 1rem;
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 4px;
+    cursor: move;
+    transition: all 0.3s ease;
+}
+
+.matching-item.dragging {
+    opacity: 0.5;
+    background: #e9ecef;
+}
+
+.matching-item.drag-over {
+    border-color: #007bff;
+    background: #e3f2fd;
+}
+
+/* Common Exercise Elements */
+.check-answer-btn {
+    display: block;
+    width: 100%;
+    padding: 0.8rem;
+    margin: 1rem 0;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.check-answer-btn:hover {
+    background: #0056b3;
+}
+
+.feedback {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.feedback-message {
+    padding: 0.8rem;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.feedback-message.correct {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.feedback-message.incorrect {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Loading State */
+.loading {
+    text-align: center;
+    padding: 2rem;
+    color: #6c757d;
+}
+
+/* Error State */
+.error {
+    text-align: center;
+    padding: 1rem;
+    background: #f8d7da;
+    color: #721c24;
+    border-radius: 4px;
+    margin: 1rem 0;
+}
+
+/* Exercise Wrapper */
+.exercise-wrapper {
+    position: relative;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    z-index: 100;
+    transition: all 0.3s ease;
+}
+
+/* Generate Exercise Button */
+.generate-exercise-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.generate-exercise-btn:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Exercise Buttons Container */
+.exercise-buttons-container {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e9ecef;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.exercise-buttons-container.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Exercise Header */
+.exercise-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.exercise-title {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.exercise-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    color: #666;
+    line-height: 1;
+    transition: all 0.2s ease;
+}
+
+.exercise-close-btn:hover {
+    color: #dc3545;
+    transform: rotate(90deg);
+}
+
+/* Exercise Buttons Grid */
+.exercise-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+/* Exercise Button */
+.exercise-btn {
+    padding: 0.75rem;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    background: white;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.exercise-btn:hover {
+    border-color: #007bff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.exercise-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Exercise Display */
+.exercise-display {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    min-height: 100px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.exercise-display.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Exercise Content */
+.exercise-content {
+    width: 100%;
+}
+
+.exercise-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.exercise-table th,
+.exercise-table td {
+    padding: 0.75rem;
+    border: 1px solid #e9ecef;
+    text-align: left;
+}
+
+.exercise-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    width: 30%;
+}
+
+/* Loading State */
+.loading {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+}
+
+/* Error State */
+.error {
+    text-align: center;
+    padding: 2rem;
+    color: #dc3545;
+    background: #fff5f5;
+    border-radius: 6px;
+}
+
+/* Feedback */
+.feedback {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 6px;
+}
+
+.feedback-message {
+    text-align: center;
+    font-weight: 500;
+}
+
+.feedback-message.correct {
+    color: #28a745;
+    background: #f0fff4;
+}
+
+.feedback-message.incorrect {
+    color: #dc3545;
+    background: #fff5f5;
+}
+
+/* Ripple Effect */
+.ripple {
+    position: absolute;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}

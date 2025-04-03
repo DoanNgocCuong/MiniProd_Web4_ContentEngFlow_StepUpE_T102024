@@ -3,6 +3,7 @@ import { config } from './config.js';
 import { FromUserProfileGenLearningPath } from './components/A_FromUserProfileGenLearningPath.js';
 import { From1TopicGen20QuestionChunking } from './components/B1_From1TopicGen20QuestionChunking.js';
 import { From1QuestionGenDetailChunking } from './components/B2_From1QuestionGenDetailChunking.js';
+import { FromDetailChunkingGen4Exercise } from './components/B3_FromDetailChunkingGen4Exercise.js';
 
 /**
  * Class xử lý việc render learning path
@@ -234,3 +235,74 @@ document.addEventListener('DOMContentLoaded', () => {
         generateBtn.addEventListener('click', handleGenerateClick);
     }
 });
+
+function handleGenerateClick() {
+    // Implementation of handleGenerateClick function
+}
+
+function handleGenerateDetailClick(detail) {
+    console.log('=== START HANDLE GENERATE DETAIL CLICK ===');
+    console.log('Detail received:', detail);
+    console.log('Detail ID:', detail.id);
+    console.log('Looking for container with ID:', `detail-content-${detail.id}`);
+
+    // Validate detail object
+    if (!detail || !detail.id) {
+        console.error('Invalid detail object:', detail);
+        return;
+    }
+
+    const exerciseComponent = new FromDetailChunkingGen4Exercise(detail);
+    const exerciseContainer = exerciseComponent.render();
+    console.log('Exercise container created:', exerciseContainer);
+
+    // Log all detail content containers for debugging
+    const allDetailContainers = document.querySelectorAll('.detail-content');
+    console.log('All detail containers found:', allDetailContainers.length);
+    allDetailContainers.forEach(container => {
+        console.log('Container ID:', container.id);
+        console.log('Container visible:', container.offsetParent !== null);
+    });
+
+    // Tìm container chứa detail content dựa vào ID
+    const detailContentContainer = document.querySelector(`#detail-content-${detail.id}`);
+    if (detailContentContainer) {
+        console.log('Found detail content container:', detailContentContainer);
+        console.log('Container dimensions:', {
+            offsetHeight: detailContentContainer.offsetHeight,
+            clientHeight: detailContentContainer.clientHeight,
+            scrollHeight: detailContentContainer.scrollHeight,
+            offsetWidth: detailContentContainer.offsetWidth
+        });
+        
+        // Tìm hoặc tạo detail chunking container
+        let detailChunkingContainer = detailContentContainer.querySelector('.detail-chunking-container');
+        if (!detailChunkingContainer) {
+            console.log('Creating new detail chunking container');
+            detailChunkingContainer = document.createElement('div');
+            detailChunkingContainer.className = 'detail-chunking-container';
+            detailContentContainer.appendChild(detailChunkingContainer);
+        }
+        
+        // Thêm exercise container vào detail chunking container
+        detailChunkingContainer.appendChild(exerciseContainer);
+        console.log('Added exercise container to detail chunking container');
+        
+        // Log final container state
+        console.log('Final container state:', {
+            hasExerciseContainer: detailChunkingContainer.contains(exerciseContainer),
+            exerciseContainerVisible: exerciseContainer.offsetParent !== null,
+            exerciseContainerDimensions: {
+                offsetHeight: exerciseContainer.offsetHeight,
+                clientHeight: exerciseContainer.clientHeight,
+                scrollHeight: exerciseContainer.scrollHeight,
+                offsetWidth: exerciseContainer.offsetWidth
+            }
+        });
+    } else {
+        console.error(`Detail content container not found for ID: ${detail.id}`);
+        // Log DOM structure for debugging
+        console.log('Current DOM structure:', document.body.innerHTML);
+    }
+    console.log('=== END HANDLE GENERATE DETAIL CLICK ===');
+}
