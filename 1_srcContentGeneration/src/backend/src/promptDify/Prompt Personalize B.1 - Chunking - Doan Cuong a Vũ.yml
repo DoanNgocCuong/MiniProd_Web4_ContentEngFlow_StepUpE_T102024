@@ -1,0 +1,175 @@
+app:
+  description: "USER PROFILE:\n- Industry: IT  \n- Job: CTO  \n- Gender: Male  \n\
+    - Native Language: Vietnamese  \n- English Level: A2  \n- Learning Goals: workplace\
+    \ communication, job interviews, salary review  \n---\n{\n      \"week\": 1,\n\
+    \      \"topic\": \"Project updates (Cập nhật dự án)\",\n      \"scenarios\":\
+    \ [\n        { \"scenario\": \"Giới thiệu dự án hiện tại\" },\n        { \"scenario\"\
+    : \"Thảo luận tiến độ công việc\" },\n        { \"scenario\": \"Giải quyết vấn\
+    \ đề phát sinh\" },\n        { \"scenario\": \"Đề xuất cải tiến dự án\" },\n \
+    \       { \"scenario\": \"Lên kế hoạch cho tuần tới\" }\n      ]\n    }"
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: Prompt Personalize B.1 - Chunking - Doan Cuong a Vũ
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.2
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+    opening_statement: ''
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: llm
+      id: 1740473479677-source-1740473482205-target
+      source: '1740473479677'
+      sourceHandle: source
+      target: '1740473482205'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: end
+      id: 1740473482205-source-1740473484814-target
+      source: '1740473482205'
+      sourceHandle: source
+      target: '1740473484814'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: Start
+        type: start
+        variables:
+        - label: JSON Input
+          max_length: 10000
+          options: []
+          required: true
+          type: paragraph
+          variable: JSON_input
+      height: 88
+      id: '1740473479677'
+      position:
+        x: 80
+        y: 282
+      positionAbsolute:
+        x: 80
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            max_tokens: 9000
+            temperature: 0
+          mode: chat
+          name: gpt-4o-mini-2024-07-18
+          provider: openai
+        prompt_template:
+        - id: fdf8c460-241b-415b-9e5c-86eaf394b12b
+          role: system
+          text: "You are an English prompt generator for practical speaking practice.\n\
+            You will be given:\n- USER PROFILE: including Industry, Job, English Level,\
+            \ Learning Goals\n- TOPIC: the context of the scenario\n- SCENARIOS: a\
+            \ list of 5 specific situations within the topic\n\nYour task:\n1. Generate\
+            \ **4 speaking practice questions in English**  each scenario (20 questions\
+            \ total)\n2. The 20 questions should all employ different English structures\
+            \ and ask for different things fitting their own scenario.\n============\n\
+            Instruction:\n- Focus only on generating realistic, context-based **speaking\
+            \ questions**. Language should be simple and clear, with a singular focus.\
+            \ Avoid double-barrel questions.\n- Each question should have a distinct\
+            \ purpose, For example: asking for opinion, facts, experience, or suggestions.\n\
+            - Questions must be unique, avoid repetition, or questions that can be\
+            \ answered with the same information.\n- Avoid questions which ask for\
+            \ specific time/duration.\n============\nRESPONSE JSON TEMPLATE:\n\n{\n\
+            \  \"topic\": \"<Topic>\",\n  \"scenarios\": [\n    {\n      \"scenario\"\
+            : \"<Scenario 1>\",\n      \"questions\": [\n        \"<Question 1>\"\
+            ,\n        \"<Question 2>\",\n        \"<Question 3>\",\n        \"<Question\
+            \ 4>\"\n      ]\n    },\n    ...\n  ]\n}\n"
+        - id: 08eea820-f9f5-4976-9717-c9925ecd5b1b
+          role: user
+          text: '{{#1740473479677.JSON_input#}}'
+        selected: true
+        title: LLM
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+          enabled: true
+      height: 96
+      id: '1740473482205'
+      position:
+        x: 384.6805948176452
+        y: 282
+      positionAbsolute:
+        x: 384.6805948176452
+        y: 282
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1740473482205'
+          - text
+          variable: output
+        selected: false
+        title: End
+        type: end
+      height: 88
+      id: '1740473484814'
+      position:
+        x: 686
+        y: 282
+      positionAbsolute:
+        x: 686
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: -889
+      y: -206
+      zoom: 2

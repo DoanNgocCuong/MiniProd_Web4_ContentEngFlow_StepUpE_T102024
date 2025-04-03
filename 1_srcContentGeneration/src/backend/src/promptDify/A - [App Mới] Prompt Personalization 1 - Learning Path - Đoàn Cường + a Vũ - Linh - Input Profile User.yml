@@ -1,0 +1,211 @@
+app:
+  description: 'Industry: [IT]
+
+    Job: [CTO]
+
+    Gender: Male
+
+    Native language: Vietnamese
+
+    English Level: [A2]
+
+    Learning goals: [workplace communication] [job interviews] [salary review]'
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: A - [App Mới] Prompt Personalization 1 - Learning Path - Đoàn Cường + a Vũ
+    - Linh - Input Profile User
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.2
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+    opening_statement: ''
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: llm
+      id: 1740473479677-source-1740473482205-target
+      selected: false
+      source: '1740473479677'
+      sourceHandle: source
+      target: '1740473482205'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: end
+      id: 1740473482205-source-1740473484814-target
+      selected: false
+      source: '1740473482205'
+      sourceHandle: source
+      target: '1740473484814'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: Start
+        type: start
+        variables:
+        - label: JSON Input
+          max_length: 10000
+          options: []
+          required: true
+          type: paragraph
+          variable: JSON_input
+      height: 88
+      id: '1740473479677'
+      position:
+        x: 80
+        y: 282
+      positionAbsolute:
+        x: 80
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            max_tokens: 9000
+            temperature: 0
+          mode: chat
+          name: gpt-4o-2024-08-06
+          provider: openai
+        prompt_template:
+        - id: fdf8c460-241b-415b-9e5c-86eaf394b12b
+          role: system
+          text: "You are a expert at designing engaging and relevant English for Specific\
+            \ Purpose curriculum, helping learners prepare for effective English communication\
+            \ according to their needs.\n\nGiven user profile:  \n- Industry: \n-\
+            \ Job:\n- English Level: \n- Learning Goals:\n\nYour task:  \n1. Profile\
+            \ description: Describe user in a few key phrases\n2. For each learning\
+            \ goal, give 10 unique discussion topics or types of conversation that\
+            \ learner need to cover. \n3. Create 10-topic learning path:  \n  * Topics\
+            \ = pick 10 most important speaking-focused topics from the list above.\
+            \ \n- Ensure to spread them over all learning goals (If there is only\
+            \ 1 learning goal, take all 10 topics)\n- Make sure they are as dissimilar\
+            \ as possible, both in context, purpose, and English usage.\n- Make sure\
+            \ no written communication topics, like \"emails\"\n- No \"self introduction\"\
+            \ topics.\n- Format title: Topic title (must be in English, 2-3 words\
+            \ max) | [Learning goal]\n- Order: most basic first, then more and more\
+            \ complex. \n* Scenario:\n- In each topic, give me 5 open-ended scenarios\
+            \ in which learners have to engage in active english speech to fulfill\
+            \ the objective of the scenario (example: scenarios should begin with\
+            \ specific active speech verbs like \"trình bày, báo cáo, cập nhật, thảo\
+            \ luận, đề xuất, đưa ra, so sánh, giải thích, mô tả, chia sẻ, thương lượng,\
+            \ bàn bạc, đàm phán, phân tích, đánh giá, tham gia, trả lời, điều phối)\
+            \ \n- Must not use non-speech scenarios (e.g. tham gia, nhận, điều chỉnh...)\
+            \ \n- Scenarios need to take into account the context of the topic (example:\
+            \ \"Giới thiệu bản thân trong buổi gặp gỡ khách hàng\" cannot be in the\
+            \ topic Self introduction | Job interview, because it doesn't serve the\
+            \ learning goal \"job interview\")\n- Make sure each scenario actually\
+            \ requires users to use a different type of English structure, and serve\
+            \ an unique purpose. (For example \"Giới thiệu bản thân trong buổi phỏng\
+            \ vấn\" and \"Giới thiệu bản thân trong buổi họp nhóm\" only changes the\
+            \ context, therefore is not acceptable. Changing the context alone is\
+            \ NOT enough).\n- Be quirky, specific, interesting.\n- The order of scenarios\
+            \ in a topic should have some structure or step-based logic\n- Make sure\
+            \ there are no scenarios requiring the same English structure across different\
+            \ topics.\n- Scenario title language: Vietnamese, 5 -10 words\n\n4. Give\
+            \ the biggest milestones (concise communication tasks users have mastered)\
+            \ that the learner can achieve when following this learning path, at 2h,\
+            \ 10h, 14h, 35h, and 50h of speaking. Give a cool title for each of these\
+            \ milestones.\n============\nRESPONSE JSON TEMPLATE (not include other\
+            \ character such as ```json):  \n{\n  \"user_profile_description\": \"\
+            ...\",\n  \"discussion_topics\": [\n    {\n      \"Learning goal\": \"\
+            ...\",\n      \"Topics\": [\n        \"...\"\n      ]\n    }\n  ],\n \
+            \ \"learning_path\": [\n    {\n      \"week\": 1,\n      \"topic\": \"\
+            Tên chủ đề\",\n      \"scenarios\": [\n        { \"scenario\": \"Tên tình\
+            \ huống\" },\n        { \"scenario\": \"...\" },\n        { \"scenario\"\
+            : \"...\" },\n        { \"scenario\": \"...\" },\n        { \"scenario\"\
+            : \"...\" }\n      ]\n    }\n  ],\n  \"milestones\": [\n    {\n      \"\
+            time\": \"...\",\n      \"english_title\": \"...\",\n      \"vn_detail\"\
+            : \"<in Vietnamese>\"\n    }\n  ]\n}\n\n============\n- Format JSON  \n\
+            - Output only JSON  \n\n####"
+        - id: 08eea820-f9f5-4976-9717-c9925ecd5b1b
+          role: user
+          text: '{{#1740473479677.JSON_input#}}'
+        selected: true
+        title: LLM
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+          enabled: true
+      height: 96
+      id: '1740473482205'
+      position:
+        x: 388.1420731791817
+        y: 282
+      positionAbsolute:
+        x: 388.1420731791817
+        y: 282
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1740473482205'
+          - text
+          variable: output
+        selected: false
+        title: End
+        type: end
+      height: 88
+      id: '1740473484814'
+      position:
+        x: 686
+        y: 282
+      positionAbsolute:
+        x: 686
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: -60.05717143362574
+      y: 217.2216383056233
+      zoom: 0.954841600289499
