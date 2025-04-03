@@ -69,24 +69,7 @@ http://103.253.20.13:3000/api/generate-learning-meaning
 
 Input:
 ```json
-{
-    "questions": [
-        {
-            "question": "Can you explain the main objective of the new project?",
-            "structure": "The main objective of the new project is ____.",
-            "main phrase": "to improve efficiency",
-            "optional phrase 1": "to increase revenue",
-            "optional phrase 2": "to enhance customer satisfaction",
-            "question-vi": "Bạn có thể giải thích mục tiêu chính của dự án mới không?",
-            "structure-vi": "Mục tiêu chính của dự án mới là ____.",
-            "main phrase-vi": "cải thiện hiệu quả",
-            "optional phrase 1-vi": "tăng doanh thu",
-            "optional phrase 2-vi": "nâng cao sự hài lòng của khách hàng"
-        }
-    ],
-    "total": 1,
-    "requestedCount": 1
-}
+{"lessons":[{"question":"How do you say hello in English?","structure":"You say hello by ____.","main phrase":"saying hello","optional phrase 1":"waving your hand","optional phrase 2":"smiling at someone","question-vi":"Bạn nói hello bằng cách nào trong tiếng Anh?","structure-vi":"Bạn nói hello bằng cách ____.","main phrase-vi":"nói hello","optional phrase 1-vi":"vẫy tay","optional phrase 2-vi":"mỉm cười với ai đó","lesson_id":"hello_1257_03042025"}]}
 ```
 
 Response:
@@ -145,19 +128,7 @@ http://103.253.20.13:3000/api/generate-learning-card
 
 Input:
 ```json
-{
-  "question": "What color is your hat?",
-  "structure": "My hat is ____. ",
-  "main phrase": "red",
-  "optional phrase 1": "blue",
-  "optional phrase 2": "green",
-  "question-vi": "Màu của chiếc mũ của bạn là gì?",
-  "structure-vi": "Chiếc mũ của tôi là ____. ",
-  "main phrase-vi": "đỏ",
-  "optional phrase 1-vi": "xanh dương",
-  "optional phrase 2-vi": "xanh lá",
-  "lesson_id": "oke_1919_02042025"
-}
+{"lessons":[{"question":"How do you say hello in English?","structure":"You say hello by ____.","main phrase":"saying hello","optional phrase 1":"waving your hand","optional phrase 2":"smiling at someone","question-vi":"Bạn nói hello bằng cách nào trong tiếng Anh?","structure-vi":"Bạn nói hello bằng cách ____.","main phrase-vi":"nói hello","optional phrase 1-vi":"vẫy tay","optional phrase 2-vi":"mỉm cười với ai đó","lesson_id":"hello_1257_03042025"}]}
 ```
 
 Response:
@@ -218,19 +189,7 @@ http://103.253.20.13:3000/api/generate-learning-flexible
 
 Input:
 ```json
-{
-  "question": "What color is your hat?",
-  "structure": "My hat is ____. ",
-  "main phrase": "red",
-  "optional phrase 1": "blue",
-  "optional phrase 2": "green",
-  "question-vi": "Màu của chiếc mũ của bạn là gì?",
-  "structure-vi": "Chiếc mũ của tôi là ____. ",
-  "main phrase-vi": "đỏ",
-  "optional phrase 1-vi": "xanh dương",
-  "optional phrase 2-vi": "xanh lá",
-  "lesson_id": "oke_1919_02042025"
-}
+{"lessons":[{"question":"How do you say hello in English?","structure":"You say hello by ____.","main phrase":"saying hello","optional phrase 1":"waving your hand","optional phrase 2":"smiling at someone","question-vi":"Bạn nói hello bằng cách nào trong tiếng Anh?","structure-vi":"Bạn nói hello bằng cách ____.","main phrase-vi":"nói hello","optional phrase 1-vi":"vẫy tay","optional phrase 2-vi":"mỉm cười với ai đó","lesson_id":"hello_1257_03042025"}]}
 ```
 
 Response:
@@ -320,19 +279,7 @@ http://103.253.20.13:3000/api/generate-learning-qna
 
 Input:
 ```json
-{
-  "question": "What color is your hat?",
-  "structure": "My hat is ____. ",
-  "main phrase": "red",
-  "optional phrase 1": "blue",
-  "optional phrase 2": "green",
-  "question-vi": "Màu của chiếc mũ của bạn là gì?",
-  "structure-vi": "Chiếc mũ của tôi là ____. ",
-  "main phrase-vi": "đỏ",
-  "optional phrase 1-vi": "xanh dương",
-  "optional phrase 2-vi": "xanh lá",
-  "lesson_id": "oke_1919_02042025"
-}
+{"lessons":[{"question":"How do you say hello in English?","structure":"You say hello by ____.","main phrase":"saying hello","optional phrase 1":"waving your hand","optional phrase 2":"smiling at someone","question-vi":"Bạn nói hello bằng cách nào trong tiếng Anh?","structure-vi":"Bạn nói hello bằng cách ____.","main phrase-vi":"nói hello","optional phrase 1-vi":"vẫy tay","optional phrase 2-vi":"mỉm cười với ai đó","lesson_id":"hello_1257_03042025"}]}
 ```
 
 Response:

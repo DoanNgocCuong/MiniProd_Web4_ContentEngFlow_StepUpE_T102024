@@ -9,37 +9,44 @@ const openai = new OpenAI({
 });
 
 const generateLearningPathPrompt = `
-You are ESP learning path expert.  
-Think step by step. Keep each step ≤ 5 words.  
+You are a expert at designing engaging and relevant English for Specific Purpose curriculum, helping learners prepare for effective English communication according to their needs.
 
 Given user profile:  
 - Industry: 
 - Job:
 - English Level: 
-- Learning Goals: 
+- Learning Goals:
 
 Your task:  
-1. Describe user briefly in a few key phrases
-2. List 5 groups of people this user communicates with to fulfill learning goal.
-3. With each group, suggest 5 most essential types of meeting/discussion that requires good English speech to complete. (e.g. daily standup). 
-4. Create 10-topic learning path:  
-  * Topics = 1 type of meeting, conversation, presentation or discussion in that user's daily workflow based on above output. 
-   - Ordered them most frequent first.
-- Do not pick very similar topics, only unique ones.
-- Topic format: English (Vietnamese translation). 2-3 words max. 
+1. Profile description: Describe user in a few key phrases
+2. For each learning goal, give 10 unique discussion topics or types of conversation that learner need to cover. 
+3. Create 10-topic learning path:  
+  * Topics = pick 10 most important speaking-focused topics from the list above. 
+- Ensure to spread them over all learning goals (If there is only 1 learning goal, take all 10 topics)
+- Make sure they are as dissimilar as possible, both in context, purpose, and English usage.
+- Make sure no written communication topics, like "emails"
+- No "self introduction" topics.
+- Format title: Topic title (must be in English, 2-3 words max) | [Learning goal]
+- Order: most basic first, then more and more complex. 
 * Scenario:
-  - For each topic, break it down into 5 scenarios for English speaking practice. Scenarios must be representative that topic. Must be suitable for English-speaking practice, open-ended, and have some logic in the order. The final scenario of topic should not include the words "Tóm tắt","kết thúc","thảo luận","kí kết".
-   - Scenario title format : Vietnamese, 5–10 word 
-5. Give the biggest milestones (concise communication tasks users have mastered) that the learner can achieve when following this learning path, at 2h, 10h, 14h, 35h, and 50h of speaking. Give a cool title for each of these milestones.
+- In each topic, give me 5 open-ended scenarios in which learners have to engage in active english speech to fulfill the objective of the scenario (example: scenarios should begin with specific active speech verbs like "trình bày, báo cáo, cập nhật, thảo luận, đề xuất, đưa ra, so sánh, giải thích, mô tả, chia sẻ, thương lượng, bàn bạc, đàm phán, phân tích, đánh giá, tham gia, trả lời, điều phối) 
+- Must not use non-speech scenarios (e.g. tham gia, nhận, điều chỉnh...) 
+- Scenarios need to take into account the context of the topic (example: "Giới thiệu bản thân trong buổi gặp gỡ khách hàng" cannot be in the topic Self introduction | Job interview, because it doesn't serve the learning goal "job interview")
+- Make sure each scenario actually requires users to use a different type of English structure, and serve an unique purpose. (For example "Giới thiệu bản thân trong buổi phỏng vấn" and "Giới thiệu bản thân trong buổi họp nhóm" only changes the context, therefore is not acceptable. Changing the context alone is NOT enough).
+- Be quirky, specific, interesting.
+- The order of scenarios in a topic should have some structure or step-based logic
+- Make sure there are no scenarios requiring the same English structure across different topics.
+- Scenario title language: Vietnamese, 5 -10 words
 
+4. Give the biggest milestones (concise communication tasks users have mastered) that the learner can achieve when following this learning path, at 2h, 10h, 14h, 35h, and 50h of speaking. Give a cool title for each of these milestones.
 ============
 RESPONSE JSON TEMPLATE (no extra characters):  
 {
   "user_profile_description": "...",
-  "communication_partners": [
+  "discussion_topics": [
     {
-      "group": "...",
-      "scenarios": [
+      "Learning goal": "...",
+      "Topics": [
         "..."
       ]
     }
@@ -67,17 +74,10 @@ RESPONSE JSON TEMPLATE (no extra characters):
 }
 
 ============
-
-Use CoD:  
-- Define who they talk to and for what 
-- List realistic daily speaking needs  
-- Build weekly learning path  
 - Format JSON  
 - Output only JSON  
 
 ####
-
-=====
 `;
 
 exports.generateLearningPath = async (req, res) => {

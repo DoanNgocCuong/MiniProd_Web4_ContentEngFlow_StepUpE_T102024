@@ -1,14 +1,19 @@
 import json
+import logging
+import os
 import time
-from typing import Dict, List
-from models.user_profile import UserProfile
-from api.learning_path_api import LearningPathAPI
-from api.chunking_api import ChunkingAPI
-from api.detail_chunking_api import DetailChunkingAPI
-from api.exercises_api import ExercisesAPI
-from services.excel_service import ExcelService
-from services.parallel_processing_service import ParallelProcessingService
-from services.logging_service import LoggingService
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime
+from typing import Dict, List, Optional
+from .models.user_profile import UserProfile
+from .api.learning_path_api import LearningPathAPI
+from .api.chunking_api import ChunkingAPI
+from .api.detail_chunking_api import DetailChunkingAPI
+from .api.exercises_api import ExercisesAPI
+from .services.excel_service import ExcelService
+from .services.parallel_processing_service import ParallelProcessingService
+from .services.logging_service import LoggingService
+from .services.summary_service import SummaryService
 
 class ContentGenerationFlow:
     def __init__(self, base_url: str = "http://103.253.20.13:3000", max_workers: int = 20):
