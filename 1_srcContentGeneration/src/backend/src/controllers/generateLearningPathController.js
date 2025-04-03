@@ -40,7 +40,7 @@ Your task:
 
 4. Give the biggest milestones (concise communication tasks users have mastered) that the learner can achieve when following this learning path, at 2h, 10h, 14h, 35h, and 50h of speaking. Give a cool title for each of these milestones.
 ============
-RESPONSE JSON TEMPLATE (no extra characters):  
+RESPONSE JSON TEMPLATE (not include other character such as \`\`\`json):  
 {
   "user_profile_description": "...",
   "discussion_topics": [
