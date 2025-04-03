@@ -22,13 +22,13 @@ class LearningPathRenderer {
         try {
             this.container.innerHTML = '';
             
-            // Render từng section với userProfile
+            // Render sections with new data structure
             this._renderProfileSection(data.user_profile_description);
-            this._renderPartnersSection(data.communication_partners);
+            this._renderDiscussionTopicsSection(data.discussion_topics);
             this._renderPathSection(data.learning_path, userProfile);
             this._renderMilestonesSection(data.milestones);
             
-            // Thêm nút copy
+            // Add copy button
             this._addCopyButton();
 
         } catch (error) {
@@ -52,21 +52,21 @@ class LearningPathRenderer {
     }
 
     /**
-     * Render section Partners
+     * Render section Discussion Topics
      * @private
      */
-    _renderPartnersSection(partners) {
+    _renderDiscussionTopicsSection(topics) {
         const section = document.createElement('div');
-        section.className = 'partners-section';
+        section.className = 'discussion-topics-section';
         section.innerHTML = `
-            <h3>Communication Partners</h3>
-            <div class="partners-list">
-                ${partners.map(partner => `
-                    <div class="partner-item">
-                        <h4>${partner.group}</h4>
+            <h3>Discussion Topics</h3>
+            <div class="topics-list">
+                ${topics.map(topic => `
+                    <div class="topic-item">
+                        <h4>${topic['Learning goal']}</h4>
                         <ul>
-                            ${partner.scenarios.map(scenario => `
-                                <li>${scenario}</li>
+                            ${topic.Topics.map(item => `
+                                <li>${item}</li>
                             `).join('')}
                         </ul>
                     </div>

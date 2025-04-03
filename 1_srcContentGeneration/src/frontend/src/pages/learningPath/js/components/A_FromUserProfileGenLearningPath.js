@@ -48,13 +48,15 @@ export class FromUserProfileGenLearningPath {
             updateLoadingProgress(10);
             
             const data = await this._fetchFromAPI(userProfile);
+            const parsedLearningPath = JSON.parse(data.learningPath);
+            
             this.data = {
-                ...JSON.parse(data.learningPath),
+                ...parsedLearningPath,
                 user_id: userProfile
             };
 
             // Save to cache
-            this.cache.set('path', data, userProfile);
+            this.cache.set('path', this.data, userProfile);
             
             updateLoadingProgress(100);
             return this.data;
