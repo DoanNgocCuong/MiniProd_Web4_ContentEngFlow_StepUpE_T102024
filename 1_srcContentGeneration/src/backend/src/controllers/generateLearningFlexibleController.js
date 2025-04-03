@@ -38,6 +38,23 @@ Response format:
   ]
 }`
 
+/**
+ * Preprocess input to match the required format for OpenAI
+ * @param {Object} lesson - The lesson data to preprocess
+ * @returns {Object} - Preprocessed lesson data
+ */
+function preprocessInput(lesson) {
+    return {
+        question: lesson.question,
+        structure: lesson.structure,
+        phrases: [
+            lesson["main phrase"],
+            lesson["optional phrase 1"],
+            lesson["optional phrase 2"]
+        ]
+    };
+}
+
 function transformToExerciseFormat(gptResponse, phrases) {
     const result = [];
     const baseSentence = gptResponse.sentence[0].sentence;
@@ -116,11 +133,14 @@ async function processLesson(lesson) {
         console.log(`${formatTimestamp()} Sending request to OpenAI for flexible lesson`);
     }
     
+    // Preprocess the input
+    const preprocessedLesson = preprocessInput(lesson);
+    
     const response = await openai.chat.completions.create({
         model: 'gpt-4o-mini',
         messages: [
             { role: 'system', content: NEW_PROMPT },
-            { role: 'user', content: JSON.stringify(lesson) }
+            { role: 'user', content: JSON.stringify(preprocessedLesson) }
         ],
         max_tokens: MAX_TOKENS,
         temperature: 0
@@ -131,7 +151,7 @@ async function processLesson(lesson) {
     }
     
     const gptResponse = JSON.parse(response.choices[0].message.content);
-    const exerciseResults = transformToExerciseFormat(gptResponse, lesson.phrases);
+    const exerciseResults = transformToExerciseFormat(gptResponse, preprocessedLesson.phrases);
     
     if (exerciseResults.length !== 8) {
         throw new Error(`Expected 8 results, got ${exerciseResults.length}`);
