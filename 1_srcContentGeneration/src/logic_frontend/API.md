@@ -185,12 +185,39 @@ Exercise Features:
 
 ## 3. Generate Flexible Phrase Exercise
 
-http://103.253.20.13:3000/api/generate-learning-flexible
+curl -X POST http://103.253.20.13:3000/api/generate-learning-flexible \
+-H "Content-Type: application/json" \
+-d '{
+  "lessons": [
+    {
+      "question": "How do you say hello in English?",
+      "structure": "You say hello by ____.",
+      "main phrase": "saying hello",
+      "optional phrase 1": "waving your hand",
+      "optional phrase 2": "smiling at someone",
+      "question-vi": "Bạn nói hello bằng cách nào trong tiếng Anh?",
+      "structure-vi": "Bạn nói hello bằng cách ____.",
+      "main phrase-vi": "nói hello",
+      "optional phrase 1-vi": "vẫy tay",
+      "optional phrase 2-vi": "mỉm cười với ai đó",
+      "lesson_id": "hello_1257_03042025"
+    }
+  ]
+}'
 
-Input:
-```json
-{"lessons":[{"question":"How do you say hello in English?","structure":"You say hello by ____.","main phrase":"saying hello","optional phrase 1":"waving your hand","optional phrase 2":"smiling at someone","question-vi":"Bạn nói hello bằng cách nào trong tiếng Anh?","structure-vi":"Bạn nói hello bằng cách ____.","main phrase-vi":"nói hello","optional phrase 1-vi":"vẫy tay","optional phrase 2-vi":"mỉm cười với ai đó","lesson_id":"hello_1257_03042025"}]}
+Trong code backend .js co doan xu ly de lay ra. 
+```bash
+{
+      "question": "Which company are you working for?",
+      "structure": "I'\''m the ______ from ABC Company.",
+      "phrases": [
+        "Sales representative",
+        "Sales director",
+        "Sales associate"
+      ]
+    }
 ```
+sau do cai nay moi duoc di qua Prompt de tra ra output
 
 Response:
 ```json

@@ -56,12 +56,17 @@ class ExerciseGenerator:
         # Format input specifically for flexible exercises
         flexible_input = {
             "lessons": [{
+                "question": detail_chunking.get("question", ""),
                 "structure": detail_chunking.get("structure", ""),
-                "phrases": [
-                    detail_chunking.get("main_phrase", ""),
-                    detail_chunking.get("optional_phrase_1", ""),
-                    detail_chunking.get("optional_phrase_2", "")
-                ]
+                "main phrase": detail_chunking.get("main_phrase", ""),
+                "optional phrase 1": detail_chunking.get("optional_phrase_1", ""),
+                "optional phrase 2": detail_chunking.get("optional_phrase_2", ""),
+                "question-vi": detail_chunking.get("question_vi", ""),
+                "structure-vi": detail_chunking.get("structure_vi", ""),
+                "main phrase-vi": detail_chunking.get("main_phrase_vi", ""),
+                "optional phrase 1-vi": detail_chunking.get("optional_phrase_1_vi", ""),
+                "optional phrase 2-vi": detail_chunking.get("optional_phrase_2_vi", ""),
+                "lesson_id": detail_chunking.get("lesson_id", "")
             }]
         }
 
