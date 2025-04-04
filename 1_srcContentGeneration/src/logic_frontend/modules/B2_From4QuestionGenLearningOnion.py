@@ -19,9 +19,11 @@ class DetailChunkingGenerator:
 
     def generate_detail_chunking(self, user_profile: Dict, week_data: Dict, question_data: Dict) -> Dict:
         """
-        Generate detail chunking from a question using the new generate-learning-onion API
+        Generate detail chunking from questions using the new generate-learning-onion API
         """
         # Format the input according to API requirements
+        questions_text = "\n".join([f"{i+1}. {q}" for i, q in enumerate(question_data["questions"])])
+        
         formatted_input = {
             "inputForOnion": f"USER PROFILE:\n"
                            f"- Industry: [{user_profile.industry}]\n"
@@ -32,7 +34,7 @@ class DetailChunkingGenerator:
                            f"- Learning goals: {' '.join([f'[{goal}]' for goal in user_profile.learning_goals])}\n\n"
                            f"TOPIC: {question_data['topic']}\n"
                            f"SCENARIO: {question_data['scenario']}\n"
-                           f"QUESTIONS:\n1. {question_data['question']}"
+                           f"QUESTIONS:\n{questions_text}"
         }
 
         # Call API
@@ -45,99 +47,72 @@ class DetailChunkingGenerator:
         # Parse response
         result = response.json()
         
-        # Parse the JSON string from chunkingPhrases
-        parsed_result = json.loads(result["chunkingPhrases"])
-        
-        # Transform response to match expected format
-        detail = {
-            "question": question_data["question"],
-            "structure": parsed_result["system_prompt"],
-            "main phrase": parsed_result["first_message"],
-            "optional phrase 1": parsed_result["lesson_details"].split("4. **Tasks**: ")[1].split(", ")[0],
-            "optional phrase 2": parsed_result["lesson_details"].split("4. **Tasks**: ")[1].split(", ")[1],
-            "question-vi": parsed_result["lesson_details"].split("1. **Title**: ")[1].split("2. **Context**: ")[0].strip(),
-            "structure-vi": parsed_result["lesson_details"].split("2. **Context**: ")[1].split("3. **Character**: ")[0].strip(),
-            "main phrase-vi": parsed_result["lesson_details"].split("3. **Character**: ")[1].split("4. **Tasks**: ")[0].strip(),
-            "optional phrase 1-vi": parsed_result["lesson_details"].split("4. **Tasks**: ")[1].split(", ")[2],
-            "optional phrase 2-vi": parsed_result["lesson_details"].split("4. **Tasks**: ")[1].split(", ")[3]
-        }
-
-        # Save to Excel
-        self._save_to_excel(week_data["week"], question_data["scenario"], question_data["question"], detail)
-
-        return detail
-
-    def _save_to_excel(self, week: int, scenario: str, question: str, detail: Dict) -> str:
-        """
-        Save detail chunking to Excel file
-        """
-        # Prepare data for Excel
-        data = []
-        for key, value in detail.items():
-            if isinstance(value, list):
-                for item in value:
-                    data.append({
-                        "Week": week,
-                        "Scenario": scenario,
-                        "Question": question,
-                        "Key": key,
-                        "Value": item
-                    })
-            else:
-                data.append({
-                    "Week": week,
-                    "Scenario": scenario,
-                    "Question": question,
-                    "Key": key,
-                    "Value": value
-                })
+        # Create data for Excel
+        data = [
+            {
+                "Week": week_data["week"],
+                "Scenario": question_data["scenario"],
+                "Question": question,
+                "Title": result["lesson_details"].split("2. **Context**: ")[0].replace("1. **Title**: ", "").strip(),
+                "Context": result["lesson_details"].split("2. **Context**: ")[1].split("3. **Character**: ")[0].strip(),
+                "Character": result["lesson_details"].split("3. **Character**: ")[1].split("4. **Tasks**: ")[0].strip(),
+                "Tasks": result["lesson_details"].split("4. **Tasks**: ")[1].strip(),
+                "System Prompt": result["system_prompt"],
+                "First Message": result["first_message"]
+            }
+            for question in question_data["questions"]
+        ]
 
         # Create DataFrame
         df = pd.DataFrame(data)
 
         # Save to Excel
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        excel_file = self.output_dir / f"B2_detail_week_{week}_{timestamp}.xlsx"
+        excel_file = self.output_dir / f"B2_detail_week_{week_data['week']}_{timestamp}.xlsx"
         df.to_excel(excel_file, index=False)
 
-        return str(excel_file)
+        return {
+            "excel_file": str(excel_file),
+            "data": data
+        }
 
 def main():
     # Example usage
     # Create user profile
     user_profile = UserProfile(
-        industry="AI",
-        job="CTO",
+        industry="IT",
+        job="Back end developer",
         gender="Male",
         native_language="Vietnamese",
-        english_level="B1",
-        learning_goals=["workplace communication", "job interviews", "salary review"]
+        english_level="A2",
+        learning_goals=["workplace communication", "daily standup", "project updates"]
     )
 
     # Create test week data
     test_week = {
         "week": 1,
-        "topic": "Project updates (Cập nhật dự án)",
+        "topic": "Daily standup",
         "scenarios": [
-            {"scenario": "Giới thiệu dự án mới"},
-            {"scenario": "Thảo luận tiến độ hiện tại"},
-            {"scenario": "Giải quyết vấn đề phát sinh"},
-            {"scenario": "Đề xuất cải tiến dự án"},
-            {"scenario": "Lên kế hoạch cho tuần tới"}
+            {"scenario": "Chia sẻ tiến độ công việc"}
         ]
     }
 
     # Create test question data
     test_question = {
-        "topic": "Giới thiệu dự án hiện tại",
-        "scenario": "Giới thiệu dự án hiện tại",
-        "question": "Can you describe the main goals of the current project?"
+        "topic": "Daily standup",
+        "scenario": "Chia sẻ tiến độ công việc",
+        "questions": [
+            "Can you describe what you accomplished since our last meeting?",
+            "What tasks are you currently working on?",
+            "How do you feel about your progress on your projects?",
+            "Is there anything that has changed in your work since yesterday?"
+        ]
     }
 
     # Generate detail chunking
     generator = DetailChunkingGenerator()
-    detail = generator.generate_detail_chunking(user_profile, test_week, test_question)
-    print(f"Detail chunking generated and saved to Excel")
+    result = generator.generate_detail_chunking(user_profile, test_week, test_question)
+    print(f"Detail chunking generated and saved to Excel: {result['excel_file']}")
 
 if __name__ == "__main__":
     main()
