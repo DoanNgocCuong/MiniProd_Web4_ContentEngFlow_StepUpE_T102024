@@ -354,12 +354,12 @@ Exercise Features:
 
 
 # A. API Profile user => 10 Weeks - 10 topics - 50 scenario!
-# B1. With Each 1 Topic 5 Scenario from Output A: Từ User Profile + Week-1Topic-5Scenario => 20 Chunking 
-# B2. With Each Chunking from Output B1: User Profile + 1Week-1Topic-1Scenario-1Question => Detail Chunking 
-# B3. Từ each Detail Chunking of Output B2 => gen 4 Learning Meaning Exercise API
+# B. With Each 1 Topic 5 Scenario from Output A: Từ User Profile + Week-1Topic-5Scenario => 20 Chunking 
+# B1. With Each Chunking from Output B1: User Profile + 1Week-1Topic-1Scenario-1Question => Detail Chunking 
+# C. Từ each Detail Chunking of Output B2 => gen 4 Learning Meaning Exercise API
 1, 2, 3, 4 exercises. 
 
-# C. Generate Learning Onion API
+# B2. Generate Learning Onion API
 
 http://103.253.20.13:3000/api/generate-learning-onion
 
