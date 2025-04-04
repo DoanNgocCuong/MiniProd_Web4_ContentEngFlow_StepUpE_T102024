@@ -33,7 +33,7 @@ router.post('/generate-learning-card', learningCardController.generateLearningCa
 router.post('/generate-learning-flexible', learningFlexibleController.generateFlexibleCard);
 router.post('/generate-learning-qna', learningQNAController.generateLearningQNA);
 router.post('/generate-learning-path', generateLearningPathController.generateLearningPath);
-router.post('/generate-learning-onion', generateLearningOnionController.generate21ChunkingFrom5Scenario);
+router.post('/generate-learning-onion', generateLearningOnionController.generateLearningOnion);
 router.post('/generate-20-chunking-from-5-scenario', generate20ChunkingFrom5ScenarioController.generate20ChunkingFrom5Scenario);
 // Submit feedback
 router.post('/submit-feedback', tableFeedbackController.submitFeedback);

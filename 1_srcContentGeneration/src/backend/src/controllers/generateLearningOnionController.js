@@ -56,7 +56,7 @@ response JSON format
 {"lesson_details":"", "system_prompt": "", "first_message": ""}
 `;
 
-exports.generate20ChunkingFrom5Scenario = async (req, res) => {
+exports.generateLearningOnion = async (req, res) => {
     try {
         const { inputForOnion } = req.body;
 

@@ -358,3 +358,67 @@ Exercise Features:
 # B2. With Each Chunking from Output B1: User Profile + 1Week-1Topic-1Scenario-1Question => Detail Chunking 
 # B3. Từ each Detail Chunking of Output B2 => gen 4 Learning Meaning Exercise API
 1, 2, 3, 4 exercises. 
+
+# C. Generate Learning Onion API
+
+http://103.253.20.13:3000/api/generate-learning-onion
+
+cURL Example:
+```bash
+curl -X POST \
+  http://103.253.20.13:3000/api/generate-learning-onion \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "inputForOnion": "USER PROFILE:\n- Industry: [IT]\n- Job: [CTO]\n- Gender: Male\n- Native language: Vietnamese\n- English Level: [A2]\n- Learning goals: [workplace communication] [job interviews] [salary review]\n\nTOPIC: Project Updates\nSCENARIO: Weekly Project Status Meeting\nQUESTIONS:\n1. What progress has been made since last week?\n2. Are there any tasks that are behind schedule?\n3. What successes can you share from this week'\''s work?\n4. How do you plan to address any delays in the project?"
+}'
+```
+
+Input:
+```json
+{
+    "inputForOnion": "USER PROFILE:\n- Industry: [IT]\n- Job: [CTO]\n- Gender: Male\n- Native language: Vietnamese\n- English Level: [A2]\n- Learning goals: [workplace communication] [job interviews] [salary review]\n\nTOPIC: Project Updates\nSCENARIO: Weekly Project Status Meeting\nQUESTIONS:\n1. What progress has been made since last week?\n2. Are there any tasks that are behind schedule?\n3. What successes can you share from this week's work?\n4. How do you plan to address any delays in the project?"
+}
+```
+
+Response:
+```json
+{
+    "lesson_details": {
+        "title": "Báo cáo tiến độ dự án hàng tuần",
+        "context": "Bạn là CTO của một công ty IT, đang tham gia cuộc họp báo cáo tiến độ dự án hàng tuần với nhóm phát triển.",
+        "character": "John Smith - Project Manager, phong cách giao tiếp chuyên nghiệp và thân thiện",
+        "tasks": [
+            "Báo cáo tiến độ công việc",
+            "Đánh giá các vấn đề phát sinh",
+            "Chia sẻ thành công",
+            "Đề xuất giải pháp cho các vấn đề"
+        ]
+    },
+    "system_prompt": "ROLE: you are a intelligent AI system specializing in generating life-like dialogue for English speech practice 1-on-1 roleplay. Roleplay with the following information:\n- User profile: [CTO, A2]\n- Context for user: Bạn là CTO của một công ty IT, đang tham gia cuộc họp báo cáo tiến độ dự án hàng tuần với nhóm phát triển.\n- AI's role: John Smith - Project Manager, phong cách giao tiếp chuyên nghiệp và thân thiện\n- Tasks: Báo cáo tiến độ công việc, Đánh giá các vấn đề phát sinh, Chia sẻ thành công, Đề xuất giải pháp cho các vấn đề\n- Question list: [What progress has been made since last week?, Are there any tasks that are behind schedule?, What successes can you share from this week's work?, How do you plan to address any delays in the project?]",
+    "first_message": "Good morning! I hope you're doing well. Let's start our weekly project status meeting. Could you please give me a brief overview of what your team has accomplished since our last meeting?"
+}
+```
+
+Required Input Parameters:
+- inputForOnion: String containing:
+  - User profile information
+  - Topic
+  - Scenario
+  - List of questions
+
+Response Fields:
+- lesson_details: Object containing:
+  - title: Lesson title in Vietnamese
+  - context: Context description in Vietnamese
+  - character: Character description in Vietnamese
+  - tasks: Array of learning objectives
+- system_prompt: Complete system prompt for AI roleplay
+- first_message: Initial message to start the conversation
+
+Features:
+- Roleplay-based learning
+- Contextual conversation practice
+- Structured learning objectives
+- Natural conversation flow
+- Progressive difficulty
+- Real-world scenario simulation 
