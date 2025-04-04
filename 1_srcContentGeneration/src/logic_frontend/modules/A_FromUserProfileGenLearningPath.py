@@ -48,43 +48,46 @@ class LearningPathGenerator:
         """
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         
-        # Save learning path
-        learning_path_data = []
-        for week in learning_path["learning_path"]:
-            for scenario in week["scenarios"]:
-                learning_path_data.append({
-                    "Week": week["week"],
-                    "Topic": week["topic"],
-                    "Scenario": scenario["scenario"]
-                })
-        
-        df_learning_path = pd.DataFrame(learning_path_data)
-        df_learning_path.to_excel(
-            self.output_dir / f"A_learning_path_{timestamp}.xlsx",
-            index=False
-        )
+        # Save learning path if it exists
+        if "learning_path" in learning_path:
+            learning_path_data = []
+            for week in learning_path["learning_path"]:
+                for scenario in week["scenarios"]:
+                    learning_path_data.append({
+                        "Week": week["week"],
+                        "Topic": week["topic"],
+                        "Scenario": scenario["scenario"]
+                    })
+            
+            df_learning_path = pd.DataFrame(learning_path_data)
+            df_learning_path.to_excel(
+                self.output_dir / f"A_learning_path_{timestamp}.xlsx",
+                index=False
+            )
 
-        # Save communication partners
-        partners_data = []
-        for partner in learning_path["communication_partners"]:
-            for scenario in partner["scenarios"]:
-                partners_data.append({
-                    "Group": partner["group"],
-                    "Scenario": scenario
-                })
-        
-        df_partners = pd.DataFrame(partners_data)
-        df_partners.to_excel(
-            self.output_dir / f"A_communication_partners_{timestamp}.xlsx",
-            index=False
-        )
+        # Save communication partners if they exist
+        if "communication_partners" in learning_path:
+            partners_data = []
+            for partner in learning_path["communication_partners"]:
+                for scenario in partner["scenarios"]:
+                    partners_data.append({
+                        "Group": partner["group"],
+                        "Scenario": scenario
+                    })
+            
+            df_partners = pd.DataFrame(partners_data)
+            df_partners.to_excel(
+                self.output_dir / f"A_communication_partners_{timestamp}.xlsx",
+                index=False
+            )
 
-        # Save milestones
-        df_milestones = pd.DataFrame(learning_path["milestones"])
-        df_milestones.to_excel(
-            self.output_dir / f"A_milestones_{timestamp}.xlsx",
-            index=False
-        )
+        # Save milestones if they exist
+        if "milestones" in learning_path:
+            df_milestones = pd.DataFrame(learning_path["milestones"])
+            df_milestones.to_excel(
+                self.output_dir / f"A_milestones_{timestamp}.xlsx",
+                index=False
+            )
 
 def main():
     # Example usage
