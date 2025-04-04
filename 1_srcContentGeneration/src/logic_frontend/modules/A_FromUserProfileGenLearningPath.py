@@ -44,12 +44,18 @@ class LearningPathGenerator:
 
     def _save_to_excel(self, learning_path: Dict) -> None:
         """
-        Save learning path components to Excel files
+        Save learning path components to Excel files and JSON file
         """
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         
         # Save learning path if it exists
         if "learning_path" in learning_path:
+            # Save to JSON file
+            json_path = Path(__file__).parent / "learning_path_data.json"
+            with open(json_path, 'w', encoding='utf-8') as f:
+                json.dump(learning_path, f, ensure_ascii=False, indent=4)
+            
+            # Save to Excel file
             learning_path_data = []
             for week in learning_path["learning_path"]:
                 for scenario in week["scenarios"]:

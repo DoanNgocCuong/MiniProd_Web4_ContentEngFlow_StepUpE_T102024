@@ -184,125 +184,17 @@ def main():
     """
     Main function to demonstrate usage of the CommunicateStageGenerator.
     """
-    # Example usage with complete sample data
-    sample_learning_path = {
-        "learning_path": [
-            {
-                "week": 1,
-                "topic": "Team Meetings | Workplace communication",
-                "scenarios": [
-                    {"scenario": "Thảo luận về lịch trình họp nhóm"},
-                    {"scenario": "Đề xuất chủ đề cho cuộc họp nhóm"},
-                    {"scenario": "Báo cáo tiến độ dự án trong cuộc họp"},
-                    {"scenario": "Giải thích vấn đề kỹ thuật trong cuộc họp"},
-                    {"scenario": "Đưa ra ý kiến phản hồi trong cuộc họp"}
-                ]
-            },
-            {
-                "week": 2,
-                "topic": "Interview Questions | Job interviews",
-                "scenarios": [
-                    {"scenario": "Trả lời câu hỏi về kinh nghiệm làm việc"},
-                    {"scenario": "Giải thích lý do muốn làm việc tại công ty"},
-                    {"scenario": "Mô tả kỹ năng kỹ thuật trong phỏng vấn"},
-                    {"scenario": "Đưa ra ví dụ về giải quyết vấn đề"},
-                    {"scenario": "Thảo luận về phong cách lãnh đạo"}
-                ]
-            },
-            {
-                "week": 3,
-                "topic": "Project Updates | Workplace communication",
-                "scenarios": [
-                    {"scenario": "Báo cáo tiến độ dự án cho quản lý"},
-                    {"scenario": "Giải thích thay đổi trong kế hoạch dự án"},
-                    {"scenario": "Đề xuất giải pháp cho vấn đề dự án"},
-                    {"scenario": "Thảo luận về rủi ro dự án"},
-                    {"scenario": "Đưa ra cập nhật hàng tuần cho nhóm"}
-                ]
-            },
-            {
-                "week": 4,
-                "topic": "Role Expectations | Job interviews",
-                "scenarios": [
-                    {"scenario": "Thảo luận về trách nhiệm công việc"},
-                    {"scenario": "Giải thích cách bạn đáp ứng yêu cầu công việc"},
-                    {"scenario": "Đưa ra ví dụ về thành công trong vai trò tương tự"},
-                    {"scenario": "Thảo luận về kỳ vọng phát triển trong vai trò"},
-                    {"scenario": "Đề xuất cách cải thiện hiệu suất công việc"}
-                ]
-            },
-            {
-                "week": 5,
-                "topic": "Performance Evaluation | Salary review",
-                "scenarios": [
-                    {"scenario": "Trình bày thành tích trong kỳ đánh giá"},
-                    {"scenario": "Giải thích mục tiêu đạt được trong năm"},
-                    {"scenario": "Đưa ra phản hồi về đánh giá hiệu suất"},
-                    {"scenario": "Thảo luận về mục tiêu phát triển cá nhân"},
-                    {"scenario": "Đề xuất cải tiến quy trình đánh giá"}
-                ]
-            },
-            {
-                "week": 6,
-                "topic": "Technical Discussions | Workplace communication",
-                "scenarios": [
-                    {"scenario": "Giải thích công nghệ mới cho nhóm"},
-                    {"scenario": "Thảo luận về kiến trúc hệ thống"},
-                    {"scenario": "Đề xuất công cụ mới cho dự án"},
-                    {"scenario": "So sánh các giải pháp kỹ thuật"},
-                    {"scenario": "Đưa ra ý kiến về xu hướng công nghệ"}
-                ]
-            },
-            {
-                "week": 7,
-                "topic": "Salary Expectations | Job interviews",
-                "scenarios": [
-                    {"scenario": "Thảo luận về mức lương mong muốn"},
-                    {"scenario": "Giải thích lý do cho mức lương đề xuất"},
-                    {"scenario": "Đưa ra ví dụ về giá trị đóng góp"},
-                    {"scenario": "So sánh mức lương với thị trường"},
-                    {"scenario": "Đàm phán mức lương với quản lý"}
-                ]
-            },
-            {
-                "week": 8,
-                "topic": "Negotiation Strategies | Salary review",
-                "scenarios": [
-                    {"scenario": "Đề xuất chiến lược đàm phán lương"},
-                    {"scenario": "Thảo luận về các yếu tố ảnh hưởng đến lương"},
-                    {"scenario": "Giải thích lợi ích của việc tăng lương"},
-                    {"scenario": "Đàm phán các điều khoản hợp đồng"},
-                    {"scenario": "Đưa ra phương án thỏa hiệp trong đàm phán"}
-                ]
-            },
-            {
-                "week": 9,
-                "topic": "Client Presentations | Workplace communication",
-                "scenarios": [
-                    {"scenario": "Trình bày sản phẩm mới cho khách hàng"},
-                    {"scenario": "Giải thích lợi ích của sản phẩm"},
-                    {"scenario": "Đưa ra giải pháp cho vấn đề của khách hàng"},
-                    {"scenario": "Thảo luận về phản hồi của khách hàng"},
-                    {"scenario": "Đề xuất cải tiến sản phẩm dựa trên phản hồi"}
-                ]
-            },
-            {
-                "week": 10,
-                "topic": "Career Progression | Salary review",
-                "scenarios": [
-                    {"scenario": "Thảo luận về con đường phát triển sự nghiệp"},
-                    {"scenario": "Đề xuất kế hoạch phát triển cá nhân"},
-                    {"scenario": "Giải thích mục tiêu nghề nghiệp dài hạn"},
-                    {"scenario": "Thảo luận về cơ hội thăng tiến"},
-                    {"scenario": "Đưa ra kế hoạch học tập và phát triển"}
-                ]
-            }
-        ]
-    }
+    # Read data from JSON file
+    import json
+    from pathlib import Path
+    
+    json_path = Path(__file__).parent / "learning_path_data.json.example"
+    with open(json_path, 'r', encoding='utf-8') as f:
+        learning_path_data = json.load(f)
     
     # Generate communicate stage
     generator = CommunicateStageGenerator()
-    generator.generate_communicate_stage(sample_learning_path)
+    generator.generate_communicate_stage(learning_path_data)
     print("Communicate stage Excel file generated in output directory")
 
 if __name__ == "__main__":
