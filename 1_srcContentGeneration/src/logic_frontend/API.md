@@ -355,11 +355,11 @@ Exercise Features:
 
 # A. API Profile user => 10 Weeks - 10 topics - 50 scenario!
 # B. With Each 1 Topic 5 Scenario from Output A: Từ User Profile + Week-1Topic-5Scenario => 20 Chunking 
-# B1. With Each Chunking from Output B1: User Profile + 1Week-1Topic-1Scenario-1Question => Detail Chunking 
-# C. Từ each Detail Chunking of Output B2 => gen 4 Learning Meaning Exercise API
+# C1. With Each Chunking from Output B: User Profile + 1Week-1Topic-1Scenario-1Question => Detail Chunking 
+# D. Từ each Detail Chunking of Output B2 => gen 4 Learning Meaning Exercise API
 1, 2, 3, 4 exercises. 
 
-# B2. Generate Learning Onion API
+# C2. With each 4 Questions from Output B: User Profile + 1 Week-1 Topic-1 Scenario-4 Questions => Generate Learning Onion API
 
 http://103.253.20.13:3000/api/generate-learning-onion
 
@@ -422,3 +422,51 @@ Features:
 - Natural conversation flow
 - Progressive difficulty
 - Real-world scenario simulation 
+# 
+
+# E. Generate Audio
+
+http://103.253.20.13:3000/api/generate-audio
+
+cURL Example:
+```bash
+curl -X POST \
+  http://103.253.20.13:3000/api/generate-audio \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "text": "Hello. Its me. Can you tell me?",
+    "voice": "en-AU-WilliamNeural",
+    "speed": 1
+  }'
+```
+
+Input:
+```json
+{
+    "text": "Hello. Its me. Can you tell me?",
+    "voice": "en-AU-WilliamNeural",
+    "speed": 1
+}
+```
+
+Response:
+```json
+{
+    "error": "Failed to generate audio"
+}
+```
+
+Required Input Parameters:
+- text: String containing the text to convert to speech (required)
+- voice: String specifying the voice to use (optional, default: "en-AU-WilliamNeural")
+- speed: Number specifying the speech rate (optional, default: 1)
+
+Error Responses:
+- 400 Bad Request: If text parameter is missing
+- 500 Internal Server Error: If audio generation fails
+
+Features:
+- Text-to-speech conversion
+- Multiple voice options
+- Adjustable speech rate
+- Error handling 
