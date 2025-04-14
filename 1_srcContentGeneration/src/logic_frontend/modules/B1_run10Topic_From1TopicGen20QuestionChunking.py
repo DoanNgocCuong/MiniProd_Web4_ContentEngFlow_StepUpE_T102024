@@ -44,6 +44,10 @@ class ChunkingGenerator:
         result = response.json()
         chunking = json.loads(result["chunkingPhrases"])
 
+        # Count total questions
+        total_questions = sum(len(scenario["questions"]) for scenario in chunking["scenarios"])
+        print(f"Generated {total_questions} questions for week {week_data['week']}")
+
         # Save to Excel
         excel_file = self._save_to_excel(week_data["week"], chunking)
 
@@ -51,7 +55,7 @@ class ChunkingGenerator:
 
     def _save_to_excel(self, week: int, chunking: Dict) -> str:
         """
-        Save chunking questions to Excel file
+        Save chunking questions to Excel file and JSON file
         """
         # Prepare data for Excel
         data = []
@@ -71,6 +75,11 @@ class ChunkingGenerator:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         excel_file = self.output_dir / f"B1_chunking_week_{week}_{timestamp}.xlsx"
         df.to_excel(excel_file, index=False)
+
+        # Save to JSON
+        json_file = self.output_dir / f"B1_chunking_week_{week}_{timestamp}.json"
+        with open(json_file, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
 
         return str(excel_file)
 
@@ -96,12 +105,43 @@ class ChunkingGenerator:
         # Sort by Week
         combined_df = combined_df.sort_values(by="Week")
 
-        # Save combined file
+        # Save combined Excel file
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        combined_file = self.output_dir / f"B1_chunking_all_weeks_{timestamp}.xlsx"
-        combined_df.to_excel(combined_file, index=False)
+        combined_excel_file = self.output_dir / f"B1_chunking_all_weeks_{timestamp}.xlsx"
+        combined_df.to_excel(combined_excel_file, index=False)
 
-        return str(combined_file)
+        # Save combined JSON file
+        combined_json_file = self.output_dir / f"B1_chunking_all_weeks_{timestamp}.json"
+        with open(combined_json_file, 'w', encoding='utf-8') as f:
+            json.dump(combined_df.to_dict('records'), f, ensure_ascii=False, indent=2)
+
+        # Print total questions
+        total_questions = len(combined_df)
+        print(f"\nTotal questions in combined file: {total_questions}")
+
+        # Clean up individual weekly files
+        self._cleanup_weekly_files(excel_files)
+
+        return str(combined_excel_file)
+
+    def _cleanup_weekly_files(self, excel_files: List[str]):
+        """
+        Clean up individual weekly Excel and JSON files after merging
+        """
+        try:
+            for file in excel_files:
+                file_path = Path(file)
+                if file_path.exists():
+                    file_path.unlink()
+                    print(f"Deleted weekly file: {file}")
+                
+                # Delete corresponding JSON file
+                json_file = file_path.with_suffix('.json')
+                if json_file.exists():
+                    json_file.unlink()
+                    print(f"Deleted JSON file: {json_file}")
+        except Exception as e:
+            print(f"Error cleaning up weekly files: {str(e)}")
 
 def process_week(week_data: Dict, user_profile: UserProfile) -> str:
     """
@@ -124,7 +164,7 @@ def main():
     )
 
     # Read learning path data from JSON file
-    json_path = Path(__file__).parent / "learning_path_data.json"
+    json_path = Path(__file__).parent / "output" / "learning_path_data.json"
     with open(json_path, 'r', encoding='utf-8') as f:
         learning_path_data = json.load(f)
 

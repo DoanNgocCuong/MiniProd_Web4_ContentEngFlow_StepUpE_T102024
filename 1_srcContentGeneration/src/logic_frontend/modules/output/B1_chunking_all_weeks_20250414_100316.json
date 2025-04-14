@@ -1,0 +1,1202 @@
+[
+  {
+    "Week": 1,
+    "Topic": "Team Meetings | Workplace communication",
+    "Scenario": "Thảo luận về lịch trình họp nhóm",
+    "Question": "Who should lead the meetings in our team?"
+  },
+  {
+    "Week": 1,
+    "Topic": "Team Meetings | Workplace communication",
+    "Scenario": "Thảo luận về lịch trình họp nhóm",
+    "Question": "What topics should we include in our meeting agenda?"
+  },
+  {
+    "Week": 1,
+    "Topic": "Team Meetings | Workplace communication",
+    "Scenario": "Thảo luận về lịch trình họp nhóm",
+    "Question": "How often should we have team meetings?"
+  },
+  {
+    "Week": 1,
+    "Topic": "Team Meetings | Workplace communication",
+    "Scenario": "Thảo luận về lịch trình họp nhóm",
+    "Question": "What do you think is the best time for our team meetings?"
+  },
+  {
+    "Week": 1,
+    "Topic": "Team Meetings | Workplace communication",
+    "Scenario": "Báo cáo tiến độ dự án trong cuộc họp",
+    "Question": "Can you explain the current status of our project?"
+  },
+  {
+    "Week": 1,
+    "Topic": "Team Meetings | Workplace communication",
+    "Scenario": "Báo cáo tiến độ dự án trong cuộc họp",
+    "Question": "What challenges have you faced in this project?"
+  },
+  {
+    "Week": 1,
+    "Topic": "Team Meetings | Workplace communication",
+    "Scenario": "Báo cáo tiến độ dự án trong cuộc họp",
+    "Question": "How do you plan to overcome these challenges?"
+  },
+  {
+    "Week": 1,
+    "Topic": "Team Meetings | Workplace communication",
+    "Scenario": "Báo cáo tiến độ dự án trong cuộc họp",
+    "Question": "What support do you need from the team to move forward?"
+  },
+  {
+    "Week": 1,
+    "Topic": "Team Meetings | Workplace communication",
+    "Scenario": "Đề xuất chủ đề cho cuộc họp nhóm",
+    "Question": "Can you suggest a topic for our next team meeting?"
+  },
+  {
+    "Week": 1,
+    "Topic": "Team Meetings | Workplace communication",
+    "Scenario": "Đề xuất chủ đề cho cuộc họp nhóm",
+    "Question": "Why do you think this topic is important for our team?"
+  },
+  {
+    "Week": 1,
+    "Topic": "Team Meetings | Workplace communication",
+    "Scenario": "Đề xuất chủ đề cho cuộc họp nhóm",
+    "Question": "How can this topic help improve our work?"
+  },
+  {
+    "Week": 1,
+    "Topic": "Team Meetings | Workplace communication",
+    "Scenario": "Đề xuất chủ đề cho cuộc họp nhóm",
+    "Question": "What resources do we need to discuss this topic?"
+  },
+  {
+    "Week": 1,
+    "Topic": "Team Meetings | Workplace communication",
+    "Scenario": "Giải thích vấn đề kỹ thuật trong cuộc họp",
+    "Question": "What steps can we take to prevent this issue in the future?"
+  },
+  {
+    "Week": 1,
+    "Topic": "Team Meetings | Workplace communication",
+    "Scenario": "Giải thích vấn đề kỹ thuật trong cuộc họp",
+    "Question": "How does this issue affect our project timeline?"
+  },
+  {
+    "Week": 1,
+    "Topic": "Team Meetings | Workplace communication",
+    "Scenario": "Giải thích vấn đề kỹ thuật trong cuộc họp",
+    "Question": "What are the possible solutions to this problem?"
+  },
+  {
+    "Week": 1,
+    "Topic": "Team Meetings | Workplace communication",
+    "Scenario": "Giải thích vấn đề kỹ thuật trong cuộc họp",
+    "Question": "Can you describe the technical issue we are facing?"
+  },
+  {
+    "Week": 1,
+    "Topic": "Team Meetings | Workplace communication",
+    "Scenario": "Đưa ra ý kiến phản hồi trong cuộc họp",
+    "Question": "How can we support each other better in our tasks?"
+  },
+  {
+    "Week": 1,
+    "Topic": "Team Meetings | Workplace communication",
+    "Scenario": "Đưa ra ý kiến phản hồi trong cuộc họp",
+    "Question": "What do you think about the team's performance recently?"
+  },
+  {
+    "Week": 1,
+    "Topic": "Team Meetings | Workplace communication",
+    "Scenario": "Đưa ra ý kiến phản hồi trong cuộc họp",
+    "Question": "How can we improve our team communication?"
+  },
+  {
+    "Week": 1,
+    "Topic": "Team Meetings | Workplace communication",
+    "Scenario": "Đưa ra ý kiến phản hồi trong cuộc họp",
+    "Question": "What feedback do you have about our last project?"
+  },
+  {
+    "Week": 2,
+    "Topic": "Interview Questions | Job interviews",
+    "Scenario": "Giải thích lý do muốn làm việc tại công ty",
+    "Question": "What do you like about our company culture?"
+  },
+  {
+    "Week": 2,
+    "Topic": "Interview Questions | Job interviews",
+    "Scenario": "Giải thích lý do muốn làm việc tại công ty",
+    "Question": "How do you think you can help our team?"
+  },
+  {
+    "Week": 2,
+    "Topic": "Interview Questions | Job interviews",
+    "Scenario": "Giải thích lý do muốn làm việc tại công ty",
+    "Question": "What do you know about our company?"
+  },
+  {
+    "Week": 2,
+    "Topic": "Interview Questions | Job interviews",
+    "Scenario": "Giải thích lý do muốn làm việc tại công ty",
+    "Question": "Why do you want to work for this company?"
+  },
+  {
+    "Week": 2,
+    "Topic": "Interview Questions | Job interviews",
+    "Scenario": "Mô tả kỹ năng kỹ thuật trong phỏng vấn",
+    "Question": "What tools do you use in your work?"
+  },
+  {
+    "Week": 2,
+    "Topic": "Interview Questions | Job interviews",
+    "Scenario": "Mô tả kỹ năng kỹ thuật trong phỏng vấn",
+    "Question": "How do you keep your technical skills updated?"
+  },
+  {
+    "Week": 2,
+    "Topic": "Interview Questions | Job interviews",
+    "Scenario": "Mô tả kỹ năng kỹ thuật trong phỏng vấn",
+    "Question": "Can you explain a project you worked on?"
+  },
+  {
+    "Week": 2,
+    "Topic": "Interview Questions | Job interviews",
+    "Scenario": "Mô tả kỹ năng kỹ thuật trong phỏng vấn",
+    "Question": "What technical skills do you have?"
+  },
+  {
+    "Week": 2,
+    "Topic": "Interview Questions | Job interviews",
+    "Scenario": "Trả lời câu hỏi về kinh nghiệm làm việc",
+    "Question": "What did you learn from your last job?"
+  },
+  {
+    "Week": 2,
+    "Topic": "Interview Questions | Job interviews",
+    "Scenario": "Trả lời câu hỏi về kinh nghiệm làm việc",
+    "Question": "How did you solve problems at work?"
+  },
+  {
+    "Week": 2,
+    "Topic": "Interview Questions | Job interviews",
+    "Scenario": "Trả lời câu hỏi về kinh nghiệm làm việc",
+    "Question": "What skills did you use in your last position?"
+  },
+  {
+    "Week": 2,
+    "Topic": "Interview Questions | Job interviews",
+    "Scenario": "Trả lời câu hỏi về kinh nghiệm làm việc",
+    "Question": "Can you tell me about your previous job?"
+  },
+  {
+    "Week": 2,
+    "Topic": "Interview Questions | Job interviews",
+    "Scenario": "Đưa ra ví dụ về giải quyết vấn đề",
+    "Question": "Can you give an example of a problem you solved?"
+  },
+  {
+    "Week": 2,
+    "Topic": "Interview Questions | Job interviews",
+    "Scenario": "Đưa ra ví dụ về giải quyết vấn đề",
+    "Question": "What steps did you take to solve that problem?"
+  },
+  {
+    "Week": 2,
+    "Topic": "Interview Questions | Job interviews",
+    "Scenario": "Đưa ra ví dụ về giải quyết vấn đề",
+    "Question": "How did your solution help your team?"
+  },
+  {
+    "Week": 2,
+    "Topic": "Interview Questions | Job interviews",
+    "Scenario": "Đưa ra ví dụ về giải quyết vấn đề",
+    "Question": "What was the result of your solution?"
+  },
+  {
+    "Week": 2,
+    "Topic": "Interview Questions | Job interviews",
+    "Scenario": "Thảo luận về phong cách lãnh đạo",
+    "Question": "What is your leadership style?"
+  },
+  {
+    "Week": 2,
+    "Topic": "Interview Questions | Job interviews",
+    "Scenario": "Thảo luận về phong cách lãnh đạo",
+    "Question": "How do you motivate your team?"
+  },
+  {
+    "Week": 2,
+    "Topic": "Interview Questions | Job interviews",
+    "Scenario": "Thảo luận về phong cách lãnh đạo",
+    "Question": "Can you describe a time you led a project?"
+  },
+  {
+    "Week": 2,
+    "Topic": "Interview Questions | Job interviews",
+    "Scenario": "Thảo luận về phong cách lãnh đạo",
+    "Question": "What do you think is important for a good leader?"
+  },
+  {
+    "Week": 3,
+    "Topic": "Project Updates | Workplace communication",
+    "Scenario": "Đề xuất giải pháp cho vấn đề dự án",
+    "Question": "What resources do you need to solve this problem?"
+  },
+  {
+    "Week": 3,
+    "Topic": "Project Updates | Workplace communication",
+    "Scenario": "Đề xuất giải pháp cho vấn đề dự án",
+    "Question": "How can the team help implement these solutions?"
+  },
+  {
+    "Week": 3,
+    "Topic": "Project Updates | Workplace communication",
+    "Scenario": "Đề xuất giải pháp cho vấn đề dự án",
+    "Question": "What solutions do you think could work?"
+  },
+  {
+    "Week": 3,
+    "Topic": "Project Updates | Workplace communication",
+    "Scenario": "Đề xuất giải pháp cho vấn đề dự án",
+    "Question": "What is the main problem you are trying to solve?"
+  },
+  {
+    "Week": 3,
+    "Topic": "Project Updates | Workplace communication",
+    "Scenario": "Đưa ra cập nhật hàng tuần cho nhóm",
+    "Question": "What support do team members need to complete their tasks?"
+  },
+  {
+    "Week": 3,
+    "Topic": "Project Updates | Workplace communication",
+    "Scenario": "Đưa ra cập nhật hàng tuần cho nhóm",
+    "Question": "How can we improve our communication this week?"
+  },
+  {
+    "Week": 3,
+    "Topic": "Project Updates | Workplace communication",
+    "Scenario": "Đưa ra cập nhật hàng tuần cho nhóm",
+    "Question": "What tasks are still pending?"
+  },
+  {
+    "Week": 3,
+    "Topic": "Project Updates | Workplace communication",
+    "Scenario": "Đưa ra cập nhật hàng tuần cho nhóm",
+    "Question": "What progress has the team made this week?"
+  },
+  {
+    "Week": 3,
+    "Topic": "Project Updates | Workplace communication",
+    "Scenario": "Giải thích thay đổi trong kế hoạch dự án",
+    "Question": "What feedback have you received about these changes?"
+  },
+  {
+    "Week": 3,
+    "Topic": "Project Updates | Workplace communication",
+    "Scenario": "Giải thích thay đổi trong kế hoạch dự án",
+    "Question": "How will these changes affect the project timeline?"
+  },
+  {
+    "Week": 3,
+    "Topic": "Project Updates | Workplace communication",
+    "Scenario": "Giải thích thay đổi trong kế hoạch dự án",
+    "Question": "Why were these changes necessary?"
+  },
+  {
+    "Week": 3,
+    "Topic": "Project Updates | Workplace communication",
+    "Scenario": "Giải thích thay đổi trong kế hoạch dự án",
+    "Question": "What changes have been made to the project plan?"
+  },
+  {
+    "Week": 3,
+    "Topic": "Project Updates | Workplace communication",
+    "Scenario": "Báo cáo tiến độ dự án cho quản lý",
+    "Question": "What are the next steps for the project?"
+  },
+  {
+    "Week": 3,
+    "Topic": "Project Updates | Workplace communication",
+    "Scenario": "Báo cáo tiến độ dự án cho quản lý",
+    "Question": "How do you plan to overcome these challenges?"
+  },
+  {
+    "Week": 3,
+    "Topic": "Project Updates | Workplace communication",
+    "Scenario": "Báo cáo tiến độ dự án cho quản lý",
+    "Question": "What challenges have you faced in this project?"
+  },
+  {
+    "Week": 3,
+    "Topic": "Project Updates | Workplace communication",
+    "Scenario": "Báo cáo tiến độ dự án cho quản lý",
+    "Question": "What is the current status of the project?"
+  },
+  {
+    "Week": 3,
+    "Topic": "Project Updates | Workplace communication",
+    "Scenario": "Thảo luận về rủi ro dự án",
+    "Question": "What are the main risks associated with this project?"
+  },
+  {
+    "Week": 3,
+    "Topic": "Project Updates | Workplace communication",
+    "Scenario": "Thảo luận về rủi ro dự án",
+    "Question": "How can we minimize these risks?"
+  },
+  {
+    "Week": 3,
+    "Topic": "Project Updates | Workplace communication",
+    "Scenario": "Thảo luận về rủi ro dự án",
+    "Question": "What has been done to address these risks so far?"
+  },
+  {
+    "Week": 3,
+    "Topic": "Project Updates | Workplace communication",
+    "Scenario": "Thảo luận về rủi ro dự án",
+    "Question": "Who is responsible for managing these risks?"
+  },
+  {
+    "Week": 4,
+    "Topic": "Role Expectations | Job interviews",
+    "Scenario": "Thảo luận về trách nhiệm công việc",
+    "Question": "What do you think are the main responsibilities of a CTO?"
+  },
+  {
+    "Week": 4,
+    "Topic": "Role Expectations | Job interviews",
+    "Scenario": "Thảo luận về trách nhiệm công việc",
+    "Question": "How do you prioritize your tasks as a CTO?"
+  },
+  {
+    "Week": 4,
+    "Topic": "Role Expectations | Job interviews",
+    "Scenario": "Thảo luận về trách nhiệm công việc",
+    "Question": "Can you describe a challenge you faced in your role?"
+  },
+  {
+    "Week": 4,
+    "Topic": "Role Expectations | Job interviews",
+    "Scenario": "Thảo luận về trách nhiệm công việc",
+    "Question": "What skills do you believe are essential for this position?"
+  },
+  {
+    "Week": 4,
+    "Topic": "Role Expectations | Job interviews",
+    "Scenario": "Đề xuất cách cải thiện hiệu suất công việc",
+    "Question": "What methods do you think can improve work efficiency?"
+  },
+  {
+    "Week": 4,
+    "Topic": "Role Expectations | Job interviews",
+    "Scenario": "Đề xuất cách cải thiện hiệu suất công việc",
+    "Question": "Can you suggest a tool that helps with productivity?"
+  },
+  {
+    "Week": 4,
+    "Topic": "Role Expectations | Job interviews",
+    "Scenario": "Đề xuất cách cải thiện hiệu suất công việc",
+    "Question": "How do you encourage your team to work more efficiently?"
+  },
+  {
+    "Week": 4,
+    "Topic": "Role Expectations | Job interviews",
+    "Scenario": "Đề xuất cách cải thiện hiệu suất công việc",
+    "Question": "What changes would you make to improve team performance?"
+  },
+  {
+    "Week": 4,
+    "Topic": "Role Expectations | Job interviews",
+    "Scenario": "Giải thích cách bạn đáp ứng yêu cầu công việc",
+    "Question": "How do you ensure you meet the job requirements?"
+  },
+  {
+    "Week": 4,
+    "Topic": "Role Expectations | Job interviews",
+    "Scenario": "Giải thích cách bạn đáp ứng yêu cầu công việc",
+    "Question": "Can you give an example of a time you met a specific requirement?"
+  },
+  {
+    "Week": 4,
+    "Topic": "Role Expectations | Job interviews",
+    "Scenario": "Giải thích cách bạn đáp ứng yêu cầu công việc",
+    "Question": "What strategies do you use to understand job expectations?"
+  },
+  {
+    "Week": 4,
+    "Topic": "Role Expectations | Job interviews",
+    "Scenario": "Giải thích cách bạn đáp ứng yêu cầu công việc",
+    "Question": "How do you communicate your progress to your team?"
+  },
+  {
+    "Week": 4,
+    "Topic": "Role Expectations | Job interviews",
+    "Scenario": "Đưa ra ví dụ về thành công trong vai trò trưởng phòng",
+    "Question": "What lessons did you learn from your successes?"
+  },
+  {
+    "Week": 4,
+    "Topic": "Role Expectations | Job interviews",
+    "Scenario": "Đưa ra ví dụ về thành công trong vai trò trưởng phòng",
+    "Question": "How did you achieve success in that project?"
+  },
+  {
+    "Week": 4,
+    "Topic": "Role Expectations | Job interviews",
+    "Scenario": "Đưa ra ví dụ về thành công trong vai trò trưởng phòng",
+    "Question": "What project are you most proud of in your career?"
+  },
+  {
+    "Week": 4,
+    "Topic": "Role Expectations | Job interviews",
+    "Scenario": "Đưa ra ví dụ về thành công trong vai trò trưởng phòng",
+    "Question": "Can you share a success story from your time as a CTO?"
+  },
+  {
+    "Week": 4,
+    "Topic": "Role Expectations | Job interviews",
+    "Scenario": "Thảo luận về kỹ vọng phát triển trong vai trò",
+    "Question": "How do you see your role evolving in the future?"
+  },
+  {
+    "Week": 4,
+    "Topic": "Role Expectations | Job interviews",
+    "Scenario": "Thảo luận về kỹ vọng phát triển trong vai trò",
+    "Question": "What areas do you want to improve in your job?"
+  },
+  {
+    "Week": 4,
+    "Topic": "Role Expectations | Job interviews",
+    "Scenario": "Thảo luận về kỹ vọng phát triển trong vai trò",
+    "Question": "How do you plan to develop your skills as a CTO?"
+  },
+  {
+    "Week": 4,
+    "Topic": "Role Expectations | Job interviews",
+    "Scenario": "Thảo luận về kỹ vọng phát triển trong vai trò",
+    "Question": "What are your expectations for growth in this role?"
+  },
+  {
+    "Week": 5,
+    "Topic": "Performance Evaluation | Salary review",
+    "Scenario": "Đưa ra phản hồi về đánh giá hiệu suất",
+    "Question": "Can you share a positive comment you received during your review?"
+  },
+  {
+    "Week": 5,
+    "Topic": "Performance Evaluation | Salary review",
+    "Scenario": "Đưa ra phản hồi về đánh giá hiệu suất",
+    "Question": "What suggestions do you have for improving the evaluation?"
+  },
+  {
+    "Week": 5,
+    "Topic": "Performance Evaluation | Salary review",
+    "Scenario": "Đưa ra phản hồi về đánh giá hiệu suất",
+    "Question": "How do you feel about the performance evaluation process?"
+  },
+  {
+    "Week": 5,
+    "Topic": "Performance Evaluation | Salary review",
+    "Scenario": "Đưa ra phản hồi về đánh giá hiệu suất",
+    "Question": "What feedback have you received from your manager?"
+  },
+  {
+    "Week": 5,
+    "Topic": "Performance Evaluation | Salary review",
+    "Scenario": "Trình bày thành tích trong kỳ đánh giá",
+    "Question": "What achievements are you most proud of this year?"
+  },
+  {
+    "Week": 5,
+    "Topic": "Performance Evaluation | Salary review",
+    "Scenario": "Trình bày thành tích trong kỳ đánh giá",
+    "Question": "How did your work contribute to the team's success?"
+  },
+  {
+    "Week": 5,
+    "Topic": "Performance Evaluation | Salary review",
+    "Scenario": "Trình bày thành tích trong kỳ đánh giá",
+    "Question": "Can you describe a challenge you overcame during this period?"
+  },
+  {
+    "Week": 5,
+    "Topic": "Performance Evaluation | Salary review",
+    "Scenario": "Trình bày thành tích trong kỳ đánh giá",
+    "Question": "What skills did you use to achieve your goals?"
+  },
+  {
+    "Week": 5,
+    "Topic": "Performance Evaluation | Salary review",
+    "Scenario": "Giải thích mục tiêu đạt được trong năm",
+    "Question": "Can you share an example of a goal you exceeded?"
+  },
+  {
+    "Week": 5,
+    "Topic": "Performance Evaluation | Salary review",
+    "Scenario": "Giải thích mục tiêu đạt được trong năm",
+    "Question": "What obstacles did you face while trying to achieve your goals?"
+  },
+  {
+    "Week": 5,
+    "Topic": "Performance Evaluation | Salary review",
+    "Scenario": "Giải thích mục tiêu đạt được trong năm",
+    "Question": "How did you measure your success in reaching these goals?"
+  },
+  {
+    "Week": 5,
+    "Topic": "Performance Evaluation | Salary review",
+    "Scenario": "Giải thích mục tiêu đạt được trong năm",
+    "Question": "What were your main goals for this year?"
+  },
+  {
+    "Week": 5,
+    "Topic": "Performance Evaluation | Salary review",
+    "Scenario": "Thảo luận về mục tiêu phát triển cá nhân",
+    "Question": "Why do you think personal development is important for your career?"
+  },
+  {
+    "Week": 5,
+    "Topic": "Performance Evaluation | Salary review",
+    "Scenario": "Thảo luận về mục tiêu phát triển cá nhân",
+    "Question": "What skills do you want to improve in your role?"
+  },
+  {
+    "Week": 5,
+    "Topic": "Performance Evaluation | Salary review",
+    "Scenario": "Thảo luận về mục tiêu phát triển cá nhân",
+    "Question": "How do you plan to achieve these development goals?"
+  },
+  {
+    "Week": 5,
+    "Topic": "Performance Evaluation | Salary review",
+    "Scenario": "Thảo luận về mục tiêu phát triển cá nhân",
+    "Question": "What personal development goals do you have for the next year?"
+  },
+  {
+    "Week": 5,
+    "Topic": "Performance Evaluation | Salary review",
+    "Scenario": "Đề xuất cải tiến quy trình đánh giá",
+    "Question": "What changes would you suggest for the evaluation process?"
+  },
+  {
+    "Week": 5,
+    "Topic": "Performance Evaluation | Salary review",
+    "Scenario": "Đề xuất cải tiến quy trình đánh giá",
+    "Question": "How can the feedback be made more useful for employees?"
+  },
+  {
+    "Week": 5,
+    "Topic": "Performance Evaluation | Salary review",
+    "Scenario": "Đề xuất cải tiến quy trình đánh giá",
+    "Question": "What tools or methods do you think could improve evaluations?"
+  },
+  {
+    "Week": 5,
+    "Topic": "Performance Evaluation | Salary review",
+    "Scenario": "Đề xuất cải tiến quy trình đánh giá",
+    "Question": "Why do you believe these improvements are necessary?"
+  },
+  {
+    "Week": 6,
+    "Topic": "Technical Discussions | Workplace communication",
+    "Scenario": "Đưa ra ý kiến về xu hướng công nghệ",
+    "Question": "Can you suggest a way for our team to learn more about this trend?"
+  },
+  {
+    "Week": 6,
+    "Topic": "Technical Discussions | Workplace communication",
+    "Scenario": "Đưa ra ý kiến về xu hướng công nghệ",
+    "Question": "What skills do you think are important to keep up with this trend?"
+  },
+  {
+    "Week": 6,
+    "Topic": "Technical Discussions | Workplace communication",
+    "Scenario": "Đưa ra ý kiến về xu hướng công nghệ",
+    "Question": "How do you think this trend will affect our industry?"
+  },
+  {
+    "Week": 6,
+    "Topic": "Technical Discussions | Workplace communication",
+    "Scenario": "Đưa ra ý kiến về xu hướng công nghệ",
+    "Question": "What technology trend do you find most interesting right now?"
+  },
+  {
+    "Week": 6,
+    "Topic": "Technical Discussions | Workplace communication",
+    "Scenario": "Thảo luận về kiến trúc hệ thống",
+    "Question": "What challenges do you see with this system architecture?"
+  },
+  {
+    "Week": 6,
+    "Topic": "Technical Discussions | Workplace communication",
+    "Scenario": "Thảo luận về kiến trúc hệ thống",
+    "Question": "How does this architecture support our business goals?"
+  },
+  {
+    "Week": 6,
+    "Topic": "Technical Discussions | Workplace communication",
+    "Scenario": "Thảo luận về kiến trúc hệ thống",
+    "Question": "Can you describe one key component of the system architecture?"
+  },
+  {
+    "Week": 6,
+    "Topic": "Technical Discussions | Workplace communication",
+    "Scenario": "Thảo luận về kiến trúc hệ thống",
+    "Question": "What is the main purpose of the system architecture we are discussing?"
+  },
+  {
+    "Week": 6,
+    "Topic": "Technical Discussions | Workplace communication",
+    "Scenario": "Giải thích công nghệ mới cho nhóm",
+    "Question": "What is the new technology you want to explain?"
+  },
+  {
+    "Week": 6,
+    "Topic": "Technical Discussions | Workplace communication",
+    "Scenario": "Giải thích công nghệ mới cho nhóm",
+    "Question": "Why do you think this technology is important for the team?"
+  },
+  {
+    "Week": 6,
+    "Topic": "Technical Discussions | Workplace communication",
+    "Scenario": "Giải thích công nghệ mới cho nhóm",
+    "Question": "How can this technology improve our current projects?"
+  },
+  {
+    "Week": 6,
+    "Topic": "Technical Discussions | Workplace communication",
+    "Scenario": "Giải thích công nghệ mới cho nhóm",
+    "Question": "What questions do you think the team might have about this technology?"
+  },
+  {
+    "Week": 6,
+    "Topic": "Technical Discussions | Workplace communication",
+    "Scenario": "Đề xuất công cụ mới cho dự án",
+    "Question": "Can you share an example of when this tool was successful?"
+  },
+  {
+    "Week": 6,
+    "Topic": "Technical Discussions | Workplace communication",
+    "Scenario": "Đề xuất công cụ mới cho dự án",
+    "Question": "What are the advantages of using this tool over others?"
+  },
+  {
+    "Week": 6,
+    "Topic": "Technical Discussions | Workplace communication",
+    "Scenario": "Đề xuất công cụ mới cho dự án",
+    "Question": "How does this tool help us achieve our project goals?"
+  },
+  {
+    "Week": 6,
+    "Topic": "Technical Discussions | Workplace communication",
+    "Scenario": "Đề xuất công cụ mới cho dự án",
+    "Question": "What tool are you suggesting for the project?"
+  },
+  {
+    "Week": 6,
+    "Topic": "Technical Discussions | Workplace communication",
+    "Scenario": "So sánh các giải pháp kỹ thuật",
+    "Question": "Which solution do you think is the best for our needs and why?"
+  },
+  {
+    "Week": 6,
+    "Topic": "Technical Discussions | Workplace communication",
+    "Scenario": "So sánh các giải pháp kỹ thuật",
+    "Question": "How does the second solution differ from the first?"
+  },
+  {
+    "Week": 6,
+    "Topic": "Technical Discussions | Workplace communication",
+    "Scenario": "So sánh các giải pháp kỹ thuật",
+    "Question": "What is one advantage of the first solution?"
+  },
+  {
+    "Week": 6,
+    "Topic": "Technical Discussions | Workplace communication",
+    "Scenario": "So sánh các giải pháp kỹ thuật",
+    "Question": "What are the main solutions we are comparing?"
+  },
+  {
+    "Week": 7,
+    "Topic": "Salary Expectations | Job interviews",
+    "Scenario": "Comparing salary expectations with the market",
+    "Question": "How do your salary expectations compare to the market rate?"
+  },
+  {
+    "Week": 7,
+    "Topic": "Salary Expectations | Job interviews",
+    "Scenario": "Comparing salary expectations with the market",
+    "Question": "What do you think about the current salary trends in your field?"
+  },
+  {
+    "Week": 7,
+    "Topic": "Salary Expectations | Job interviews",
+    "Scenario": "Comparing salary expectations with the market",
+    "Question": "How do you feel about the salary offers from other companies?"
+  },
+  {
+    "Week": 7,
+    "Topic": "Salary Expectations | Job interviews",
+    "Scenario": "Comparing salary expectations with the market",
+    "Question": "What do you think is a fair salary for your role in the market?"
+  },
+  {
+    "Week": 7,
+    "Topic": "Salary Expectations | Job interviews",
+    "Scenario": "Negotiating salary with management",
+    "Question": "How would you approach a salary negotiation with your manager?"
+  },
+  {
+    "Week": 7,
+    "Topic": "Salary Expectations | Job interviews",
+    "Scenario": "Negotiating salary with management",
+    "Question": "What points would you emphasize during the negotiation?"
+  },
+  {
+    "Week": 7,
+    "Topic": "Salary Expectations | Job interviews",
+    "Scenario": "Negotiating salary with management",
+    "Question": "How do you plan to respond if your salary request is denied?"
+  },
+  {
+    "Week": 7,
+    "Topic": "Salary Expectations | Job interviews",
+    "Scenario": "Negotiating salary with management",
+    "Question": "What alternatives would you consider if the salary is not negotiable?"
+  },
+  {
+    "Week": 7,
+    "Topic": "Salary Expectations | Job interviews",
+    "Scenario": "Giving examples of salary benchmarks",
+    "Question": "Can you provide examples of salary benchmarks in your industry?"
+  },
+  {
+    "Week": 7,
+    "Topic": "Salary Expectations | Job interviews",
+    "Scenario": "Giving examples of salary benchmarks",
+    "Question": "What sources do you use to find salary information?"
+  },
+  {
+    "Week": 7,
+    "Topic": "Salary Expectations | Job interviews",
+    "Scenario": "Giving examples of salary benchmarks",
+    "Question": "How do you think your skills compare to the benchmarks?"
+  },
+  {
+    "Week": 7,
+    "Topic": "Salary Expectations | Job interviews",
+    "Scenario": "Giving examples of salary benchmarks",
+    "Question": "Why is it important to know salary benchmarks?"
+  },
+  {
+    "Week": 7,
+    "Topic": "Salary Expectations | Job interviews",
+    "Scenario": "Explaining reasons for salary expectations",
+    "Question": "Can you explain why you expect this salary?"
+  },
+  {
+    "Week": 7,
+    "Topic": "Salary Expectations | Job interviews",
+    "Scenario": "Explaining reasons for salary expectations",
+    "Question": "What skills do you have that support your salary request?"
+  },
+  {
+    "Week": 7,
+    "Topic": "Salary Expectations | Job interviews",
+    "Scenario": "Explaining reasons for salary expectations",
+    "Question": "How does your experience relate to your salary expectation?"
+  },
+  {
+    "Week": 7,
+    "Topic": "Salary Expectations | Job interviews",
+    "Scenario": "Explaining reasons for salary expectations",
+    "Question": "What achievements can you mention that justify your salary?"
+  },
+  {
+    "Week": 7,
+    "Topic": "Salary Expectations | Job interviews",
+    "Scenario": "Discussing desired salary range",
+    "Question": "What factors do you consider when thinking about salary?"
+  },
+  {
+    "Week": 7,
+    "Topic": "Salary Expectations | Job interviews",
+    "Scenario": "Discussing desired salary range",
+    "Question": "How did you decide on this salary expectation?"
+  },
+  {
+    "Week": 7,
+    "Topic": "Salary Expectations | Job interviews",
+    "Scenario": "Discussing desired salary range",
+    "Question": "Why do you think this salary range is appropriate?"
+  },
+  {
+    "Week": 7,
+    "Topic": "Salary Expectations | Job interviews",
+    "Scenario": "Discussing desired salary range",
+    "Question": "What is your desired salary range for this position?"
+  },
+  {
+    "Week": 8,
+    "Topic": "Negotiation Strategies | Salary review",
+    "Scenario": "Đàm phán các điều khoản hợp đồng",
+    "Question": "What terms do you think are important to discuss in a contract negotiation?"
+  },
+  {
+    "Week": 8,
+    "Topic": "Negotiation Strategies | Salary review",
+    "Scenario": "Đàm phán các điều khoản hợp đồng",
+    "Question": "How would you approach discussing benefits in a contract?"
+  },
+  {
+    "Week": 8,
+    "Topic": "Negotiation Strategies | Salary review",
+    "Scenario": "Đàm phán các điều khoản hợp đồng",
+    "Question": "What is your strategy for negotiating work hours in a contract?"
+  },
+  {
+    "Week": 8,
+    "Topic": "Negotiation Strategies | Salary review",
+    "Scenario": "Đàm phán các điều khoản hợp đồng",
+    "Question": "Can you describe a situation where you had to negotiate contract terms?"
+  },
+  {
+    "Week": 8,
+    "Topic": "Negotiation Strategies | Salary review",
+    "Scenario": "Đề xuất chiến lược đàm phán lương",
+    "Question": "What factors do you think are important when negotiating salary?"
+  },
+  {
+    "Week": 8,
+    "Topic": "Negotiation Strategies | Salary review",
+    "Scenario": "Đề xuất chiến lược đàm phán lương",
+    "Question": "How would you prepare for a salary negotiation?"
+  },
+  {
+    "Week": 8,
+    "Topic": "Negotiation Strategies | Salary review",
+    "Scenario": "Đề xuất chiến lược đàm phán lương",
+    "Question": "Can you share a successful negotiation experience you had?"
+  },
+  {
+    "Week": 8,
+    "Topic": "Negotiation Strategies | Salary review",
+    "Scenario": "Đề xuất chiến lược đàm phán lương",
+    "Question": "What is your main goal in a salary negotiation?"
+  },
+  {
+    "Week": 8,
+    "Topic": "Negotiation Strategies | Salary review",
+    "Scenario": "Giải thích lợi ích của việc tăng lương",
+    "Question": "What impact do you believe a salary increase has on employee motivation?"
+  },
+  {
+    "Week": 8,
+    "Topic": "Negotiation Strategies | Salary review",
+    "Scenario": "Giải thích lợi ích của việc tăng lương",
+    "Question": "Can you think of a reason why someone deserves a salary increase?"
+  },
+  {
+    "Week": 8,
+    "Topic": "Negotiation Strategies | Salary review",
+    "Scenario": "Giải thích lợi ích của việc tăng lương",
+    "Question": "How would you explain the value of your work to justify a salary raise?"
+  },
+  {
+    "Week": 8,
+    "Topic": "Negotiation Strategies | Salary review",
+    "Scenario": "Giải thích lợi ích của việc tăng lương",
+    "Question": "What benefits do you think come from a salary increase?"
+  },
+  {
+    "Week": 8,
+    "Topic": "Negotiation Strategies | Salary review",
+    "Scenario": "Thảo luận về các yếu tố ảnh hưởng đến lương",
+    "Question": "What role do you think education plays in determining salary?"
+  },
+  {
+    "Week": 8,
+    "Topic": "Negotiation Strategies | Salary review",
+    "Scenario": "Thảo luận về các yếu tố ảnh hưởng đến lương",
+    "Question": "In your opinion, how important is the company size in salary discussions?"
+  },
+  {
+    "Week": 8,
+    "Topic": "Negotiation Strategies | Salary review",
+    "Scenario": "Thảo luận về các yếu tố ảnh hưởng đến lương",
+    "Question": "How does your experience influence your salary?"
+  },
+  {
+    "Week": 8,
+    "Topic": "Negotiation Strategies | Salary review",
+    "Scenario": "Thảo luận về các yếu tố ảnh hưởng đến lương",
+    "Question": "What do you think are the main factors that affect salary levels?"
+  },
+  {
+    "Week": 8,
+    "Topic": "Negotiation Strategies | Salary review",
+    "Scenario": "Đưa ra phương án thỏa hiệp trong đàm phán",
+    "Question": "What is your approach to finding a compromise in salary negotiations?"
+  },
+  {
+    "Week": 8,
+    "Topic": "Negotiation Strategies | Salary review",
+    "Scenario": "Đưa ra phương án thỏa hiệp trong đàm phán",
+    "Question": "How do you decide what to give up in a negotiation?"
+  },
+  {
+    "Week": 8,
+    "Topic": "Negotiation Strategies | Salary review",
+    "Scenario": "Đưa ra phương án thỏa hiệp trong đàm phán",
+    "Question": "Can you share an example of a compromise you made in a negotiation?"
+  },
+  {
+    "Week": 8,
+    "Topic": "Negotiation Strategies | Salary review",
+    "Scenario": "Đưa ra phương án thỏa hiệp trong đàm phán",
+    "Question": "What do you think is the best way to propose a compromise?"
+  },
+  {
+    "Week": 9,
+    "Topic": "Client Presentations | Workplace communication",
+    "Scenario": "Thảo luận về phản hồi của khách hàng",
+    "Question": "What feedback have you received from the client so far?"
+  },
+  {
+    "Week": 9,
+    "Topic": "Client Presentations | Workplace communication",
+    "Scenario": "Thảo luận về phản hồi của khách hàng",
+    "Question": "How do you plan to address any concerns the client has?"
+  },
+  {
+    "Week": 9,
+    "Topic": "Client Presentations | Workplace communication",
+    "Scenario": "Thảo luận về phản hồi của khách hàng",
+    "Question": "What positive comments did the client make about the product?"
+  },
+  {
+    "Week": 9,
+    "Topic": "Client Presentations | Workplace communication",
+    "Scenario": "Thảo luận về phản hồi của khách hàng",
+    "Question": "How can you use the feedback to improve future presentations?"
+  },
+  {
+    "Week": 9,
+    "Topic": "Client Presentations | Workplace communication",
+    "Scenario": "Giải thích lợi ích của sản phẩm",
+    "Question": "What are the main advantages of using this product?"
+  },
+  {
+    "Week": 9,
+    "Topic": "Client Presentations | Workplace communication",
+    "Scenario": "Giải thích lợi ích của sản phẩm",
+    "Question": "How can you show the client the value of this product?"
+  },
+  {
+    "Week": 9,
+    "Topic": "Client Presentations | Workplace communication",
+    "Scenario": "Giải thích lợi ích của sản phẩm",
+    "Question": "What examples can you give to illustrate the benefits?"
+  },
+  {
+    "Week": 9,
+    "Topic": "Client Presentations | Workplace communication",
+    "Scenario": "Giải thích lợi ích của sản phẩm",
+    "Question": "Why do you think the client should choose this product over others?"
+  },
+  {
+    "Week": 9,
+    "Topic": "Client Presentations | Workplace communication",
+    "Scenario": "Đề xuất cải tiến sản phẩm dựa trên phản hồi",
+    "Question": "What suggestions do you have for improving the product?"
+  },
+  {
+    "Week": 9,
+    "Topic": "Client Presentations | Workplace communication",
+    "Scenario": "Đề xuất cải tiến sản phẩm dựa trên phản hồi",
+    "Question": "How can we incorporate client feedback into our product development?"
+  },
+  {
+    "Week": 9,
+    "Topic": "Client Presentations | Workplace communication",
+    "Scenario": "Đề xuất cải tiến sản phẩm dựa trên phản hồi",
+    "Question": "What changes do you think would make the product more appealing?"
+  },
+  {
+    "Week": 9,
+    "Topic": "Client Presentations | Workplace communication",
+    "Scenario": "Đề xuất cải tiến sản phẩm dựa trên phản hồi",
+    "Question": "Why is it important to listen to client feedback for product improvement?"
+  },
+  {
+    "Week": 9,
+    "Topic": "Client Presentations | Workplace communication",
+    "Scenario": "Đưa ra giải pháp cho vấn đề của khách hàng",
+    "Question": "How do you think the client will react to your proposed solution?"
+  },
+  {
+    "Week": 9,
+    "Topic": "Client Presentations | Workplace communication",
+    "Scenario": "Đưa ra giải pháp cho vấn đề của khách hàng",
+    "Question": "What steps would you suggest to implement the solution?"
+  },
+  {
+    "Week": 9,
+    "Topic": "Client Presentations | Workplace communication",
+    "Scenario": "Đưa ra giải pháp cho vấn đề của khách hàng",
+    "Question": "How can our product help solve this issue?"
+  },
+  {
+    "Week": 9,
+    "Topic": "Client Presentations | Workplace communication",
+    "Scenario": "Đưa ra giải pháp cho vấn đề của khách hàng",
+    "Question": "What specific problem is the client facing?"
+  },
+  {
+    "Week": 9,
+    "Topic": "Client Presentations | Workplace communication",
+    "Scenario": "Trình bày sản phẩm mới cho khách hàng",
+    "Question": "What features of the new product do you think are most important?"
+  },
+  {
+    "Week": 9,
+    "Topic": "Client Presentations | Workplace communication",
+    "Scenario": "Trình bày sản phẩm mới cho khách hàng",
+    "Question": "How would you describe the benefits of this product to a client?"
+  },
+  {
+    "Week": 9,
+    "Topic": "Client Presentations | Workplace communication",
+    "Scenario": "Trình bày sản phẩm mới cho khách hàng",
+    "Question": "What questions do you expect the client to ask about the product?"
+  },
+  {
+    "Week": 9,
+    "Topic": "Client Presentations | Workplace communication",
+    "Scenario": "Trình bày sản phẩm mới cho khách hàng",
+    "Question": "Can you explain how this product solves a problem for the client?"
+  },
+  {
+    "Week": 10,
+    "Topic": "Career Progression | Salary review",
+    "Scenario": "Interpreting long-term career goals",
+    "Question": "Why do you think long-term goals are important?"
+  },
+  {
+    "Week": 10,
+    "Topic": "Career Progression | Salary review",
+    "Scenario": "Interpreting long-term career goals",
+    "Question": "What steps do you think are necessary to reach your goals?"
+  },
+  {
+    "Week": 10,
+    "Topic": "Career Progression | Salary review",
+    "Scenario": "Interpreting long-term career goals",
+    "Question": "How do you see your career in five years?"
+  },
+  {
+    "Week": 10,
+    "Topic": "Career Progression | Salary review",
+    "Scenario": "Interpreting long-term career goals",
+    "Question": "What are your long-term career goals?"
+  },
+  {
+    "Week": 10,
+    "Topic": "Career Progression | Salary review",
+    "Scenario": "Presenting a training and development plan",
+    "Question": "Why is ongoing training important in your industry?"
+  },
+  {
+    "Week": 10,
+    "Topic": "Career Progression | Salary review",
+    "Scenario": "Presenting a training and development plan",
+    "Question": "What skills do you think are essential for your team’s success?"
+  },
+  {
+    "Week": 10,
+    "Topic": "Career Progression | Salary review",
+    "Scenario": "Presenting a training and development plan",
+    "Question": "How would you present your training plan to your manager?"
+  },
+  {
+    "Week": 10,
+    "Topic": "Career Progression | Salary review",
+    "Scenario": "Presenting a training and development plan",
+    "Question": "What training do you think would benefit your team?"
+  },
+  {
+    "Week": 10,
+    "Topic": "Career Progression | Salary review",
+    "Scenario": "Discussing career development paths",
+    "Question": "How do you feel about taking on new responsibilities?"
+  },
+  {
+    "Week": 10,
+    "Topic": "Career Progression | Salary review",
+    "Scenario": "Discussing career development paths",
+    "Question": "What skills do you want to improve for your career?"
+  },
+  {
+    "Week": 10,
+    "Topic": "Career Progression | Salary review",
+    "Scenario": "Discussing career development paths",
+    "Question": "Can you share a time when you learned something new at work?"
+  },
+  {
+    "Week": 10,
+    "Topic": "Career Progression | Salary review",
+    "Scenario": "Discussing career development paths",
+    "Question": "What do you think is important for career growth?"
+  },
+  {
+    "Week": 10,
+    "Topic": "Career Progression | Salary review",
+    "Scenario": "Discussing salary increase opportunities",
+    "Question": "Why do you think it is important to ask for a salary review?"
+  },
+  {
+    "Week": 10,
+    "Topic": "Career Progression | Salary review",
+    "Scenario": "Discussing salary increase opportunities",
+    "Question": "What achievements would you highlight in a salary review?"
+  },
+  {
+    "Week": 10,
+    "Topic": "Career Progression | Salary review",
+    "Scenario": "Discussing salary increase opportunities",
+    "Question": "How do you feel about discussing salary with your manager?"
+  },
+  {
+    "Week": 10,
+    "Topic": "Career Progression | Salary review",
+    "Scenario": "Discussing salary increase opportunities",
+    "Question": "What factors do you think influence salary increases?"
+  },
+  {
+    "Week": 10,
+    "Topic": "Career Progression | Salary review",
+    "Scenario": "Proposing a personal development plan",
+    "Question": "Why is a personal development plan important for you?"
+  },
+  {
+    "Week": 10,
+    "Topic": "Career Progression | Salary review",
+    "Scenario": "Proposing a personal development plan",
+    "Question": "What resources do you need for your personal growth?"
+  },
+  {
+    "Week": 10,
+    "Topic": "Career Progression | Salary review",
+    "Scenario": "Proposing a personal development plan",
+    "Question": "How do you plan to achieve your development goals?"
+  },
+  {
+    "Week": 10,
+    "Topic": "Career Progression | Salary review",
+    "Scenario": "Proposing a personal development plan",
+    "Question": "What goals would you set for your personal development?"
+  }
+]
