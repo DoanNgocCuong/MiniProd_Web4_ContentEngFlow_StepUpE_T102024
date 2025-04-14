@@ -56,30 +56,37 @@ class DetailChunkingGenerator:
         }
 
         try:
+            # Add delay between requests
             time.sleep(2)
+            
+            # Call API with retry mechanism
             response = self.session.post(
                 f"{self.base_url}/api/generate-questions",
                 json=formatted_input,
                 timeout=120
             )
+            
             response.raise_for_status()
             result = response.json()
             question_details = result["questions"][0]
+            
+            # Add metadata
             question_details.update({
                 "week": week_data["week"],
                 "topic": week_data["topic"],
                 "scenario": question_data["scenario"],
                 "original_question": question_data["question"]
             })
+
             return question_details
         except Exception as e:
             print(f"Error processing question: {question_data['question']}")
             print(f"Error details: {str(e)}")
             return None
 
-    def save_final_files(self, all_results: List[Dict]) -> tuple:
+    def save_final_files(self, results: List[Dict]) -> tuple:
         """
-        Save all results to final Excel and JSON files
+        Save final results to Excel and JSON files
         """
         # Define the columns we want to save
         columns = [
@@ -90,21 +97,23 @@ class DetailChunkingGenerator:
         
         # Create DataFrame from all results
         data = []
-        for result in all_results:
-            if result:
+        for result in results:
+            if result:  # Only include non-None results
                 row_data = {col: result.get(col, "") for col in columns}
                 data.append(row_data)
         
         df = pd.DataFrame(data)
+        
+        # Sort by week and scenario
         df = df.sort_values(by=["week", "scenario"])
 
         # Save to Excel
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        excel_file = self.output_dir / f"C_all_details_{timestamp}.xlsx"
+        excel_file = self.output_dir / f"C_test_20_questions_{timestamp}.xlsx"
         df.to_excel(excel_file, index=False)
 
         # Save to JSON
-        json_file = self.output_dir / f"C_all_details_{timestamp}.json"
+        json_file = self.output_dir / f"C_test_20_questions_{timestamp}.json"
         with open(json_file, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
 
@@ -149,9 +158,9 @@ def main():
 
         generator = DetailChunkingGenerator()
         
-        # Prepare all questions
+        # Prepare first 20 questions
         all_questions = []
-        for question in b1_questions:
+        for question in b1_questions[:20]:  # Only take first 20 questions
             week_data = next((w for w in learning_path_data["learning_path"] if w["week"] == question["Week"]), None)
             if not week_data:
                 print(f"No week data found for week {question['Week']}")
@@ -164,12 +173,13 @@ def main():
             }
             all_questions.append((generator, user_profile, week_data, question_data))
 
-        print(f"Total questions to process: {len(all_questions)}")
+        print(f"Processing first 20 questions")
 
-        # Process questions in parallel batches
+        # Process questions in parallel
         results = []
-        batch_size = 20  # Process 20 questions at a time
-        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        batch_size = 5  # Process 5 questions at a time
+        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+            # Process in batches
             for i in range(0, len(all_questions), batch_size):
                 if generator.should_stop:
                     break
@@ -183,7 +193,7 @@ def main():
                         result = future.result()
                         if result:
                             results.append(result)
-                            print(f"Processed {len(results)}/{len(all_questions)} questions")
+                            print(f"Processed {len(results)}/20 questions")
                     except Exception as e:
                         print(f"Error in batch processing: {str(e)}")
                 
@@ -193,7 +203,7 @@ def main():
         # Save final results
         if results:
             excel_file, json_file = generator.save_final_files(results)
-            print(f"All questions processed and saved to:")
+            print(f"Test questions processed and saved to:")
             print(f"Excel file: {excel_file}")
             print(f"JSON file: {json_file}")
             print(f"Total questions processed: {len(results)}")
@@ -211,4 +221,4 @@ def main():
         sys.exit(1)
 
 if __name__ == "__main__":
-    main()
+    main() 

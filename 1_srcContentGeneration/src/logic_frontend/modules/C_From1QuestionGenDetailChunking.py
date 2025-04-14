@@ -62,7 +62,7 @@ class DetailChunkingGenerator:
 
     def _save_to_excel(self, question_details: Dict) -> str:
         """
-        Save detail chunking to Excel file with proper column structure
+        Save detail chunking to Excel and JSON files with proper column structure
         """
         # Define the columns we want to save
         columns = [
@@ -79,6 +79,11 @@ class DetailChunkingGenerator:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         excel_file = self.output_dir / f"C_detail_week_{question_details['week']}_{timestamp}.xlsx"
         df.to_excel(excel_file, index=False)
+
+        # Save to JSON
+        json_file = self.output_dir / f"C_detail_week_{question_details['week']}_{timestamp}.json"
+        with open(json_file, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
 
         return str(excel_file)
 
