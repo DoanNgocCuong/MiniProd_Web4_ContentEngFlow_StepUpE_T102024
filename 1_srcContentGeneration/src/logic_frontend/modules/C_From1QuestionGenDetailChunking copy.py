@@ -43,44 +43,41 @@ class DetailChunkingGenerator:
         
         # Parse response
         result = response.json()
-        detail = result["questions"][0]
+        
+        # Extract the question details
+        question_details = result["questions"][0]
+        
+        # Add metadata
+        question_details.update({
+            "week": week_data["week"],
+            "topic": week_data["topic"],
+            "scenario": question_data["scenario"],
+            "original_question": question_data["question"]
+        })
 
         # Save to Excel
-        self._save_to_excel(week_data["week"], question_data["scenario"], question_data["question"], detail)
+        self._save_to_excel(question_details)
 
-        return detail
+        return question_details
 
-    def _save_to_excel(self, week: int, scenario: str, question: str, detail: Dict) -> str:
+    def _save_to_excel(self, question_details: Dict) -> str:
         """
-        Save detail chunking to Excel file
+        Save detail chunking to Excel file with proper column structure
         """
-        # Prepare data for Excel
-        data = []
-        for key, value in detail.items():
-            if isinstance(value, list):
-                for item in value:
-                    data.append({
-                        "Week": week,
-                        "Scenario": scenario,
-                        "Question": question,
-                        "Key": key,
-                        "Value": item
-                    })
-            else:
-                data.append({
-                    "Week": week,
-                    "Scenario": scenario,
-                    "Question": question,
-                    "Key": key,
-                    "Value": value
-                })
-
-        # Create DataFrame
-        df = pd.DataFrame(data)
+        # Define the columns we want to save
+        columns = [
+            "week", "topic", "scenario", "original_question",
+            "question", "structure", "main phrase", "optional phrase 1", "optional phrase 2",
+            "question-vi", "structure-vi", "main phrase-vi", "optional phrase 1-vi", "optional phrase 2-vi"
+        ]
+        
+        # Create a single row DataFrame
+        data = {col: question_details.get(col, "") for col in columns}
+        df = pd.DataFrame([data])
 
         # Save to Excel
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        excel_file = self.output_dir / f"B2_detail_week_{week}_{timestamp}.xlsx"
+        excel_file = self.output_dir / f"C_detail_week_{question_details['week']}_{timestamp}.xlsx"
         df.to_excel(excel_file, index=False)
 
         return str(excel_file)
@@ -121,6 +118,7 @@ def main():
     generator = DetailChunkingGenerator()
     detail = generator.generate_detail_chunking(user_profile, test_week, test_question)
     print(f"Detail chunking generated and saved to Excel")
+    print(json.dumps(detail, indent=2, ensure_ascii=False))
 
 if __name__ == "__main__":
     main()

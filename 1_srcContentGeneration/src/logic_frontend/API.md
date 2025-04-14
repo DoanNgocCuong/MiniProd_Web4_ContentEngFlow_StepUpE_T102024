@@ -28,7 +28,7 @@ http://103.253.20.13:3000/api/generate-20-chunking-from-5-scenario
 }
 ```
 ---
-# B2. User Profile + 1Week-1Topic-1Scenario-1Question => Detail Chunking 
+# C. User Profile + 1Week-1Topic-1Scenario-1Question => Detail Chunking 
 
 
 http://103.253.20.13:3000/api/generate-questions

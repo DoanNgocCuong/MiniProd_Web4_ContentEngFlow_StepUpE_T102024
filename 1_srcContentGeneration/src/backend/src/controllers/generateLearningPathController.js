@@ -36,7 +36,7 @@ Your task:
 - Be quirky, specific, interesting.
 - The order of scenarios in a topic should have some structure or step-based logic
 - Make sure there are no scenarios requiring the same English structure across different topics.
-- Scenario title language: Vietnamese, 5 -10 words
+- Scenario title language: Vietnamese, 4 - 6 words
 
 4. Give the biggest milestones (concise communication tasks users have mastered) that the learner can achieve when following this learning path, at 2h, 10h, 14h, 35h, and 50h of speaking. Give a cool title for each of these milestones.
 ============

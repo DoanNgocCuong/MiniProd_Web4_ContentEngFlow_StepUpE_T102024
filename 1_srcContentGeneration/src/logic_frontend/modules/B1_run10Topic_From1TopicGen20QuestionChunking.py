@@ -1,3 +1,4 @@
+import concurrent.futures
 import json
 import requests
 from typing import Dict, List
@@ -6,6 +7,7 @@ from datetime import datetime
 import pandas as pd
 import sys
 from pathlib import Path
+import glob
 
 # Add parent directory to Python path
 sys.path.append(str(Path(__file__).parent.parent))
@@ -43,9 +45,9 @@ class ChunkingGenerator:
         chunking = json.loads(result["chunkingPhrases"])
 
         # Save to Excel
-        self._save_to_excel(week_data["week"], chunking)
+        excel_file = self._save_to_excel(week_data["week"], chunking)
 
-        return chunking
+        return excel_file
 
     def _save_to_excel(self, week: int, chunking: Dict) -> str:
         """
@@ -72,8 +74,45 @@ class ChunkingGenerator:
 
         return str(excel_file)
 
+    def merge_weekly_excel_files(self) -> str:
+        """
+        Merge all weekly Excel files into a single file, sorted by week
+        """
+        # Get all B1 chunking Excel files
+        excel_files = glob.glob(str(self.output_dir / "B1_chunking_week_*.xlsx"))
+        
+        if not excel_files:
+            raise ValueError("No Excel files found to merge")
+
+        # Read all Excel files and combine them
+        all_data = []
+        for file in excel_files:
+            df = pd.read_excel(file)
+            all_data.append(df)
+
+        # Combine all dataframes
+        combined_df = pd.concat(all_data, ignore_index=True)
+        
+        # Sort by Week
+        combined_df = combined_df.sort_values(by="Week")
+
+        # Save combined file
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        combined_file = self.output_dir / f"B1_chunking_all_weeks_{timestamp}.xlsx"
+        combined_df.to_excel(combined_file, index=False)
+
+        return str(combined_file)
+
+def process_week(week_data: Dict, user_profile: UserProfile) -> str:
+    """
+    Process a single week's data
+    """
+    generator = ChunkingGenerator()
+    excel_file = generator.generate_chunking(user_profile, week_data)
+    print(f"Generated chunking questions for week {week_data['week']}")
+    return excel_file
+
 def main():
-    # Example usage
     # Create user profile
     user_profile = UserProfile(
         industry="IT",
@@ -84,23 +123,33 @@ def main():
         learning_goals=["workplace communication", "job interviews", "salary review"]
     )
 
-    # Create test week data
-    test_week = {
-        "week": 1,
-        "topic": "Project updates (Cập nhật dự án)",
-        "scenarios": [
-            {"scenario": "Giới thiệu dự án mới"},
-            {"scenario": "Thảo luận tiến độ hiện tại"},
-            {"scenario": "Giải quyết vấn đề phát sinh"},
-            {"scenario": "Đề xuất cải tiến dự án"},
-            {"scenario": "Lên kế hoạch cho tuần tới"}
-        ]
-    }
+    # Read learning path data from JSON file
+    json_path = Path(__file__).parent / "learning_path_data.json"
+    with open(json_path, 'r', encoding='utf-8') as f:
+        learning_path_data = json.load(f)
 
-    # Generate chunking
+    # Process all weeks in parallel
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        # Submit all tasks
+        futures = [
+            executor.submit(process_week, week_data, user_profile)
+            for week_data in learning_path_data["learning_path"]
+        ]
+        
+        # Wait for all tasks to complete
+        concurrent.futures.wait(futures)
+        
+        # Check for any exceptions
+        for future in futures:
+            try:
+                future.result()
+            except Exception as e:
+                print(f"Error processing week: {e}")
+
+    # Merge all weekly files into one
     generator = ChunkingGenerator()
-    chunking = generator.generate_chunking(user_profile, test_week)
-    print(f"Chunking questions generated and saved to Excel")
+    combined_file = generator.merge_weekly_excel_files()
+    print(f"All weeks processed and combined into: {combined_file}")
 
 if __name__ == "__main__":
     main()
