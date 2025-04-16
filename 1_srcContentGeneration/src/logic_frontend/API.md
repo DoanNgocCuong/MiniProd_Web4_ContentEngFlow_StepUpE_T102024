@@ -72,6 +72,7 @@ Input:
 {"lessons":[{"question":"How do you say hello in English?","structure":"You say hello by ____.","main phrase":"saying hello","optional phrase 1":"waving your hand","optional phrase 2":"smiling at someone","question-vi":"Bạn nói hello bằng cách nào trong tiếng Anh?","structure-vi":"Bạn nói hello bằng cách ____.","main phrase-vi":"nói hello","optional phrase 1-vi":"vẫy tay","optional phrase 2-vi":"mỉm cười với ai đó","lesson_id":"hello_1257_03042025"}]}
 ```
 
+
 Response:
 ```json
 {

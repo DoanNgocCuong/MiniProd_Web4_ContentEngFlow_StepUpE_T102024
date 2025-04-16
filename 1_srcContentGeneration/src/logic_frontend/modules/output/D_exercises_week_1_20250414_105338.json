@@ -1,0 +1,118 @@
+{
+  "week": 1,
+  "meaning_exercises": [
+    {
+      "answer_1": "You say hello by ____.",
+      "sentence": "<g>Bạn nói hello bằng cách</g> saying hello.",
+      "answer_2": "You don't say hello by ____.",
+      "answer_3": "You say goodbye by ____.",
+      "answer_2_description": "<r>You don't say hello by ____</r> mang nghĩa là 'bạn không nói hello bằng cách ____' nên sai nghĩa so với yêu cầu của đề bài.",
+      "answer_3_description": "<r>You say goodbye by ____</r> mang nghĩa là 'bạn nói tạm biệt bằng cách ____' nên sai nghĩa so với yêu cầu của đề bài."
+    },
+    {
+      "answer_1": "saying hello",
+      "sentence": "You say hello by <g>nói hello</g>.",
+      "answer_2": "greeting",
+      "answer_3": "introducing yourself",
+      "answer_2_description": "<r>Greeting</r> mang nghĩa là 'chào hỏi' nên sai nghĩa so với yêu cầu của đề bài.",
+      "answer_3_description": "<r>Introducing yourself</r> mang nghĩa là 'giới thiệu bản thân' nên sai nghĩa so với yêu cầu của đề bài."
+    },
+    {
+      "answer_1": "waving your hand",
+      "sentence": "You say hello by <g>vẫy tay</g>.",
+      "answer_2": "nodding your head",
+      "answer_3": "shaking hands",
+      "answer_2_description": "<r>Nodding your head</r> mang nghĩa là 'gật đầu' nên sai nghĩa so với yêu cầu của đề bài.",
+      "answer_3_description": "<r>Shaking hands</r> mang nghĩa là 'bắt tay' nên sai nghĩa so với yêu cầu của đề bài."
+    }
+  ],
+  "card_exercises": [
+    {
+      "sentence_en": "You say hello by ____.",
+      "sentence_vi": "Bạn nói hello bằng cách ____.",
+      "ipa": "/juː seɪ həˈloʊ baɪ ____/"
+    },
+    {
+      "sentence_en": "saying hello",
+      "sentence_vi": "nói hello",
+      "ipa": "/ˈseɪɪŋ həˈloʊ/"
+    },
+    {
+      "sentence_en": "waving your hand",
+      "sentence_vi": "vẫy tay",
+      "ipa": "/ˈweɪvɪŋ jʊər hænd/"
+    },
+    {
+      "sentence_en": "smiling at someone",
+      "sentence_vi": "mỉm cười với ai đó",
+      "ipa": "/ˈsmaɪlɪŋ æt ˈsʌmˌwʌn/"
+    }
+  ],
+  "flexible_exercises": [
+    {
+      "description": "Hãy nghe mình nói và đọc lại",
+      "sentence_hide": "You say hello by saying hello.",
+      "sentence_en": "You say hello by saying hello.",
+      "sentence_vi": "Bạn nói xin chào bằng cách nói xin chào."
+    },
+    {
+      "description": "Nhắc lại nhé",
+      "sentence_hide": "You say hello by ______ _____.",
+      "sentence_en": "You say hello by saying hello.",
+      "sentence_vi": "Bạn nói xin chào bằng cách nói xin chào."
+    },
+    {
+      "description": "Hãy dịch câu sau",
+      "sentence_hide": "You say hello by ______ ____ ____.",
+      "sentence_en": "You say hello by waving your hand.",
+      "sentence_vi": "Bạn nói xin chào bằng cách vẫy tay."
+    },
+    {
+      "description": "Hãy dịch câu sau",
+      "sentence_hide": "You say hello by _______ __ _______.",
+      "sentence_en": "You say hello by smiling at someone.",
+      "sentence_vi": "Bạn nói xin chào bằng cách mỉm cười với ai đó."
+    },
+    {
+      "description": "Hãy dịch câu sau",
+      "sentence_hide": "___ ___ _____ __ saying hello.",
+      "sentence_en": "You say hello by saying hello.",
+      "sentence_vi": "Bạn nói xin chào bằng cách nói xin chào."
+    },
+    {
+      "description": "Hãy dịch câu sau",
+      "sentence_hide": "___ ___ _____ __ waving your hand.",
+      "sentence_en": "You say hello by waving your hand.",
+      "sentence_vi": "Bạn nói xin chào bằng cách vẫy tay."
+    },
+    {
+      "description": "Hãy dịch câu sau",
+      "sentence_hide": "___ ___ _____ __ smiling at someone.",
+      "sentence_en": "You say hello by smiling at someone.",
+      "sentence_vi": "Bạn nói xin chào bằng cách mỉm cười với ai đó."
+    },
+    {
+      "description": "Hãy dịch câu sau",
+      "sentence_hide": "___ __ ___ ___ _____ __ ________?",
+      "sentence_en": "How do you say hello in English?",
+      "sentence_vi": "Bạn nói xin chào bằng cách nào trong tiếng Anh?"
+    }
+  ],
+  "qna_exercises": [
+    {
+      "description": "TRẢ LỜI THEO TRANH GỢI Ý",
+      "sentence_en": "You say hello by saying hello.",
+      "sentence_hide": "___ ___ _____ __ ______ _____."
+    },
+    {
+      "description": "TRẢ LỜI THEO TRANH GỢI Ý",
+      "sentence_en": "You say hello by waving your hand.",
+      "sentence_hide": "___ ___ _____ __ ______ ____ ____."
+    },
+    {
+      "description": "TRẢ LỜI THEO TRANH GỢI Ý",
+      "sentence_en": "You say hello by smiling at someone.",
+      "sentence_hide": "___ ___ _____ __ _______ __ _______."
+    }
+  ]
+}

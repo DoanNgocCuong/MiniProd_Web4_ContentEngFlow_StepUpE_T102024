@@ -80,7 +80,7 @@ class DetailChunkingGenerator:
 
         # Save to Excel
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        excel_file = self.output_dir / f"B2_detail_week_{week}_{timestamp}.xlsx"
+        excel_file = self.output_dir / f"C2_detail_week_{week}_{timestamp}.xlsx"
         df.to_excel(excel_file, index=False)
 
         return str(excel_file)

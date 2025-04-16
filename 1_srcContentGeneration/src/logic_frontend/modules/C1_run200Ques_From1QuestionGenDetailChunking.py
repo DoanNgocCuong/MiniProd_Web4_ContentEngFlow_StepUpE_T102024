@@ -35,47 +35,60 @@ class DetailChunkingGenerator:
         )
         self.session.mount('http://', HTTPAdapter(max_retries=retries))
 
-    def generate_detail_chunking(self, user_profile: Dict, week_data: Dict, question_data: Dict) -> Dict:
+    def generate_detail_chunking(self, user_profile: Dict, week_data: Dict, question_data: Dict, max_retries: int = 3) -> Dict:
         """
-        Generate detail chunking from a question
+        Generate detail chunking from a question with retry mechanism
         """
         if self.should_stop:
             return None
 
-        # Format the input according to API requirements
-        formatted_input = {
-            "generateQuestionInput": f"Generate detailed content for a specific question.\n"
-                                   f"# Prepare user profile\n"
-                                   f"user_profile = f\"\"\"USER PROFILE:\n"
-                                   f"- industry: [{user_profile.industry}]\n"
-                                   f"- job: [{user_profile.job}]\n"
-                                   f"- englishLevel: [{user_profile.english_level}]\n"
-                                   f"- learningGoals: {' '.join([f'[{goal}]' for goal in user_profile.learning_goals])}\"\"\"\n\n"
-                                   f"# Prepare question data\n"
-                                   f"question_data = {json.dumps(question_data)}"
-        }
+        for attempt in range(max_retries):
+            try:
+                # Format the input according to API requirements
+                formatted_input = {
+                    "generateQuestionInput": f"Generate detailed content for a specific question.\n"
+                                       f"# Prepare user profile\n"
+                                       f"user_profile = f\"\"\"USER PROFILE:\n"
+                                       f"- industry: [{user_profile.industry}]\n"
+                                       f"- job: [{user_profile.job}]\n"
+                                       f"- englishLevel: [{user_profile.english_level}]\n"
+                                       f"- learningGoals: {' '.join([f'[{goal}]' for goal in user_profile.learning_goals])}\"\"\"\n\n"
+                                       f"# Prepare question data\n"
+                                       f"question_data = {json.dumps(question_data)}"
+                }
 
-        try:
-            time.sleep(2)
-            response = self.session.post(
-                f"{self.base_url}/api/generate-questions",
-                json=formatted_input,
-                timeout=120
-            )
-            response.raise_for_status()
-            result = response.json()
-            question_details = result["questions"][0]
-            question_details.update({
-                "week": week_data["week"],
-                "topic": week_data["topic"],
-                "scenario": question_data["scenario"],
-                "original_question": question_data["question"]
-            })
-            return question_details
-        except Exception as e:
-            print(f"Error processing question: {question_data['question']}")
-            print(f"Error details: {str(e)}")
-            return None
+                # Add delay between requests
+                time.sleep(2)
+                
+                # Call API with retry mechanism
+                response = self.session.post(
+                    f"{self.base_url}/api/generate-questions",
+                    json=formatted_input,
+                    timeout=120
+                )
+                
+                response.raise_for_status()
+                result = response.json()
+                question_details = result["questions"][0]
+                
+                # Add metadata
+                question_details.update({
+                    "week": week_data["week"],
+                    "topic": week_data["topic"],
+                    "scenario": question_data["scenario"],
+                    "original_question": question_data["question"]
+                })
+
+                return question_details
+            except Exception as e:
+                print(f"Attempt {attempt + 1} failed for question: {question_data['question']}")
+                print(f"Error details: {str(e)}")
+                if attempt == max_retries - 1:
+                    print(f"Max retries reached for question: {question_data['question']}")
+                    return None
+                time.sleep(5)  # Wait longer between retries
+
+        return None
 
     def save_final_files(self, all_results: List[Dict]) -> tuple:
         """
@@ -168,6 +181,7 @@ def main():
 
         # Process questions in parallel batches
         results = []
+        failed_questions = []
         batch_size = 20  # Process 20 questions at a time
         with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
             for i in range(0, len(all_questions), batch_size):
@@ -184,6 +198,11 @@ def main():
                         if result:
                             results.append(result)
                             print(f"Processed {len(results)}/{len(all_questions)} questions")
+                        else:
+                            # Get the question that failed
+                            question_data = batch[batch_futures.index(future)][3]
+                            failed_questions.append(question_data)
+                            print(f"Failed to process question: {question_data['question']}")
                     except Exception as e:
                         print(f"Error in batch processing: {str(e)}")
                 
@@ -197,6 +216,13 @@ def main():
             print(f"Excel file: {excel_file}")
             print(f"JSON file: {json_file}")
             print(f"Total questions processed: {len(results)}")
+            
+            # Save failed questions if any
+            if failed_questions:
+                failed_file = generator.output_dir / f"failed_questions_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+                with open(failed_file, 'w', encoding='utf-8') as f:
+                    json.dump(failed_questions, f, ensure_ascii=False, indent=2)
+                print(f"Failed questions saved to: {failed_file}")
 
     except KeyboardInterrupt:
         print("\nGracefully shutting down...")

@@ -7,6 +7,7 @@ import pandas as pd
 import sys
 import logging
 from pathlib import Path
+import time
 
 # Add parent directory to Python path
 sys.path.append(str(Path(__file__).parent.parent))
@@ -29,9 +30,9 @@ class ExerciseGenerator:
         self.output_dir.mkdir(exist_ok=True)
         logging.info(f"ExerciseGenerator initialized with base_url: {base_url}")
 
-    def generate_exercises(self, detail_chunking: Dict) -> Dict:
+    def generate_exercises(self, detail_chunking: Dict, max_retries: int = 3) -> Dict:
         """
-        Generate 4 types of exercises from detail chunking
+        Generate 4 types of exercises from detail chunking with retry mechanism
         """
         logging.info("Starting exercise generation process")
         logging.debug(f"Input detail_chunking: {json.dumps(detail_chunking, indent=2)}")
@@ -53,44 +54,43 @@ class ExerciseGenerator:
             }]
         }
 
-        # Format input specifically for flexible exercises
-        flexible_input = {
-            "lessons": [{
-                "question": detail_chunking.get("question", ""),
-                "structure": detail_chunking.get("structure", ""),
-                "main phrase": detail_chunking.get("main_phrase", ""),
-                "optional phrase 1": detail_chunking.get("optional_phrase_1", ""),
-                "optional phrase 2": detail_chunking.get("optional_phrase_2", ""),
-                "question-vi": detail_chunking.get("question_vi", ""),
-                "structure-vi": detail_chunking.get("structure_vi", ""),
-                "main phrase-vi": detail_chunking.get("main_phrase_vi", ""),
-                "optional phrase 1-vi": detail_chunking.get("optional_phrase_1_vi", ""),
-                "optional phrase 2-vi": detail_chunking.get("optional_phrase_2_vi", ""),
-                "lesson_id": detail_chunking.get("lesson_id", "")
-            }]
-        }
-
         try:
-            # Generate all 4 types of exercises
+            # Generate all 4 types of exercises with retry mechanism
             logging.info("Generating Meaning Exercises...")
-            meaning_exercises = self._generate_meaning_exercises(formatted_input)
+            meaning_exercises = self._generate_with_retry(
+                self._generate_meaning_exercises,
+                formatted_input,
+                max_retries
+            )
             logging.info(f"Generated {len(meaning_exercises)} Meaning Exercises")
 
             logging.info("Generating Card Exercises...")
-            card_exercises = self._generate_card_exercises(formatted_input)
+            card_exercises = self._generate_with_retry(
+                self._generate_card_exercises,
+                formatted_input,
+                max_retries
+            )
             logging.info(f"Generated {len(card_exercises)} Card Exercises")
 
             logging.info("Generating Flexible Exercises...")
-            flexible_exercises = self._generate_flexible_exercises(flexible_input)
+            flexible_exercises = self._generate_with_retry(
+                self._generate_flexible_exercises,
+                formatted_input,
+                max_retries
+            )
             logging.info(f"Generated {len(flexible_exercises)} Flexible Exercises")
 
             logging.info("Generating Q&A Exercises...")
-            qna_exercises = self._generate_qna_exercises(formatted_input)
+            qna_exercises = self._generate_with_retry(
+                self._generate_qna_exercises,
+                formatted_input,
+                max_retries
+            )
             logging.info(f"Generated {len(qna_exercises)} Q&A Exercises")
 
             # Save all exercises to Excel
             logging.info("Saving all exercises to Excel...")
-            excel_path = self._save_to_excel(
+            excel_path, json_path = self._save_to_excel(
                 detail_chunking.get("week", 0),
                 meaning_exercises,
                 card_exercises,
@@ -98,6 +98,7 @@ class ExerciseGenerator:
                 qna_exercises
             )
             logging.info(f"Exercises saved to Excel file: {excel_path}")
+            logging.info(f"Exercises saved to JSON file: {json_path}")
 
             return {
                 "meaning": meaning_exercises,
@@ -110,13 +111,33 @@ class ExerciseGenerator:
             logging.error(f"Error in generate_exercises: {str(e)}", exc_info=True)
             raise
 
+    def _generate_with_retry(self, generate_func, input_data: Dict, max_retries: int = 3) -> List[Dict]:
+        """
+        Helper function to retry exercise generation
+        """
+        for attempt in range(max_retries):
+            try:
+                time.sleep(2)  # Add delay between requests
+                result = generate_func(input_data)
+                if result:
+                    return result
+                logging.warning(f"Attempt {attempt + 1} returned empty result")
+            except Exception as e:
+                logging.error(f"Attempt {attempt + 1} failed: {str(e)}")
+                if attempt == max_retries - 1:
+                    logging.error(f"Max retries reached for {generate_func.__name__}")
+                    return []
+                time.sleep(5)  # Wait longer between retries
+        return []
+
     def _generate_meaning_exercises(self, formatted_input: Dict) -> List[Dict]:
         """Generate learning meaning exercises"""
         try:
             logging.debug("Calling generate-learning-meaning API...")
             response = requests.post(
                 f"{self.base_url}/api/generate-learning-meaning",
-                json=formatted_input
+                json=formatted_input,
+                timeout=120
             )
             response.raise_for_status()
             result = response.json()
@@ -136,7 +157,8 @@ class ExerciseGenerator:
             logging.debug("Calling generate-learning-card API...")
             response = requests.post(
                 f"{self.base_url}/api/generate-learning-card",
-                json=formatted_input
+                json=formatted_input,
+                timeout=120
             )
             response.raise_for_status()
             result = response.json()
@@ -156,28 +178,20 @@ class ExerciseGenerator:
             logging.debug("Calling generate-learning-flexible API...")
             response = requests.post(
                 f"{self.base_url}/api/generate-learning-flexible",
-                json=formatted_input
+                json=formatted_input,
+                timeout=120
             )
             response.raise_for_status()
             result = response.json()
             logging.debug(f"API Response: {json.dumps(result, indent=2)}")
             
-            # Handle both list and dictionary responses
             if isinstance(result, list):
                 logging.info("API returned list directly")
                 return result
-            elif isinstance(result, dict):
-                return result.get("exercises", [])
-            else:
-                logging.warning(f"Unexpected response type: {type(result)}")
-                return []
-        except requests.exceptions.HTTPError as e:
-            logging.error(f"HTTP Error in _generate_flexible_exercises: {str(e)}")
-            logging.error(f"Response content: {e.response.text if hasattr(e, 'response') else 'No response content'}")
-            return []  # Return empty list instead of raising error
+            return result.get("exercises", [])
         except Exception as e:
             logging.error(f"Error in _generate_flexible_exercises: {str(e)}", exc_info=True)
-            return []  # Return empty list instead of raising error
+            raise
 
     def _generate_qna_exercises(self, formatted_input: Dict) -> List[Dict]:
         """Generate Q&A exercises"""
@@ -185,7 +199,8 @@ class ExerciseGenerator:
             logging.debug("Calling generate-learning-qna API...")
             response = requests.post(
                 f"{self.base_url}/api/generate-learning-qna",
-                json=formatted_input
+                json=formatted_input,
+                timeout=120
             )
             response.raise_for_status()
             result = response.json()
@@ -207,7 +222,7 @@ class ExerciseGenerator:
         """
         try:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            excel_file = self.output_dir / f"B3_exercises_week_{week}_{timestamp}.xlsx"
+            excel_file = self.output_dir / f"D_exercises_week_{week}_{timestamp}.xlsx"
             logging.info(f"Creating Excel file: {excel_file}")
             
             # Create Excel writer
@@ -217,13 +232,12 @@ class ExerciseGenerator:
                 meaning_data = []
                 for exercise in meaning_exercises:
                     meaning_data.append({
-                        "Week": week,
-                        "Sentence": exercise.get("sentence", ""),
-                        "Correct Answer": exercise.get("answer_1", ""),
-                        "Wrong Answer 1": exercise.get("answer_2", ""),
-                        "Wrong Answer 2": exercise.get("answer_3", ""),
-                        "Explanation 1": exercise.get("answer_2_description", ""),
-                        "Explanation 2": exercise.get("answer_3_description", "")
+                        "sentence": exercise.get("sentence", ""),
+                        "answer_1": exercise.get("answer_1", ""),
+                        "answer_2": exercise.get("answer_2", ""),
+                        "answer_3": exercise.get("answer_3", ""),
+                        "answer_2_description": exercise.get("answer_2_description", ""),
+                        "answer_3_description": exercise.get("answer_3_description", "")
                     })
                 pd.DataFrame(meaning_data).to_excel(writer, sheet_name="Meaning Exercises", index=False)
 
@@ -232,10 +246,9 @@ class ExerciseGenerator:
                 card_data = []
                 for exercise in card_exercises:
                     card_data.append({
-                        "Week": week,
-                        "English Sentence": exercise.get("sentence_en", ""),
-                        "Vietnamese Translation": exercise.get("sentence_vi", ""),
-                        "IPA Pronunciation": exercise.get("ipa", "")
+                        "sentence_en": exercise.get("sentence_en", ""),
+                        "sentence_vi": exercise.get("sentence_vi", ""),
+                        "ipa": exercise.get("ipa", "")
                     })
                 pd.DataFrame(card_data).to_excel(writer, sheet_name="Card Exercises", index=False)
 
@@ -244,11 +257,10 @@ class ExerciseGenerator:
                 flexible_data = []
                 for exercise in flexible_exercises:
                     flexible_data.append({
-                        "Week": week,
-                        "Description": exercise.get("description", ""),
-                        "Hidden Sentence": exercise.get("sentence_hide", ""),
-                        "English Sentence": exercise.get("sentence_en", ""),
-                        "Vietnamese Translation": exercise.get("sentence_vi", "")
+                        "description": exercise.get("description", ""),
+                        "sentence_hide": exercise.get("sentence_hide", ""),
+                        "sentence_en": exercise.get("sentence_en", ""),
+                        "sentence_vi": exercise.get("sentence_vi", "")
                     })
                 pd.DataFrame(flexible_data).to_excel(writer, sheet_name="Flexible Exercises", index=False)
 
@@ -257,15 +269,29 @@ class ExerciseGenerator:
                 qna_data = []
                 for exercise in qna_exercises:
                     qna_data.append({
-                        "Week": week,
-                        "Description": exercise.get("description", ""),
-                        "English Sentence": exercise.get("sentence_en", ""),
-                        "Hidden Sentence": exercise.get("sentence_hide", "")
+                        "description": exercise.get("description", ""),
+                        "sentence_en": exercise.get("sentence_en", ""),
+                        "sentence_hide": exercise.get("sentence_hide", "")
                     })
                 pd.DataFrame(qna_data).to_excel(writer, sheet_name="Q&A Exercises", index=False)
 
-            logging.info(f"Successfully saved all exercises to {excel_file}")
-            return str(excel_file)
+            # Save to JSON
+            json_file = self.output_dir / f"D_exercises_week_{week}_{timestamp}.json"
+            logging.info(f"Creating JSON file: {json_file}")
+            
+            exercises_data = {
+                "week": week,
+                "meaning_exercises": meaning_exercises,
+                "card_exercises": card_exercises,
+                "flexible_exercises": flexible_exercises,
+                "qna_exercises": qna_exercises
+            }
+            
+            with open(json_file, 'w', encoding='utf-8') as f:
+                json.dump(exercises_data, f, ensure_ascii=False, indent=2)
+
+            logging.info(f"Successfully saved all exercises to {excel_file} and {json_file}")
+            return str(excel_file), str(json_file)
 
         except Exception as e:
             logging.error(f"Error in _save_to_excel: {str(e)}", exc_info=True)
@@ -295,7 +321,7 @@ def main():
         generator = ExerciseGenerator()
         exercises = generator.generate_exercises(test_detail)
         logging.info("Exercise generation completed successfully")
-        print(f"All exercises generated and saved to Excel")
+        print(f"All exercises generated and saved to Excel and JSON")
 
     except Exception as e:
         logging.error(f"Error in main: {str(e)}", exc_info=True)
