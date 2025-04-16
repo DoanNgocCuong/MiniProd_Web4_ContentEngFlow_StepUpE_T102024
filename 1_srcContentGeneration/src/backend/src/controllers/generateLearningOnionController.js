@@ -53,7 +53,16 @@ Give the first message for the AI to start the roleplay with that acts as a remi
 ===
 response JSON format 
 
-{"lesson_details":"", "system_prompt": "", "first_message": ""}
+{
+  "lesson_details": {
+    "title": "",
+    "context": "",
+    "character": "",
+    "tasks": ""
+  },
+  "system_prompt": "",
+  "first_message": ""
+}
 `;
 
 exports.generateLearningOnion = async (req, res) => {

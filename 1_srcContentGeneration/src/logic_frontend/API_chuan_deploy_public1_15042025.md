@@ -353,13 +353,6 @@ Exercise Features:
 
 =======
 
-
-# A. API Profile user => 10 Weeks - 10 topics - 50 scenario!
-# B. With Each 1 Topic 5 Scenario from Output A: Từ User Profile + Week-1Topic-5Scenario => 20 Chunking 
-# C1. With Each Chunking from Output B: User Profile + 1Week-1Topic-1Scenario-1Question => Detail Chunking 
-# C1-D. Từ each Detail Chunking of Output B2 => gen 4 Learning Meaning Exercise API
-1, 2, 3, 4 exercises. 
-
 # C2. With each 4 Questions from Output B: User Profile + 1 Week-1 Topic-1 Scenario-4 Questions => Generate Learning Onion API
 
 http://103.253.20.13:3000/api/generate-learning-onion
@@ -471,3 +464,38 @@ Features:
 - Multiple voice options
 - Adjustable speech rate
 - Error handling 
+
+# C3. User Profile + Question => Phát triển ý (PTY - Onion Learning Method)
+
+```bash
+curl -X POST \
+  http://103.253.20.13:3000/api/generate-learning-pty \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "mainQuestion": "What progress has been made since last week?"
+}'
+```
+
+http://103.253.20.13:3000/api/generate-learning-pty
+
+Input:
+```json
+{
+    "mainQuestion": "What progress has been made since last week?"
+}
+```
+
+Response:
+```json
+{
+    "systemPrompt": "Take turns and role-play with me. You are Onion Guru...",
+    "firstMessage": "Hello there! I can help you expand your answer to increase your fluency. Let's start with the main question: What progress has been made since last week?"
+}
+```
+
+Required Input Parameters:
+- mainQuestion: The question that needs to be expanded/practiced
+
+Response Fields:
+- systemPrompt: The complete Onion Guru prompt template that guides the conversation
+- firstMessage: The initial message to start the practice session
