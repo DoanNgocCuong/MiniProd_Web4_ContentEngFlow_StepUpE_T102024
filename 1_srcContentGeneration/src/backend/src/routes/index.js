@@ -17,6 +17,8 @@ const generateLearningOnionController = require('../controllers/generateLearning
 const generate20ChunkingFrom5ScenarioController = require('../controllers/generate20ChunkingFrom5ScenarioController');
 const generateAudioController = require('../controllers/generateAudioController');
 const generateLearningPTYController = require('../controllers/generateLearningPTYController');
+const generateLearningLyLyController = require('../controllers/generateLearningLyLyController');
+
 
 const tableFeedbackController = require('../controllers/tableFeedbackController');
 const tableDraftController = require('../controllers/tableDraftController');
@@ -39,6 +41,7 @@ router.post('/generate-learning-onion', generateLearningOnionController.generate
 router.post('/generate-20-chunking-from-5-scenario', generate20ChunkingFrom5ScenarioController.generate20ChunkingFrom5Scenario);
 router.post('/generate-audio', generateAudioController.generateAudio);
 router.post('/generate-learning-pty', generateLearningPTYController.generateLearningPTY);
+router.post('/generate-learning-lyly', generateLearningLyLyController.generateLearningLyLy);
 
 // Submit feedback
 router.post('/submit-feedback', tableFeedbackController.submitFeedback);

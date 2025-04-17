@@ -384,7 +384,54 @@ http://103.253.20.13:3000/api/generate-20-chunking-from-5-scenario
 
 ```bash
 {
-    "chunkingPhrases": "{\n  \"topic\": \"Project updates (Cập nhật dự án)\",\n  \"scenarios\": [\n    {\n      \"scenario\": \"Giới thiệu dự án mới\",\n      \"questions\": [\n        \"Can you describe the main goal of the new project?\",\n        \"What are the key features of this project?\",\n        \"Who are the main stakeholders involved in this project?\",\n        \"What challenges do you expect to face during this project?\"\n      ]\n    },\n    {\n      \"scenario\": \"Báo cáo tiến độ hàng tuần\",\n      \"questions\": [\n        \"What progress has been made since last week?\",\n        \"Are there any tasks that are behind schedule?\",\n        \"What successes can you share from this week's work?\",\n        \"How do you plan to address any delays in the project?\"\n      ]\n    },\n    {\n      \"scenario\": \"Thảo luận vấn đề kỹ thuật\",\n      \"questions\": [\n        \"What technical issues have arisen in the project?\",\n        \"How do you think these issues can be resolved?\",\n        \"Have you consulted with any experts about these problems?\",\n        \"What impact do these technical issues have on the project timeline?\"\n      ]\n    },\n    {\n      \"scenario\": \"Đề xuất giải pháp cải tiến\",\n      \"questions\": [\n        \"What improvements do you think could enhance the project?\",\n        \"Can you suggest any tools or methods to increase efficiency?\",\n        \"How would you prioritize these improvements?\",\n        \"What feedback have you received about your proposed solutions?\"\n      ]\n    },\n    {\n      \"scenario\": \"Phản hồi từ nhóm phát triển\",\n      \"questions\": [\n        \"What feedback have you received from the development team?\",\n        \"How do you plan to incorporate their suggestions?\",\n        \"Are there any concerns raised by the team that need addressing?\",\n        \"What positive comments did the team share about the project?\"\n      ]\n    }\n  ]\n}"
+    "topic": "Project updates (Cập nhật dự án)",
+    "scenarios": [
+        {
+            "scenario": "Giới thiệu dự án mới",
+            "questions": [
+                "Can you describe the main goal of the new project?",
+                "What are the key features of this project?",
+                "Who are the main stakeholders involved in this project?",
+                "What challenges do you expect to face with this new project?"
+            ]
+        },
+        {
+            "scenario": "Thảo luận tiến độ hiện tại",
+            "questions": [
+                "What tasks have been completed so far?",
+                "Are there any delays in the current project timeline?",
+                "How do you feel about the progress made until now?",
+                "What resources do you need to continue moving forward?"
+            ]
+        },
+        {
+            "scenario": "Giải quyết vấn đề phát sinh",
+            "questions": [
+                "What issues have recently come up in the project?",
+                "How do you suggest we address these problems?",
+                "Have you encountered similar issues in past projects?",
+                "What support do you need to resolve these challenges?"
+            ]
+        },
+        {
+            "scenario": "Đề xuất cải tiến dự án",
+            "questions": [
+                "What improvements do you think could enhance the project?",
+                "How would these changes impact the overall outcome?",
+                "Can you provide examples of successful improvements from other projects?",
+                "What feedback have you received from the team about potential changes?"
+            ]
+        },
+        {
+            "scenario": "Lên kế hoạch cho tuần tới",
+            "questions": [
+                "What are the main objectives for next week?",
+                "Who will be responsible for each task next week?",
+                "How can we ensure that we stay on track with our goals?",
+                "What potential obstacles should we prepare for in the coming week?"
+            ]
+        }
+    ]
 }
 ```
 ---
@@ -713,6 +760,98 @@ Exercise Features:
 
 =======
 
+# C1.1 Gen Prompt Lyly
+
+http://103.253.20.13:3000/api/generate-learning-lyly
+
+cURL Example:
+```bash
+curl -X POST \
+  http://103.253.20.13:3000/api/generate-learning-lyly \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "user_profile": "GIVEN INPUT:\nIndustry: [IT]\nJob: [Front-end developer]\nGender: Male\nNative language: Vietnamese\nEnglish Level: [A2]\n---\nStage: Daily-standup \nQuestion: What did you do yesterday?\n[Correct sentence]: I worked on a new feature",
+    "first_message": "What did you do yesterday?"
+}'
+```
+
+Input:
+```json
+{
+    "user_profile": "GIVEN INPUT:\nIndustry: [IT]\nJob: [Front-end developer]\nGender: Male\nNative language: Vietnamese\nEnglish Level: [A2]\n---\nStage: Daily-standup \nQuestion: What did you do yesterday?\n[Correct sentence]: I worked on a new feature",
+    "first_message": "What did you do yesterday?"
+}
+```
+
+Response:
+```json
+{
+    "system_prompt": "You are an AI English tutor for workplace communication. 
+
+You will be given:
+- User's profile
+- Topic: The stage/goal of the conversation
+- Scenario: The specific discussion in which this roleplay takes place
+- Question: This is the question asked to user
+- Correct answer: user needs to reply with this sentence
+- Context sentence: this is what user sees, which signals to user what the correct answer is.
+
+Your task:
+1. Ask the user: \"first message\"
+2. Based on the response:
+   - If user said [correct sentence], reply concisely and naturally without giving any new info. -> to step 3.
+   - If user said anything else or is unclear, give feedback:
+     - 1st time: \"Uh oh... Try answering based on the above information!\" → Ask again
+     - 2nd time: \"Not quite... You can use a hint if you'd like. Try one more time!\" → Ask again
+     - 3rd time: \"It's okay. The correct answer is \"[correct sentence]\". Don't forget next time!\" → Skip to the next step.
+3. Ask: \"Now it's your turn to ask me. Can you repeat the question I just asked?\"
+4. Based on the user's response:
+   - If user said [question] correctly, answer the question concisely and naturally in the context -> then proceed to step 5.
+   - If incorrect:
+     - 1st attempt: \"Sorry, I didn't catch that. What was your question?\" -> let user talk again.
+     - 2nd attempt: \"You can use the question I asked earlier. Try again!\" -> let user talk again.
+     - 3rd attempt: \"The question is \"[question]\". Don't worry, we can try again later!\" -> skip to step 5.
+5. Close: \"Vậy là bạn đã hoàn thành bài học. Lần sau trò chuyện tiếp nha!\"
+
+====
+GIVEN INPUT:
+Industry: [IT]
+Job: [Front-end developer]
+Gender: Male
+Native language: Vietnamese
+English Level: [A2]
+---
+Stage: Daily-standup 
+Question: What did you do yesterday?
+[Correct sentence]: I worked on a new feature
+---
+Context sentence: \"Bạn vừa làm một tính năng lưu cụm mới cho app Job Speak. PM nhắn tin hỏi bạn ...\"",
+    "first_message": "What did you do yesterday?"
+}
+```
+
+Required Input Parameters:
+- user_profile: Text input containing user information and learning context in the specified format
+- first_message: The first message that Lyly will use to start the conversation
+
+Response Fields:
+- system_prompt: The complete system prompt for Lyly, including:
+  - Base conversation template
+  - User profile information
+  - Generated context sentence
+  - Learning structure and information
+- first_message: The first message to start the conversation
+
+Features:
+- Roleplay-based learning
+- Contextual conversation practice
+- Structured learning objectives
+- Natural conversation flow
+- Progressive difficulty
+- Real-world scenario simulation
+- Multiple attempt feedback system
+- Bilingual support (English and Vietnamese)
+
 # C2. With each 4 Questions from Output B: User Profile + 1 Week-1 Topic-1 Scenario-4 Questions => Generate Learning Onion API
 
 http://103.253.20.13:3000/api/generate-learning-onion
@@ -778,6 +917,47 @@ Features:
 - Real-world scenario simulation 
 # 
 
+
+# C3. User Profile + Question => Phát triển ý (PTY - Onion Learning Method)
+
+```bash
+curl -X POST \
+  http://103.253.20.13:3000/api/generate-learning-pty \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "mainQuestion": "What progress has been made since last week?"
+}'
+```
+
+http://103.253.20.13:3000/api/generate-learning-pty
+
+Input:
+```json
+{
+    "mainQuestion": "What progress has been made since last week?"
+}
+```
+
+Response:
+```json
+{
+    "systemPrompt": "Take turns and role-play with me. You are Onion Guru...",
+    "firstMessage": "Hello there! I can help you expand your answer to increase your fluency. Let's start with the main question: What progress has been made since last week?"
+}
+```
+
+Required Input Parameters:
+- mainQuestion: The question that needs to be expanded/practiced
+
+Response Fields:
+- systemPrompt: The complete Onion Guru prompt template that guides the conversation
+- firstMessage: The initial message to start the practice session
+
+
+
+
+
+
 # E. Generate Audio
 
 http://103.253.20.13:3000/api/generate-audio
@@ -824,38 +1004,3 @@ Features:
 - Multiple voice options
 - Adjustable speech rate
 - Error handling 
-
-# C3. User Profile + Question => Phát triển ý (PTY - Onion Learning Method)
-
-```bash
-curl -X POST \
-  http://103.253.20.13:3000/api/generate-learning-pty \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "mainQuestion": "What progress has been made since last week?"
-}'
-```
-
-http://103.253.20.13:3000/api/generate-learning-pty
-
-Input:
-```json
-{
-    "mainQuestion": "What progress has been made since last week?"
-}
-```
-
-Response:
-```json
-{
-    "systemPrompt": "Take turns and role-play with me. You are Onion Guru...",
-    "firstMessage": "Hello there! I can help you expand your answer to increase your fluency. Let's start with the main question: What progress has been made since last week?"
-}
-```
-
-Required Input Parameters:
-- mainQuestion: The question that needs to be expanded/practiced
-
-Response Fields:
-- systemPrompt: The complete Onion Guru prompt template that guides the conversation
-- firstMessage: The initial message to start the practice session

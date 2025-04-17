@@ -82,13 +82,12 @@ exports.generate20ChunkingFrom5Scenario = async (req, res) => {
 
         // Validate response format
         try {
-            JSON.parse(content);
+            const parsedContent = JSON.parse(content);
+            res.json(parsedContent);
         } catch (e) {
             console.error('JSON parse error:', e);
             return res.status(500).json({ error: 'Invalid response format from AI' });
         }
-
-        res.json({ chunkingPhrases: content });
     } catch (error) {
         // Improved error handling with more details
         console.error('Detailed error:', error);
