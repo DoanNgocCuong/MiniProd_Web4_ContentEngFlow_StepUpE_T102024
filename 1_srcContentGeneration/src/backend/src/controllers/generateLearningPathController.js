@@ -80,9 +80,26 @@ RESPONSE JSON TEMPLATE (not include other character such as \`\`\`json):
 ####
 `;
 
+// Function to get image link for a scenario
+async function getLinkImageForScenario(scenario) {
+    try {
+        // Here you can implement your own logic to get image links
+        // For example, you could:
+        // 1. Get from your image database
+        // 2. Get from an image API
+        // 3. Get from a predefined mapping
+        
+        // For now, returning a placeholder URL based on the scenario
+        // You should replace this with your actual image source logic
+        return `https://your-image-service.com/images/${encodeURIComponent(scenario)}`;
+    } catch (error) {
+        console.error(`Error getting image link for scenario: ${scenario}`, error);
+        return ""; // Return empty string if getting image fails
+    }
+}
+
 exports.generateLearningPath = async (req, res) => {
     try {
-        // Lấy user profile từ req.body
         const { userProfile } = req.body;
 
         const response = await openai.chat.completions.create({
@@ -96,11 +113,20 @@ exports.generateLearningPath = async (req, res) => {
             ],
             max_tokens: 9000,
             temperature: 0
-            });
+        });
 
         const content = response.choices[0].message.content;
+        const parsedContent = JSON.parse(content);
 
-        res.json({ learningPath: content });
+        // Add image links to each scenario
+        for (let topic of parsedContent.learning_path) {
+            for (let scenario of topic.scenarios) {
+                const imageLink = await getLinkImageForScenario(scenario.scenario);
+                scenario.thumbnail = imageLink;
+            }
+        }
+
+        res.json(parsedContent);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
