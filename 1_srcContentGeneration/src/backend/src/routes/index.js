@@ -42,7 +42,7 @@ router.post('/generate-20-chunking-from-5-scenario', generate20ChunkingFrom5Scen
 router.post('/generate-audio', generateAudioController.generateAudio);
 router.post('/generate-learning-pty', generateLearningPTYController.generateLearningPTY);
 router.post('/generate-learning-lyly', generateLearningLyLyController.generateLearningLyLy);
-router.post('/generate-questions-4-inputs', generateQuestions4InputController.generateQuestions);
+router.post('/generate-questions-4-inputs', generateQuestions4InputController.generateQuestions4Input);
 
 // Submit feedback
 router.post('/submit-feedback', tableFeedbackController.submitFeedback);

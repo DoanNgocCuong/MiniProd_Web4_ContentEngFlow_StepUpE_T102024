@@ -453,7 +453,7 @@ http://103.253.20.13:3000/api/generate-questions-4-inputs
 Payload:
 ```bash
 {
-  "generateQuestionInput": {
+  "generateQuestions4Input": {
     "user_profile": "USER PROFILE:\n- industry: [AI]\n- job: [CTO]\n- englishLevel: [B1]\n- learningGoals: [cdcdc]",
     "question_data": {
       "topic": "Project updates (Cập nhật dự án)",

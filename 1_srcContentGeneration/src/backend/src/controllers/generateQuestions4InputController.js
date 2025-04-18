@@ -1,16 +1,14 @@
-// backend/src/controllers/generateQuestionsController.js
+// author: Doan Ngoc Cuong
+// date: 2025-03-27
+// backend/src/controllers/ generatechunkingPhrasesController.js
 
 const OpenAI = require('openai');
-const { BATCH_SIZE, MAX_TOKENS } = require('../config/batchConfig');
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 });
 
-/**
- * Prompt chuẩn để tạo câu hỏi
- */
-const generateQuestionsPrompt = `
+const generateQuestions4InputPrompt = `
 You are an expert at generating content related to English lesson topics.
 Return an array of question objects in JSON format, without including any other characters such as \`\`\`JSON. 
 
@@ -73,105 +71,63 @@ Example:
 }
 `;
 
-/**
- * Kiểm tra tính hợp lệ của câu hỏi
- */
-function validateQuestion(question) {
-    const requiredFields = [
-        'question', 'structure', 'main phrase', 
-        'optional phrase 1', 'optional phrase 2',
-        'question-vi', 'structure-vi', 
-        'main phrase-vi', 'optional phrase 1-vi', 'optional phrase 2-vi'
-    ];
-
-    // Kiểm tra các trường bắt buộc
-    for (const field of requiredFields) {
-        if (!question[field]) return false;
-    }
-
-    // Kiểm tra cấu trúc câu tiếng Việt
-    if (!question['structure-vi'].includes('____')) return false;
-
-    return true;
-}
-
-/**
- * Controller để tạo câu hỏi
- * @param {Object} req - Request với format { "generateQuestionInput": "Generate 5 English questions about..." }
- * @param {Object} res - Response object
- */
-exports.generateQuestions = async (req, res) => {
+exports.generateQuestions4Input = async (req, res) => {
     try {
-        const { generateQuestionInput } = req.body;
+        const { generateQuestions4Input } = req.body;
 
-        // Validate input
-        if (!generateQuestionInput) {
-            return res.status(400).json({ error: 'Generate Question Input is required' });
+        // Add input validation
+        if (!generateQuestions4Input) {
+            return res.status(400).json({ error: 'generateQuestions4Input is required' });
         }
 
-        // Lấy số lượng câu hỏi từ input
-        const questionCountMatch = generateQuestionInput.match(/Generate (\d+) English/i);
-        const questionCount = questionCountMatch ? parseInt(questionCountMatch[1]) : 1;
-        const batches = Math.ceil(questionCount / BATCH_SIZE);
-        let allQuestions = [];
+        // Log để debug
+        console.log('Received generateQuestions4Input:', generateQuestions4Input);
 
-        // Tạo câu hỏi theo batches
-        for (let i = 0; i < batches; i++) {
-            const batchSize = Math.min(BATCH_SIZE, questionCount - i * BATCH_SIZE);
-            const batchPrompt = generateQuestionInput.replace(/Generate \d+ English/i, `Generate ${batchSize} English`);
-
-            const response = await openai.chat.completions.create({
-                model: 'gpt-4o-mini',
-                messages: [
-                    { 
-                        role: 'system', 
-                        content: generateQuestionsPrompt
-                    },
-                    { 
-                        role: 'user', 
-                        content: `${batchPrompt}`
-                    }
-                ],
-                max_tokens: MAX_TOKENS,
-                temperature: 0.7
-            });
-
-            const content = response.choices[0].message.content;
-            let parsedContent;
-            try {
-                parsedContent = JSON.parse(content.trim().replace(/```json|```/g, ''));
-            } catch (error) {
-                console.error('JSON parsing error:', error);
-                continue;
-            }
-
-            // Validate và filter câu hỏi không hợp lệ
-            const validQuestions = Array.isArray(parsedContent) 
-                ? parsedContent.filter(validateQuestion)
-                : [parsedContent].filter(validateQuestion);
-
-            allQuestions = allQuestions.concat(validQuestions);
-        }
-
-        // Kiểm tra số lượng câu hỏi tạo được
-        if (allQuestions.length === 0) {
-            return res.status(500).json({ 
-                error: 'Failed to generate valid questions' 
-            });
-        }
-
-        // Trả về kết quả
-        res.json({ 
-            questions: allQuestions,
-            total: allQuestions.length,
-            requestedCount: questionCount
+        const response = await openai.chat.completions.create({
+            model: 'gpt-4o-mini-2024-07-18',
+            messages: [
+                { 
+                    role: 'system', 
+                    content: generateQuestions4InputPrompt
+                },
+                { 
+                    role: 'user', 
+                    content: typeof generateQuestions4Input === 'string' 
+                        ? generateQuestions4Input 
+                        : JSON.stringify(generateQuestions4Input)
+                }
+            ],
+            max_tokens: 4096,
+            temperature: 0
         });
 
+        const content = response.choices[0].message.content;
+        
+        // Log để debug
+        console.log('OpenAI response:', content);
+
+        // Validate response format
+        try {
+            const parsedContent = JSON.parse(content);
+            res.json(parsedContent);
+        } catch (e) {
+            console.error('JSON parse error:', e);
+            return res.status(500).json({ error: 'Invalid response format from AI' });
+        }
     } catch (error) {
-        console.error('Generation error:', error);
+        // Improved error handling with more details
+        console.error('Detailed error:', error);
+        
+        if (error.response) {
+            return res.status(error.response.status).json({ 
+                error: 'OpenAI API error',
+                message: error.response.data.error.message 
+            });
+        }
+        
         res.status(500).json({ 
-            error: error.message,
-            details: 'Error generating questions'
+            error: 'Internal server error',
+            message: error.message || 'An unexpected error occurred'
         });
     }
 };
