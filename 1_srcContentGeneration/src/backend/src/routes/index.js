@@ -18,7 +18,7 @@ const generate20ChunkingFrom5ScenarioController = require('../controllers/genera
 const generateAudioController = require('../controllers/generateAudioController');
 const generateLearningPTYController = require('../controllers/generateLearningPTYController');
 const generateLearningLyLyController = require('../controllers/generateLearningLyLyController');
-
+const generateQuestions4InputController = require('../controllers/generateQuestions4InputController');
 
 const tableFeedbackController = require('../controllers/tableFeedbackController');
 const tableDraftController = require('../controllers/tableDraftController');
@@ -42,6 +42,7 @@ router.post('/generate-20-chunking-from-5-scenario', generate20ChunkingFrom5Scen
 router.post('/generate-audio', generateAudioController.generateAudio);
 router.post('/generate-learning-pty', generateLearningPTYController.generateLearningPTY);
 router.post('/generate-learning-lyly', generateLearningLyLyController.generateLearningLyLy);
+router.post('/generate-questions-4-inputs', generateQuestions4InputController.generateQuestions);
 
 // Submit feedback
 router.post('/submit-feedback', tableFeedbackController.submitFeedback);
