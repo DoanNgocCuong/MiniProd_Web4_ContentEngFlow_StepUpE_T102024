@@ -19,6 +19,7 @@ const generateAudioController = require('../controllers/generateAudioController'
 const generateLearningPTYController = require('../controllers/generateLearningPTYController');
 const generateLearningLyLyController = require('../controllers/generateLearningLyLyController');
 const generateQuestions4InputController = require('../controllers/generateQuestions4InputController');
+const generateC11_4ExercisesController = require('../controllers/generateC11_4Exercises');
 
 const tableFeedbackController = require('../controllers/tableFeedbackController');
 const tableDraftController = require('../controllers/tableDraftController');
@@ -43,6 +44,7 @@ router.post('/generate-audio', generateAudioController.generateAudio);
 router.post('/generate-learning-pty', generateLearningPTYController.generateLearningPTY);
 router.post('/generate-learning-lyly', generateLearningLyLyController.generateLearningLyLy);
 router.post('/generate-questions-4-inputs', generateQuestions4InputController.generateQuestions4Input);
+router.post('/generate-all-exercises', generateC11_4ExercisesController.generateAllExercises);
 
 // Submit feedback
 router.post('/submit-feedback', tableFeedbackController.submitFeedback);
